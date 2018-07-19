@@ -1770,7 +1770,7 @@ function createCitySelector(func){
  * @param func
  * @returns
  */
-function createDateSelector(func) {
+function createDateSelector(func,x) {
 	// 如果节点不存在, 创建一个存储日期的节点
 	if($("#date").length == 0){
 		$("body").append("<div id='date'></div>");
@@ -1793,7 +1793,7 @@ function createDateSelector(func) {
     // 数据初始化
     function formatYear (nowYear) {
         var arr = [];
-        for (var i = nowYear - 5; i <= nowYear + 5; i++) {
+        for (var i = nowYear - 20; i <= nowYear + 20; i++) {
             arr.push({
                 id: i + '',
                 value: i + '年'
@@ -1870,7 +1870,10 @@ function createDateSelector(func) {
     var oneLevelId = showDateDom.attr('data-year');
     var twoLevelId = showDateDom.attr('data-month');
     var threeLevelId = showDateDom.attr('data-date');
-    var iosSelect = new IosSelect(3, 
+    if (!x || parseInt(x) == 0) {
+    	x = 3;
+    }
+    var iosSelect = new IosSelect(x, 
         [yearData, monthData, dateData],
         {
             title: '选择日期',

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.dao.ExperienceMapper" >
+<mapper namespace="com.purchaser.dao.ExperienceMapper" >
   <resultMap id="BaseResultMap" type="com.purchaser.pojo.Experience" >
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="admirer" property="admirer" jdbcType="BIGINT" />
+    <result column="user" property="user" jdbcType="BIGINT" />
     <result column="startTime" property="starttime" jdbcType="TIMESTAMP" />
     <result column="endTime" property="endtime" jdbcType="TIMESTAMP" />
     <result column="company_name" property="companyName" jdbcType="VARCHAR" />
@@ -13,7 +14,7 @@
     <result column="post_detail" property="postDetail" jdbcType="LONGVARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, admirer, startTime, endTime, company_name, post
+    id, admirer, user, startTime, endTime, company_name, post
   </sql>
   <sql id="Blob_Column_List" >
     post_detail
@@ -31,10 +32,10 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.purchaser.pojo.Experience" >
-    insert into tb_experience (id, admirer, startTime, 
+    insert into tb_experience (id, admirer, user, startTime, 
       endTime, company_name, post, 
       post_detail)
-    values (#{id,jdbcType=BIGINT}, #{admirer,jdbcType=BIGINT}, #{starttime,jdbcType=TIMESTAMP}, 
+    values (#{id,jdbcType=BIGINT}, #{admirer,jdbcType=BIGINT}, #{user, jdbcType=BIGINT}, #{starttime,jdbcType=TIMESTAMP}, 
       #{endtime,jdbcType=TIMESTAMP}, #{companyName,jdbcType=VARCHAR}, #{post,jdbcType=VARCHAR}, 
       #{postDetail,jdbcType=LONGVARCHAR})
   </insert>
@@ -46,6 +47,9 @@
       </if>
       <if test="admirer != null" >
         admirer,
+      </if>
+      <if test="user != null" >
+        user,
       </if>
       <if test="starttime != null" >
         startTime,
@@ -70,6 +74,9 @@
       <if test="admirer != null" >
         #{admirer,jdbcType=BIGINT},
       </if>
+      <if test="user != null" >
+        #{user,jdbcType=BIGINT},
+      </if>
       <if test="starttime != null" >
         #{starttime,jdbcType=TIMESTAMP},
       </if>
@@ -93,6 +100,9 @@
       <if test="admirer != null" >
         admirer = #{admirer,jdbcType=BIGINT},
       </if>
+      <if test="user != null" >
+        user = #{user,jdbcType=BIGINT},
+      </if>
       <if test="starttime != null" >
         startTime = #{starttime,jdbcType=TIMESTAMP},
       </if>
@@ -114,6 +124,7 @@
   <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.purchaser.pojo.Experience" >
     update tb_experience
     set admirer = #{admirer,jdbcType=BIGINT},
+      user = #{user,jdbcType=BIGINT},
       startTime = #{starttime,jdbcType=TIMESTAMP},
       endTime = #{endtime,jdbcType=TIMESTAMP},
       company_name = #{companyName,jdbcType=VARCHAR},
@@ -124,6 +135,7 @@
   <update id="updateByPrimaryKey" parameterType="com.purchaser.pojo.Experience" >
     update tb_experience
     set admirer = #{admirer,jdbcType=BIGINT},
+      user = #{user,jdbcType=BIGINT},
       startTime = #{starttime,jdbcType=TIMESTAMP},
       endTime = #{endtime,jdbcType=TIMESTAMP},
       company_name = #{companyName,jdbcType=VARCHAR},

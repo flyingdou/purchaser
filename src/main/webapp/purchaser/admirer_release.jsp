@@ -157,8 +157,8 @@
 	      	         <!-- 性别  -->
 	      	         <div class="line">
 	      	              <div class="title">性别</div>
-	      	              <div class="value">
-	      	              		<span class="inputValue">{{model.gender}}}}</span><span class="inputValue">&nbsp;&gt;</span>
+	      	              <div class="value" @click="selectGender()" >
+	      	              		<span class="inputValue">{{model.gender | gender}}</span><span class="inputValue">&nbsp;&gt;</span>
 	      	              </div>
 	      	         </div>
 	      	         
@@ -218,63 +218,71 @@
 	      	         
       	    </div>
       	    
-      	    <!-- 企业信息 -->
+      	    <!-- 资历信息 -->
       	    <div class="company_info">
       	         
-      	         <!-- 企业名称  -->
+      	         <!-- 学历 -->
       	         <div class="line">
-      	              <div class="title">企业名称 </div>
+      	              <div class="title">学历 </div>
       	              <div class="value">
-      	              		<input class="inputValue" v-model="model.affiliation" type="text" placeholder="请输入企业名称"/>
+      	              		<input class="inputValue" v-model="model.study" type="text" placeholder="请输入最高学历"/>
       	              </div>
       	         </div>
       	         
-      	         <!-- 行业  -->
+      	         <!-- 语言能力 -->
       	         <div class="line">
-      	              <div class="title">行业 </div>
-      	              <div class="value" @click="selectBusiness()" >
-      	                     <span class="inputValue" v-model="model.business">{{model.business}}</span><span class="inputValue">&nbsp;&gt;</span>
+      	              <div class="title">语言能力</div>
+      	              <div class="value" >
+      	                     <input class="inputValue" v-model="model.language" type="text" placeholder="请输入语言能力" />
       	              </div>
       	         </div>
       	         
-      	         <!-- 企业类型  -->
+      	         <!-- 资格认证 -->
       	         <div class="line">
-      	              <div class="title">企业类型 </div>
-      	              <div class="value" @click="selectCompanyType()">
-      	              		<span class="inputValue" v-model="model.company_type">{{model.company_type}}</span><span class="inputValue">&nbsp;&gt;</span>
+      	              <div class="title">资格认证 </div>
+      	              <div class="value">
+      	              		<input class="inputValue" v-model="model.qualification" type="text" placeholder="请输入资格认证信息" />
+      	              </div>
+      	         </div>
+      	         
+      	         
+      	         <!-- 教育经历-->
+      	         <div class="line">
+      	              <div class="title">教育经历 </div>
+      	              <div class="value">
+      	              		<input class="inputValue" v-model="model.learning" type="text" placeholder="请输入教育经历" />
+      	              </div>
+      	         </div>
+      	         
+      	         
+      	         <!-- 工作履历 ，跳转二级页面-->
+      	         <div class="line">
+      	              <div class="title">工作履历 </div>
+      	              <div class="value">
+      	              		<span class="inputValue" v-model="model.work_experience_id">{{model.work_experience}}</span><span class="inputValue">&nbsp;&gt;</span>
+      	              </div>
+      	         </div>
+      	         
+      	         
+      	         <!-- 自我评价 -->
+      	         <div class="line">
+      	              <div class="title">自我评价 </div>
+      	              <div class="value">
+      	              		<input class="inputValue" v-model="model.self_evaluation" type="text" placeholder="请输入自我评价" />
+      	              </div>
+      	         </div>
+      	         
+      	         
+      	         <!-- 短信验证码 -->
+      	         <div class="line">
+      	              <div class="title">短信验证码 </div>
+      	              <div class="value">
+      	              		<input class="inputValue" v-model="model.code" type="number" placeholder="请输入验证码" />
       	              </div>
       	         </div>
       	         
       	    </div>
       	    
-      	    <!-- 会员信息 -->
-      	    <div class="member_info">
-      	        
-      	         <!-- 会员类型  -->
-      	         <div class="line">
-      	              <div class="title">会员类型</div>
-      	              <div class="value" @click="selectType()">
-      	                     <span class="inputValue" v-model="model.type">{{model.type}}</span><span class="inputValue">&nbsp;&gt;</span>
-      	              </div>
-      	         </div>
-      	         
-      	         <!-- 会员年费 -->
-      	         <div class="line">
-      	              <div class="title">会员年费</div>
-      	              <div class="value">
-      	              		<span class="inputValue">{{model.price}}元</span>
-      	              </div>
-      	         </div>
-      	         
-      	         <!-- 手机验证码-->
-      	         <div class="line">
-      	              <div class="title">手机验证码</div>
-      	              <div class="value">
-      	              		<input class="inputValue" v-model="model.code" type="number" placeholder="请输入验证码"/>
-      	              </div>
-      	         </div>
-      	         
-      	    </div>
       	    
       	    <!-- 填充高度  -->
       	    <div class="footerFill"></div>
@@ -283,7 +291,7 @@
       	    <div class="funButton">
       	    	 <div class="footer getMobilecode" v-if = "model.sendCode == '1' " @click='sendMobileCode()' >获取验证码</div>
       	    	 <div class="footer countdown" v-if = "model.sendCode == '0'">重新获取({{model.countdown}})</div>
-      	    	 <div class="footer pay" @click='toPay()'>支付</div>
+      	    	 <div class="footer pay" @click='save()'>保存</div>
       	    </div>
       	    
       	    
@@ -299,33 +307,10 @@
     	 var src = "purchaser/img/uploadIcon.png";
     	 $("#previwer").attr({"src":src});
     	 
-    	 var param = {
-    			 business: 1,
-    			 company_type: 2,
-    			 type: 3
-    	 };
-    	 // 请求后台参数数据
-    	 $.ajax({
-    		 url: "member/findParameters.pur",
-    		 data: {
-    			 json: encodeURI(JSON.stringify(param))
-    		 },
-    		 success: function (res) {
-    			// 网络请求成功
-    			res = JSON.parse(res);
-    			if (res.success) {
-    				pageData.business = res.business;
-    				pageData.company_type = res.company_type;
-    				pageData.type = res.type;
-    				findUserInfo();
-    			} else {
-    				console.log("程序异常");
-    			}
-    		 },
-    		 error: function (e) {
-    			 console.log("网络异常");
-    		 }
-    	 })
+    	 var gender = [{'id':'M','value':'男'},{'id':'F','value':'女'}];
+    	 pageData.gender = gender;
+    	 findUserInfo();
+    	
      })
      
      // 查询用户的基本信息
@@ -347,21 +332,6 @@
     			    	 dou.city = "厦门";
     			     }
     			     
-    			     // business 初始化
-    			     if (!dou.business || dou.business == '') {
-    			     	dou.business = '请选择';
-    			     }
-    			     
-    			     // company_type 初始化
-    			     if (!dou.company_type || dou.company_type == '') {
-    			     	dou.company_type = '请选择';
-    			     }
-    			     
-    			     // type初始化
-    			     if (!dou.type || dou.type == '') {
-    			    	 dou.type = "个人会员",
-    			    	 dou.price = "500";
-    			     }
     			     
     			     // 初始化操作
     			     dou.sendCode = '1';
@@ -392,7 +362,9 @@
      var joinApply = new Vue({
     	 el: "#app",
     	 data: {
-    		 model: {}
+    		 model: {
+    			 gender_name:"男"
+    		 }
     	 },
     	 
     	 // 初始化函数
@@ -421,6 +393,19 @@
     		 })
     	 },
     	 
+    	 // 过滤器
+    	 filters: {
+    		 // 性别过滤
+    		 gender: function (value) {
+    			 if (value == 'M') {
+    				 value = '男';
+    			 } else {
+    				 value = '女';
+    			 }
+    			 return value;
+    		 }
+    	 },
+    	 
     	 // 自定义方法
     	 methods: {
     		 // 跳转到，选择籍贯信息的页面
@@ -431,44 +416,15 @@
 	                });
     		 },
     		 
-    		 // 选择行业，弹出层
-    		 selectBusiness: function () {
+    		 // 选择性别，弹出层
+    		 selectGender: function () {
     			 createSelector({
-    				data: pageData.business,
-    				title: "选择行业",
+    				data: pageData.gender,
+    				title: "选择性别",
     				callback: function (res) {
     					console.log(res);
-    					joinApply.model.business_id = res.id;
-    					joinApply.model.business = res.value;
+    					joinApply.model.gender = res.id;
     				}
-    			 });
-    		 },
-    		 
-    		 
-    		 // 企业类型，弹出层
-    		 selectCompanyType: function () {
-    			 createSelector({
-    				data: pageData.company_type,
-    				title: "企业类型",
-    				callback: function (res) {
-    					console.log(res);
-    					joinApply.model.company_type_id = res.id;
-    					joinApply.model.company_type = res.value;
-    				}
-    			 });
-    		 },
-    		 
-    		 // 选择会员类型
-    		 selectType: function () {
-    			 createSelector({
-    				 data: pageData.type,
-    				 title: "会员类型",
-    				 callback: function (res) {
-    					 console.log(res);
-    					 joinApply.model.type_id = res.id;
-    					 joinApply.model.type = res.value;
-    					 joinApply.model.price = res.price;
-    				 }
     			 });
     		 },
     		 
@@ -553,19 +509,13 @@
     	},
     	
     	
-    	// 用户点击'支付'按钮时
-    	toPay: function () {
+    	// 用户点击'保存'按钮时
+    	save: function () {
     		var model = joinApply.model;
     		
     		// 姓名
     		if (!model.name || model.name == '') {
     			alert('请先填写姓名！');
-    			return;
-    		}
-    		
-    		// 职务
-    		if (!model.duty || model.duty == '') {
-    			alert('请先填写职务！');
     			return;
     		}
     		
@@ -593,32 +543,54 @@
     			return;
     		}
     		
+    		// 现居地址
+    		if (!model.address || model.address == '' ) {
+    			alert('请先填写现居地址！');
+    			return;
+    		}
+    		
     		// 照片
-    		if (!model.image || model.image == '' || !model.imgs || model.imgs.length < 1) {
+    		if ((!model.image || model.image == '') && (!model.imgs || model.imgs.length < 1) ) {
     			alert('请先上传一寸免冠照！');
     			return;
     		}
     		
-    		// 企业名称
-    		if (!model.affiliation || model.affiliation == '') {
-    			alert('请先填写企业名称！');
-    			return;
-    		}
-    		// 行业
-    		if (!model.business || model.business == '' || model.business.indexOf('请') > 0) {
-    			alert('请先选择行业！');
+    		// 学历
+    		if (!model.study || model.study == '' ) {
+    			alert('请先填写学历！');
     			return;
     		}
     		
-    		// 企业类型
-    		if (!model.company_type || model.company_type == '' || model.company_type.indexOf('请') > 0) {
-    			alert('请先选择企业类型！');
+    		// 语言能力
+    		if (!model.language || model.language == '' ) {
+    			alert('请先填写语言能力！');
     			return;
     		}
     		
-    		// 会员类型
-    		if (!model.type || model.type == '') {
-    			alert('请先选择会员类型！');
+    		
+    		// 资格认证
+    		if (!model.qualification || model.qualification == '' ) {
+    			alert('请先填写资格认证！');
+    			return;
+    		}
+    		
+    		
+    		// 教育经历
+    		if (!model.learning || model.learning == '' ) {
+    			alert('请先填写教育经历！');
+    			return;
+    		}
+    		
+    		// 工作履历
+    		if (!model.work_experience || model.work_experience == '' || model.work_experience.length <= 0 ) {
+    			alert('请先填写工作履历！');
+    			return;
+    		}
+    		
+    		
+    		// 自我评价
+    		if (!model.self_evaluation || model.self_evaluation == '' ) {
+    			alert('请先填写自我评价信息！');
     			return;
     		}
     		
@@ -629,10 +601,8 @@
     		}
     		
     		// 数据校验通过，将用户数据存储起来
-    		sessionStorage.setItem("joinApply", joinApply.model);
+    		sessionStorage.setItem("admirer", joinApply.model);
     		
-    		// 跳转到订单页面
-    		location.href = 'purchaser/memberOrder.jsp';
     		
     		
     	}

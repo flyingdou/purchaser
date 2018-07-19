@@ -12,6 +12,9 @@ public class Experience {
 
     // admirer表外键
     private Long admirer;
+    
+    // user表外键
+    private Long user;
 
     // 开始时间
     private Date starttime;
@@ -38,6 +41,14 @@ public class Experience {
 
     public Long getAdmirer() {
         return admirer;
+    }
+
+    public void setUser(Long user) {
+        this.user = user;
+    }
+    
+    public Long getUser() {
+        return user;
     }
 
     public void setAdmirer(Long admirer) {
