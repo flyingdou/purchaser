@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.purchaser.dao.ActiveMapper" >
+  <resultMap id="BaseResultMap" type="com.purchaser.pojo.Active" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="image" property="image" jdbcType="VARCHAR" />
+    <result column="creator" property="creator" jdbcType="BIGINT" />
+    <result column="price" property="price" jdbcType="INTEGER" />
+    <result column="distinguished_price" property="distinguishedPrice" jdbcType="INTEGER" />
+    <result column="manufacturer_price" property="manufacturerPrice" jdbcType="INTEGER" />
+    <result column="start_date" property="startDate" jdbcType="TIMESTAMP" />
+    <result column="end_date" property="endDate" jdbcType="TIMESTAMP" />
+    <result column="join_end_date" property="joinEndDate" jdbcType="TIMESTAMP" />
+    <result column="telephone" property="telephone" jdbcType="VARCHAR" />
+    <result column="host_unit" property="hostUnit" jdbcType="VARCHAR" />
+    <result column="upper_limit" property="upperLimit" jdbcType="INTEGER" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="longitude" property="longitude" jdbcType="DECIMAL" />
+    <result column="latitude" property="latitude" jdbcType="DECIMAL" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, name, image, creator, price, distinguished_price, manufacturer_price, start_date, 
+    end_date, join_end_date, telephone, host_unit, upper_limit, address, longitude, latitude, 
+    remark, type, create_date
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_active
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from tb_active
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.purchaser.pojo.Active" >
+    insert into tb_active (id, name, image, 
+      creator, price, distinguished_price, 
+      manufacturer_price, start_date, end_date, 
+      join_end_date, telephone, host_unit, 
+      upper_limit, address, longitude, 
+      latitude, remark, type, create_date
+      )
+    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{image,jdbcType=VARCHAR}, 
+      #{creator,jdbcType=BIGINT}, #{price,jdbcType=INTEGER}, #{distinguishedPrice,jdbcType=INTEGER}, 
+      #{manufacturerPrice,jdbcType=INTEGER}, #{startDate,jdbcType=TIMESTAMP}, #{endDate,jdbcType=TIMESTAMP}, 
+      #{joinEndDate,jdbcType=TIMESTAMP}, #{telephone,jdbcType=VARCHAR}, #{hostUnit,jdbcType=VARCHAR}, 
+      #{upperLimit,jdbcType=INTEGER}, #{address,jdbcType=VARCHAR}, #{longitude,jdbcType=DECIMAL}, 
+      #{latitude,jdbcType=DECIMAL}, #{remark,jdbcType=VARCHAR}, #{type, jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.purchaser.pojo.Active" >
+    insert into tb_active
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="image != null" >
+        image,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="distinguishedPrice != null" >
+        distinguished_price,
+      </if>
+      <if test="manufacturerPrice != null" >
+        manufacturer_price,
+      </if>
+      <if test="startDate != null" >
+        start_date,
+      </if>
+      <if test="endDate != null" >
+        end_date,
+      </if>
+      <if test="joinEndDate != null" >
+        join_end_date,
+      </if>
+      <if test="telephone != null" >
+        telephone,
+      </if>
+      <if test="hostUnit != null" >
+        host_unit,
+      </if>
+      <if test="upperLimit != null" >
+        upper_limit,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="longitude != null" >
+        longitude,
+      </if>
+      <if test="latitude != null" >
+        latitude,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="image != null" >
+        #{image,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=BIGINT},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=INTEGER},
+      </if>
+      <if test="distinguishedPrice != null" >
+        #{distinguishedPrice,jdbcType=INTEGER},
+      </if>
+      <if test="manufacturerPrice != null" >
+        #{manufacturerPrice,jdbcType=INTEGER},
+      </if>
+      <if test="startDate != null" >
+        #{startDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endDate != null" >
+        #{endDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="joinEndDate != null" >
+        #{joinEndDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="telephone != null" >
+        #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="hostUnit != null" >
+        #{hostUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="upperLimit != null" >
+        #{upperLimit,jdbcType=INTEGER},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="longitude != null" >
+        #{longitude,jdbcType=DECIMAL},
+      </if>
+      <if test="latitude != null" >
+        #{latitude,jdbcType=DECIMAL},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.purchaser.pojo.Active" >
+    update tb_active
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="image != null" >
+        image = #{image,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=BIGINT},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=INTEGER},
+      </if>
+      <if test="distinguishedPrice != null" >
+        distinguished_price = #{distinguishedPrice,jdbcType=INTEGER},
+      </if>
+      <if test="manufacturerPrice != null" >
+        manufacturer_price = #{manufacturerPrice,jdbcType=INTEGER},
+      </if>
+      <if test="startDate != null" >
+        start_date = #{startDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endDate != null" >
+        end_date = #{endDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="joinEndDate != null" >
+        join_end_date = #{joinEndDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="telephone != null" >
+        telephone = #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="hostUnit != null" >
+        host_unit = #{hostUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="upperLimit != null" >
+        upper_limit = #{upperLimit,jdbcType=INTEGER},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="longitude != null" >
+        longitude = #{longitude,jdbcType=DECIMAL},
+      </if>
+      <if test="latitude != null" >
+        latitude = #{latitude,jdbcType=DECIMAL},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.purchaser.pojo.Active" >
+    update tb_active
+    set name = #{name,jdbcType=VARCHAR},
+      image = #{image,jdbcType=VARCHAR},
+      creator = #{creator,jdbcType=BIGINT},
+      price = #{price,jdbcType=INTEGER},
+      distinguished_price = #{distinguishedPrice,jdbcType=INTEGER},
+      manufacturer_price = #{manufacturerPrice,jdbcType=INTEGER},
+      start_date = #{startDate,jdbcType=TIMESTAMP},
+      end_date = #{endDate,jdbcType=TIMESTAMP},
+      join_end_date = #{joinEndDate,jdbcType=TIMESTAMP},
+      telephone = #{telephone,jdbcType=VARCHAR},
+      host_unit = #{hostUnit,jdbcType=VARCHAR},
+      upper_limit = #{upperLimit,jdbcType=INTEGER},
+      address = #{address,jdbcType=VARCHAR},
+      longitude = #{longitude,jdbcType=DECIMAL},
+      latitude = #{latitude,jdbcType=DECIMAL},
+      type = #{type,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <!-- 查询挑战列表 -->
+  <select id="getActiveList" parameterType="int" resultMap="BaseResultMap">
+  	 select id,name,image,start_date,end_date,join_end_date,address from tb_active where type = #{type}
+  </select>
+  
+  <!-- 根据id查询参加的用户列表 -->
+  <select id="getJionUserListById" parameterType="String" resultType="Map">
+  	select u.id,u.name,u.image from tb_user u inner join tb_order o on u.id = o.user
+	where o.status = 1 and o.product_type = 'B' and o.product_id = #{activeId}
+  </select>
+  
+  <!-- 检查用户是否已经参加活动 -->
+  <select id="checkUserJoinActiveByActiveId" parameterType="Map" resultType="int">
+  	select count(u.id) from tb_user u inner join tb_order o on u.id = o.user
+	where o.status = 1 and o.product_type = 'B' and o.product_id = #{activeId}
+	and u.id = #{userId}
+  </select>
+  
+  <!-- 校验活动邀请码 -->
+  <select id="checkActiveCode" parameterType="Map" resultType="Map">
+  		select c.* from tb_invitation_code c inner join tb_active a on c.active = a.id where c.effective = 0 and c.code = #{code}
+  		 and a.id = #{activeId}
+  </select>
+  
+  <!-- 修改活动邀请码更改为已使用 -->
+  <select id="updateActiveCodeUse" parameterType="Long">
+  		update tb_invitation_code set effective = 1 where id = #{activeCodeId}
+  </select>
+</mapper>

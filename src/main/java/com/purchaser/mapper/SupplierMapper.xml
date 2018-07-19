@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.purchaser.dao.SupplierMapper" >
+  <resultMap id="BaseResultMap" type="com.purchaser.pojo.Supplier" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="registered_capital" property="registeredCapital" jdbcType="INTEGER" />
+    <result column="representative" property="representative" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="workers" property="workers" jdbcType="INTEGER" />
+    <result column="business" property="business" jdbcType="INTEGER" />
+    <result column="factory_area" property="factoryArea" jdbcType="INTEGER" />
+    <result column="official_network" property="officialNetwork" jdbcType="VARCHAR" />
+    <result column="image1" property="image1" jdbcType="VARCHAR" />
+    <result column="image2" property="image2" jdbcType="VARCHAR" />
+    <result column="image3" property="image3" jdbcType="VARCHAR" />
+    <result column="contact" property="contact" jdbcType="VARCHAR" />
+    <result column="duty" property="duty" jdbcType="VARCHAR" />
+    <result column="mobilephone" property="mobilephone" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="fax_number" property="faxNumber" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="creator" property="creator" jdbcType="BIGINT" />
+    <result column="audit" property="audit" jdbcType="INTEGER" />
+    <result column="apply_date" property="applyDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, name, registered_capital, representative, address, create_date, workers, business, 
+    factory_area, official_network, image1, image2, image3, contact, duty, mobilephone, email, fax_number, 
+    remark, creator, audit, apply_date
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_supplier
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from tb_supplier
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.purchaser.pojo.Supplier" >
+    insert into tb_supplier (id, name, registered_capital, 
+      representative, address, create_date, 
+      workers, business, factory_area, 
+      official_network, image1, image2, image3, contact, 
+      duty, mobilephone, email, 
+      fax_number, remark, creator, 
+      audit, apply_date)
+    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{registeredCapital,jdbcType=INTEGER}, 
+      #{representative,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{workers,jdbcType=INTEGER}, #{business,jdbcType=INTEGER}, #{factoryArea,jdbcType=INTEGER}, 
+      #{officialNetwork,jdbcType=VARCHAR}, #{image,jdbcType=VARCHAR}, #{contact,jdbcType=VARCHAR}, 
+      #{duty,jdbcType=VARCHAR}, #{mobilephone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+      #{faxNumber,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{creator,jdbcType=BIGINT}, 
+      #{audit,jdbcType=INTEGER}, #{applyDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.purchaser.pojo.Supplier" >
+    insert into tb_supplier
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="registeredCapital != null" >
+        registered_capital,
+      </if>
+      <if test="representative != null" >
+        representative,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="workers != null" >
+        workers,
+      </if>
+      <if test="business != null" >
+        business,
+      </if>
+      <if test="factoryArea != null" >
+        factory_area,
+      </if>
+      <if test="officialNetwork != null" >
+        official_network,
+      </if>
+      <if test="image1 != null" >
+        image1,
+      </if>
+      <if test="image2 != null" >
+        image2,
+      </if>
+      <if test="image3 != null" >
+        image3,
+      </if>
+      <if test="contact != null" >
+        contact,
+      </if>
+      <if test="duty != null" >
+        duty,
+      </if>
+      <if test="mobilephone != null" >
+        mobilephone,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="faxNumber != null" >
+        fax_number,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="audit != null" >
+        audit,
+      </if>
+      <if test="applyDate != null" >
+        apply_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="registeredCapital != null" >
+        #{registeredCapital,jdbcType=INTEGER},
+      </if>
+      <if test="representative != null" >
+        #{representative,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="workers != null" >
+        #{workers,jdbcType=INTEGER},
+      </if>
+      <if test="business != null" >
+        #{business,jdbcType=INTEGER},
+      </if>
+      <if test="factoryArea != null" >
+        #{factoryArea,jdbcType=INTEGER},
+      </if>
+      <if test="officialNetwork != null" >
+        #{officialNetwork,jdbcType=VARCHAR},
+      </if>
+      <if test="image1 != null" >
+        #{image1,jdbcType=VARCHAR},
+      </if>
+      <if test="image2 != null" >
+        #{image2,jdbcType=VARCHAR},
+      </if>
+      <if test="image3 != null" >
+        #{image3,jdbcType=VARCHAR},
+      </if>
+      <if test="contact != null" >
+        #{contact,jdbcType=VARCHAR},
+      </if>
+      <if test="duty != null" >
+        #{duty,jdbcType=VARCHAR},
+      </if>
+      <if test="mobilephone != null" >
+        #{mobilephone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="faxNumber != null" >
+        #{faxNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=BIGINT},
+      </if>
+      <if test="audit != null" >
+        #{audit,jdbcType=INTEGER},
+      </if>
+      <if test="applyDate != null" >
+        #{applyDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.purchaser.pojo.Supplier" >
+    update tb_supplier
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="registeredCapital != null" >
+        registered_capital = #{registeredCapital,jdbcType=INTEGER},
+      </if>
+      <if test="representative != null" >
+        representative = #{representative,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="workers != null" >
+        workers = #{workers,jdbcType=INTEGER},
+      </if>
+      <if test="business != null" >
+        business = #{business,jdbcType=INTEGER},
+      </if>
+      <if test="factoryArea != null" >
+        factory_area = #{factoryArea,jdbcType=INTEGER},
+      </if>
+      <if test="officialNetwork != null" >
+        official_network = #{officialNetwork,jdbcType=VARCHAR},
+      </if>
+      <if test="image1 != null" >
+        image1 = #{image1,jdbcType=VARCHAR},
+      </if>
+      <if test="image2 != null" >
+        image2 = #{image2,jdbcType=VARCHAR},
+      </if>
+      <if test="image3 != null" >
+        image3 = #{image3,jdbcType=VARCHAR},
+      </if>
+      <if test="contact != null" >
+        contact = #{contact,jdbcType=VARCHAR},
+      </if>
+      <if test="duty != null" >
+        duty = #{duty,jdbcType=VARCHAR},
+      </if>
+      <if test="mobilephone != null" >
+        mobilephone = #{mobilephone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="faxNumber != null" >
+        fax_number = #{faxNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=BIGINT},
+      </if>
+      <if test="audit != null" >
+        audit = #{audit,jdbcType=INTEGER},
+      </if>
+      <if test="applyDate != null" >
+        apply_date = #{applyDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.purchaser.pojo.Supplier" >
+    update tb_supplier
+    set name = #{name,jdbcType=VARCHAR},
+      registered_capital = #{registeredCapital,jdbcType=INTEGER},
+      representative = #{representative,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      workers = #{workers,jdbcType=INTEGER},
+      business = #{business,jdbcType=INTEGER},
+      factory_area = #{factoryArea,jdbcType=INTEGER},
+      official_network = #{officialNetwork,jdbcType=VARCHAR},
+      image1 = #{image1,jdbcType=VARCHAR},
+      image2 = #{image2,jdbcType=VARCHAR},
+      image3 = #{image3,jdbcType=VARCHAR},
+      contact = #{contact,jdbcType=VARCHAR},
+      duty = #{duty,jdbcType=VARCHAR},
+      mobilephone = #{mobilephone,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      fax_number = #{faxNumber,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      creator = #{creator,jdbcType=BIGINT},
+      audit = #{audit,jdbcType=INTEGER},
+      apply_date = #{applyDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <!-- 查询供应商列表 -->
+  <select id="getSupplierList" resultMap="BaseResultMap" parameterType="Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_supplier
+    where 1=1
+    <if test="business != null and business != '' or 0 == business">
+    	and business = #{business}
+    </if>
+    <if test="name != null and name != ''">
+    	and name like '%${name}%'
+    </if>
+  </select>
+</mapper>

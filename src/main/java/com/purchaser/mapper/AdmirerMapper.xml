@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.AdmirerMapper" >
+  <resultMap id="BaseResultMap" type="com.purchaser.pojo.Admirer" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="user" property="user" jdbcType="BIGINT" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="study" property="study" jdbcType="VARCHAR" />
+    <result column="language" property="language" jdbcType="VARCHAR" />
+    <result column="work_experience" property="workExperience" jdbcType="BIGINT" />
+    <result column="self_evaluation" property="selfEvaluation" jdbcType="VARCHAR" />
+    <result column="creator" property="creator" jdbcType="BIGINT" />
+    <result column="audit" property="audit" jdbcType="INTEGER" />
+    <result column="apply_date" property="applyDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.purchaser.pojo.AdmirerWithBLOBs" extends="BaseResultMap" >
+    <result column="qualification" property="qualification" jdbcType="LONGVARCHAR" />
+    <result column="learning" property="learning" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user, address, study, language, work_experience, self_evaluation, creator, audit, 
+    apply_date
+  </sql>
+  <sql id="Blob_Column_List" >
+    qualification, learning
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from tb_admirer
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from tb_admirer
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.purchaser.pojo.AdmirerWithBLOBs" >
+    insert into tb_admirer (id, user, address, 
+      study, language, work_experience, 
+      self_evaluation, creator, audit, 
+      apply_date, qualification, learning
+      )
+    values (#{id,jdbcType=BIGINT}, #{user,jdbcType=BIGINT}, #{address,jdbcType=VARCHAR}, 
+      #{study,jdbcType=VARCHAR}, #{language,jdbcType=VARCHAR}, #{workExperience,jdbcType=BIGINT}, 
+      #{selfEvaluation,jdbcType=VARCHAR}, #{creator,jdbcType=BIGINT}, #{audit,jdbcType=INTEGER}, 
+      #{applyDate,jdbcType=TIMESTAMP}, #{qualification,jdbcType=LONGVARCHAR}, #{learning,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.purchaser.pojo.AdmirerWithBLOBs" >
+    insert into tb_admirer
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="user != null" >
+        user,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="study != null" >
+        study,
+      </if>
+      <if test="language != null" >
+        language,
+      </if>
+      <if test="workExperience != null" >
+        work_experience,
+      </if>
+      <if test="selfEvaluation != null" >
+        self_evaluation,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="audit != null" >
+        audit,
+      </if>
+      <if test="applyDate != null" >
+        apply_date,
+      </if>
+      <if test="qualification != null" >
+        qualification,
+      </if>
+      <if test="learning != null" >
+        learning,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="user != null" >
+        #{user,jdbcType=BIGINT},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="study != null" >
+        #{study,jdbcType=VARCHAR},
+      </if>
+      <if test="language != null" >
+        #{language,jdbcType=VARCHAR},
+      </if>
+      <if test="workExperience != null" >
+        #{workExperience,jdbcType=BIGINT},
+      </if>
+      <if test="selfEvaluation != null" >
+        #{selfEvaluation,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=BIGINT},
+      </if>
+      <if test="audit != null" >
+        #{audit,jdbcType=INTEGER},
+      </if>
+      <if test="applyDate != null" >
+        #{applyDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="qualification != null" >
+        #{qualification,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="learning != null" >
+        #{learning,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.purchaser.pojo.AdmirerWithBLOBs" >
+    update tb_admirer
+    <set >
+      <if test="user != null" >
+        user = #{user,jdbcType=BIGINT},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="study != null" >
+        study = #{study,jdbcType=VARCHAR},
+      </if>
+      <if test="language != null" >
+        language = #{language,jdbcType=VARCHAR},
+      </if>
+      <if test="workExperience != null" >
+        work_experience = #{workExperience,jdbcType=BIGINT},
+      </if>
+      <if test="selfEvaluation != null" >
+        self_evaluation = #{selfEvaluation,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=BIGINT},
+      </if>
+      <if test="audit != null" >
+        audit = #{audit,jdbcType=INTEGER},
+      </if>
+      <if test="applyDate != null" >
+        apply_date = #{applyDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="qualification != null" >
+        qualification = #{qualification,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="learning != null" >
+        learning = #{learning,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.purchaser.pojo.AdmirerWithBLOBs" >
+    update tb_admirer
+    set user = #{user,jdbcType=BIGINT},
+      address = #{address,jdbcType=VARCHAR},
+      study = #{study,jdbcType=VARCHAR},
+      language = #{language,jdbcType=VARCHAR},
+      work_experience = #{workExperience,jdbcType=BIGINT},
+      self_evaluation = #{selfEvaluation,jdbcType=VARCHAR},
+      creator = #{creator,jdbcType=BIGINT},
+      audit = #{audit,jdbcType=INTEGER},
+      apply_date = #{applyDate,jdbcType=TIMESTAMP},
+      qualification = #{qualification,jdbcType=LONGVARCHAR},
+      learning = #{learning,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.purchaser.pojo.Admirer" >
+    update tb_admirer
+    set user = #{user,jdbcType=BIGINT},
+      address = #{address,jdbcType=VARCHAR},
+      study = #{study,jdbcType=VARCHAR},
+      language = #{language,jdbcType=VARCHAR},
+      work_experience = #{workExperience,jdbcType=BIGINT},
+      self_evaluation = #{selfEvaluation,jdbcType=VARCHAR},
+      creator = #{creator,jdbcType=BIGINT},
+      audit = #{audit,jdbcType=INTEGER},
+      apply_date = #{applyDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
