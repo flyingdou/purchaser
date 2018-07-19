@@ -199,7 +199,7 @@
 	      	         <div class="line">
 	      	              <div class="title">现居住地 </div>
 	      	              <div class="value">
-	      	              		<input class="inputValue" v-model="model.email" type="text" placeholder="输入地址 "/>
+	      	              		<input class="inputValue" v-model="model.address" type="text" placeholder="输入地址 "/>
 	      	              </div>
 	      	         </div>
 	      	         
