@@ -185,4 +185,10 @@
   <select id="checkIsMember" parameterType="Long" resultType="int">
   	select count(u.id) from tb_user u inner join tb_member m on u.id = m.user where u.id = #{userId} and m.valid = 1 
   </select>
+  
+  <!-- 后台管理系统管理员登录 -->
+  <select id="adminLogin" parameterType="Map" resultMap="BaseResultMap">
+  	select <include refid="Base_Column_List"/> from tb_user
+  	where mobilephone = #{account} and password = #{password}
+  </select>
 </mapper>

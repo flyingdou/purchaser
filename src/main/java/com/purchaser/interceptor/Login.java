@@ -10,19 +10,20 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.purchaser.pojo.User;
 
-
 /*
  * 作者: dou
  * 时间: 2018-07-12 14:56:46
  * desc: 登录拦截器
  * */
-public class Login implements HandlerInterceptor{
+public class Login implements HandlerInterceptor {
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 
-		String[] paths = { "/register", "/login", "/simpleLogin","/wechatLogin", "/weixinNotify" };
+		String[] paths = { "/register", "/login", "/simpleLogin", "/wechatLogin", "/weixinNotify" };
+		String adminPath = "/admin";
+
 		boolean check = false;
 		for (String path : paths) {
 			if (request.getRequestURI().indexOf(path) != -1) {
@@ -33,24 +34,32 @@ public class Login implements HandlerInterceptor{
 
 		if (check) {
 			return true;
-		} else {
-			HttpSession session = request.getSession();
-			User user = (User) session.getAttribute("user");
-			if (user != null) {
-				return true;
-			} else {
-				session.setAttribute("status", 0);
-				String path = request.getContextPath();
-				String basePath =  request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + "/" + path;
-				String currentURL = request.getRequestURL().toString();
-				if (StringUtils.isNotEmpty(request.getQueryString())) {
-					currentURL += "?" + request.getQueryString();
-				}
-				session.setAttribute("upUrl", currentURL);
-				response.sendRedirect(basePath + "purchaser/requestOpenid.jsp");
-				return false;
-			}
 		}
+
+		// 判断用户是否登录
+		HttpSession session = request.getSession();
+		User user = (User) session.getAttribute("user");
+		if (user != null) {
+			return true;
+		}
+
+		String path = request.getContextPath();
+		String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + "/"
+				+ path;
+
+		if (request.getRequestURI().indexOf(adminPath) != -1) {
+			response.sendRedirect(basePath + "admin/login.html");
+			return false;
+		}
+
+		session.setAttribute("status", 0);
+		String currentURL = request.getRequestURL().toString();
+		if (StringUtils.isNotEmpty(request.getQueryString())) {
+			currentURL += "?" + request.getQueryString();
+		}
+		session.setAttribute("upUrl", currentURL);
+		response.sendRedirect(basePath + "purchaser/requestOpenid.jsp");
+		return false;
 
 	}
 

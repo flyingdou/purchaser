@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.purchaser.pojo.Active;
+import com.purchaser.pojo.InvitationCode;
 
 public interface ActiveMapper {
 	int deleteByPrimaryKey(Long id);
@@ -17,6 +18,13 @@ public interface ActiveMapper {
 	int updateByPrimaryKeySelective(Active record);
 
 	int updateByPrimaryKey(Active record);
+
+	/**
+	 * 批量添加活动邀请码
+	 * @param list
+	 * @return
+	 */
+	int addActiveCodeList(List<InvitationCode> list);
 
 	/**
 	 * 查询挑战列表

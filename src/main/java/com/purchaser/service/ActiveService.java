@@ -3,8 +3,17 @@ package com.purchaser.service;
 import java.util.Map;
 
 import com.alibaba.fastjson.JSONObject;
+import com.purchaser.pojo.Active;
 
 public interface ActiveService {
+
+	/**
+	 * 发起活动
+	 * 
+	 * @param active
+	 * @return
+	 */
+	void release(Active active);
 
 	/**
 	 * 查询挑战列表
@@ -32,6 +41,7 @@ public interface ActiveService {
 
 	/**
 	 * 验证活动邀请码
+	 * 
 	 * @param param
 	 * @return
 	 */

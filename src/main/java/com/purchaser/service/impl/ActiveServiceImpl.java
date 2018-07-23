@@ -1,9 +1,11 @@
 package com.purchaser.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,10 +18,16 @@ import com.purchaser.constants.Constant;
 import com.purchaser.dao.ActiveMapper;
 import com.purchaser.dao.SignMapper;
 import com.purchaser.pojo.Active;
+import com.purchaser.pojo.InvitationCode;
 import com.purchaser.pojo.Sign;
 import com.purchaser.service.ActiveService;
 import com.purchaser.util.CommentUtils;
 
+/**
+ * 
+ * @author 华文
+ *
+ */
 @Service
 @Transactional
 public class ActiveServiceImpl implements ActiveService {
@@ -29,6 +37,41 @@ public class ActiveServiceImpl implements ActiveService {
 
 	@Autowired
 	private SignMapper signMapper;
+
+	/**
+	 * 发起活动
+	 */
+	@Override
+	public void release(Active active) {
+		// 首先生成一条活动数据
+		active.setCreateDate(new Date());
+		activeMapper.insertSelective(active);
+		// 然后生成活动的邀请码(暂时20个(嘉宾10个, 厂商10个)), 保存到数据库
+		List<InvitationCode> list1 = new ArrayList<InvitationCode>();
+		List<InvitationCode> list2 = new ArrayList<InvitationCode>();
+		for (int i = 0; i < 10; i++) {
+			// 嘉宾
+			InvitationCode code1 = new InvitationCode();
+			code1.setActive(active.getId());
+			code1.setCode(UUID.randomUUID().toString().substring(0, 6));
+			code1.setType(0);
+			code1.setEffective(0);
+			code1.setCreateDate(new Date());
+			list1.add(code1);
+			
+			// 厂商
+			InvitationCode code2 = new InvitationCode();
+			code1.setActive(active.getId());
+			code1.setCode(UUID.randomUUID().toString().substring(0, 6));
+			code1.setType(1);
+			code1.setEffective(0);
+			code1.setCreateDate(new Date());
+			list2.add(code2);
+		}
+		
+		// 最后生成活动的二维码
+		
+	}
 
 	/**
 	 * 查询挑战列表
@@ -109,7 +152,7 @@ public class ActiveServiceImpl implements ActiveService {
 	 */
 	@Override
 	public Map<String, Object> checkActiveCode(JSONObject param) {
-		
+
 		return activeMapper.checkActiveCode(param);
 	}
 }

@@ -1,0 +1,62 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>网站后台管理系统登录</title>
+<meta name="viewport" content="width=device-width">
+<link href="css/base.css" rel="stylesheet" type="text/css">
+<link href="css/login.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+	<div class="login" id="wraper">
+		<form action="" method="post" id="form">
+			<div class="logo"></div>
+		    <div class="login_form">
+		    	<div class="user">
+		        	<input class="text_value" value="" name="username" type="text" id="username" v-model="model.account">
+		            <input class="text_value" value="" name="password" type="password" id="password" v-model="model.password">
+		        </div>
+		        <button class="button" id="submit" type="button" @click="login()">登录</button>
+		    </div>
+		</form>
+	</div>
+	<script src="../purchaser/js/vue.min.js"></script>
+	<script src="../purchaser/js/jquery.min.js"></script>
+	<script src="../purchaser/js/commonUtils.js"></script>
+	<script>
+	  var vue = new Vue({
+		  el: "#wraper",
+		  data: {
+			  model: {}
+		  },
+		  methods: {
+			  // 登录
+			  login: function () {
+				 if (!this.model.account || this.model.account == "") {
+					 alert("请输入账号!");
+					 return;
+				 }
+				 if (!this.model.password || this.model.password == "") {
+					 alert("请输入密码!");
+					 return;
+				 }
+				  
+				// 请求服务端登录接口
+				 var url = "/admin/login.pur";
+				 var param = {
+						 account : this.model.account,
+						 password: this.model.password
+				 }
+				 requestServer(url, param, function (res) {
+					 if (res.success) {
+						 location.href = "/admin/toPage.pur?url=admin.html";
+					 } else {
+						 alert(res.message);
+					 }
+				 });
+			  }
+		  }
+	  });
+	</script>
+</body>
+</html>

@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>发起活动</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<!-- Le styles -->
+<link href="http://fonts.googleapis.com/css?family=Oxygen|Marck+Script"
+	rel="stylesheet" type="text/css">
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/font-awesome.css" rel="stylesheet">
+<link href="css/admin.css" rel="stylesheet">
+
+<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+<!--[if lt IE 9]>
+	    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+<style type="text/css">
+.form-group {
+	display: flex;
+	justify-content: space-between;
+	align-items: center; margin : 0 auto;
+	margin-top: 20px;
+	margin: 0 auto; margin-top : 20px;
+	width: 34%;
+}
+
+.control-input {
+	margin-left: 10px;
+}
+
+.active-image {
+	padding-right: 50px; width : 140px;
+	height: 100px;
+	overflow: hidden;
+	width: 140px;
+}
+
+.img-rounded {
+	width: 100%;
+	height: auto;
+}
+
+.submit-button {
+	margin: 20px auto;
+	width: 60px;
+	height: 30px;
+	text-align: center;
+	line-height: 30px;
+	background-color: #F0F0F2;
+	border: 1px solid #BBB;
+	border-radius: 5px;
+	cursor: pointer;
+}
+</style>
+</head>
+<body>
+	<div class="container" id="wraper">
+		<div class="row">
+			<div class="span2">
+				<div class="main-left-col">
+					<h1>
+						<i class="icon-shopping-cart icon-large"></i> Admin
+					</h1>
+					<ul class="side-nav">
+						<li class="dropdown"><a class="dropdown-toggle"
+							data-toggle="collapse" data-target="#user-dropdown"
+							href="javascript:void(0)"> <!-- <i class="icon-home"></i> -->
+								用户管理<b class="caret"></b>
+						</a>
+							<ul id="user-dropdown" class="collapse">
+								<li><a href="javascript:void(0)">用户列表</a></li>
+								<li><a href="javascript:void(0)">会员信息录入</a></li>
+								<li><a href="javascript:void(0)"> 设定会员收费标准</a></li>
+							</ul></li>
+						<li class="dropdown"><a class="dropdown-toggle"
+							data-toggle="collapse" data-target="#website-dropdown"
+							href="javascript:void(0)"> <!-- <i class="icon-sitemap"></i> -->
+								活动管理<b class="caret"></b>
+						</a>
+							<ul id="website-dropdown" class="collapse">
+								<li><a href="toPage.pur?url=active_release.html">发起活动</a></li>
+							</ul></li>
+						<li class="dropdown"><a class="dropdown-toggle"
+							data-toggle="collapse" data-target="#store-dropdown"
+							href="javascript:void(0)"> <!-- <i class="icon-shopping-cart"></i> -->
+								采购师管理 <b class="caret"></b>
+						</a>
+							<ul id="store-dropdown" class="collapse">
+								<li><a href="javascript:void(0)"> 采购师录入审核</a></li>
+							</ul></li>
+						<li class="dropdown"><a class="dropdown-toggle"
+							data-toggle="collapse" data-target="#reports-dropdown"
+							href="javascript:void(0)"> <!-- <i class="icon-signal"></i> -->
+								供应商管理 <b class="caret"></b>
+						</a>
+							<ul id="reports-dropdown" class="collapse">
+								<li><a href="javascript:void(0)">供应商库录入审核</a></li>
+							</ul></li>
+						<li class="dropdown"><a class="dropdown-toggle"
+							data-toggle="collapse" data-target="#members-dropdown"
+							href="javascript:void(0)"> <!-- <i class="icon-group"></i> -->
+								内容管理 <b class="caret"></b>
+						</a>
+							<ul id="members-dropdown" class="collapse">
+								<li><a href="javascript:void(0)"> 编辑内容列表</a></li>
+							</ul></li>
+					</ul>
+
+				</div>
+				<!-- end main-left-col -->
+
+			</div>
+			<!-- end span2 -->
+
+			<div class="span10">
+				<form role="form">
+					<!-- <div class="active-image">
+						<img src="https://www.ecartoon.com.cn/picture/wangyan1.jpg" class="img-rounded">
+					</div> -->
+					<div class="form-group">
+						<label for="firstname" class="col-sm-2 control-label">活动封面</label>
+						<div class="col-sm-10 control-input active-image">
+							<img :src="base_picture_url + model.image" class="img-rounded" v-if="model.image" 
+								@click="javascript:document.querySelector('#file').click()">
+							<div style="height: 98px; line-height: 100px; text-align: center; border: 1px solid #BBB;" v-if="!model.image" 
+								@click="javascript:document.querySelector('#file').click()">
+								请选择图片
+							</div>
+							<input id="file" type="file" name="file" hidden @change="uploadImage()">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="firstname" class="col-sm-2 control-label">活动名称</label>
+						<div class="col-sm-10 control-input">
+							<input type="text" class="form-control" id="firstname"
+								placeholder="请输入活动名称" v-model="model.name">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="firstname" class="col-sm-2 control-label">会员价格</label>
+						<div class="col-sm-10 control-input">
+							<input type="text" class="form-control" id="firstname"
+								placeholder="请输入会员价格" v-model="model.price" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="firstname" class="col-sm-2 control-label">嘉宾价格</label>
+						<div class="col-sm-10 control-input">
+							<input type="text" class="form-control" id="firstname"
+								placeholder="请输入嘉宾价格" v-model="model.distinguishedPrice" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="firstname" class="col-sm-2 control-label">厂商价格</label>
+						<div class="col-sm-10 control-input">
+							<input type="text" class="form-control" id="firstname"
+								placeholder="请输入厂商价格" v-model="model.manufacturerPrice" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="firstname" class="col-sm-2 control-label">开始时间</label>
+						<div class="col-sm-10 control-input">
+							<input type="text" class="form-control" id="startTime"
+								placeholder="请选择开始时间" v-model="model.startDate">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="firstname" class="col-sm-2 control-label">结束时间</label>
+						<div class="col-sm-10 control-input">
+							<input type="text" class="form-control" id="endTime"
+								placeholder="请选择结束时间" v-model="model.endDate">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="firstname" class="col-sm-2 control-label">报名结束时间</label>
+						<div class="col-sm-10 control-input">
+							<input type="text" class="form-control" id="joinEndTime"
+								placeholder="请选择报名结束时间" v-model="model.joinEndDate">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="firstname" class="col-sm-2 control-label">联系电话</label>
+						<div class="col-sm-10 control-input">
+							<input type="text" class="form-control" id="firstname"
+								placeholder="请输入联系电话" v-model="model.telephone">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="firstname" class="col-sm-2 control-label">主办单位</label>
+						<div class="col-sm-10 control-input">
+							<input type="text" class="form-control" id="firstname"
+								placeholder="请输入主办单位名称" v-model="model.hostUnit">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="firstname" class="col-sm-2 control-label">人数上限</label>
+						<div class="col-sm-10 control-input">
+							<input type="text" class="form-control" id="firstname"
+								placeholder="请输入人数上限" v-model="model.upperLimit">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="firstname" class="col-sm-2 control-label">地址</label>
+						<div class="col-sm-10 control-input">
+							<input type="text" class="form-control" id="firstname"
+								placeholder="请输入地址" v-model="model.address">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="firstname" class="col-sm-2 control-label">活动类型</label>
+						<div class="col-sm-10 control-input">
+							<select v-model="model.type">
+								<option value="0">联谊活动</option>
+								<option value="1">培训沙龙</option>
+								<option value="2">参观访问</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="name">活动说明</label>
+						<textarea class="form-control" rows="6" v-model="model.remark"></textarea>
+					</div>
+					<div class="submit-button" @click="submit()">发布</div>
+				</form>
+			</div>
+			<!-- end span10 -->
+		</div>
+		<!-- end row -->
+	</div>
+	<!-- end container -->
+
+	<script src="js/jquery.min.js"></script>
+	<script src="js/ajaxfileupload.js"></script>
+	<script src="js/bootstrap.js"></script>
+	<script src="js/excanvas.min.js"></script>
+	<script src="js/jquery.flot.min.js"></script>
+	<script src="js/jquery.flot.resize.js"></script>
+	<script src="js/required.js"></script>
+	<script type="text/javascript">
+		$(function() {
+			var d1 = [];
+			d1.push([ 0, 32 ]);
+			d1.push([ 1, 30 ]);
+			d1.push([ 2, 24 ]);
+			d1.push([ 3, 17 ]);
+			d1.push([ 4, 11 ]);
+			d1.push([ 5, 25 ]);
+			d1.push([ 6, 28 ]);
+			d1.push([ 7, 36 ]);
+			d1.push([ 8, 44 ]);
+			d1.push([ 9, 52 ]);
+			d1.push([ 10, 53 ]);
+			d1.push([ 11, 50 ]);
+			d1.push([ 12, 45 ]);
+			d1.push([ 13, 42 ]);
+			d1.push([ 14, 40 ]);
+			d1.push([ 15, 36 ]);
+			d1.push([ 16, 34 ]);
+			d1.push([ 17, 24 ]);
+			d1.push([ 18, 17 ]);
+			d1.push([ 19, 17 ]);
+			d1.push([ 20, 20 ]);
+			d1.push([ 21, 28 ]);
+			d1.push([ 22, 36 ]);
+			d1.push([ 23, 38 ]);
+
+			$.plot($("#placeholder"), [ d1 ], {
+				grid : {
+					backgroundColor : 'white',
+					color : '#999',
+					borderWidth : 1,
+					borderColor : '#DDD'
+				},
+				colors : [ "#FC6B0A" ],
+				series : {
+					lines : {
+						show : true,
+						fill : true,
+						fillColor : "rgba(253,108,11,0.4)"
+					}
+				}
+			});
+		});
+		
+		requirejs(['DateBox/DateBox'], function(DateBox){
+
+			new DateBox('startTime');
+			
+			new DateBox('endTime');
+			
+			new DateBox('joinEndTime');
+
+		});
+		
+		requirejs(['../purchaser/js/vue.min.js'], function(Vue){
+			var vue = new Vue({
+				el: "#wraper",
+				data: {
+					base_picture_url: location.origin + "/picture/",
+					model: {}
+				},
+				created: function () {
+					Vue.set(this.model, "type", 0);
+				},
+				methods: {
+					
+					// 上传图片
+					uploadImage: function () {
+						// 读取文件
+						var file = {
+								path: $("#file")[0].files[0],
+								size: $("#file")[0].files[0].size,
+								subffix: $("#file")[0].value.split(".")[1].toUpperCase()
+						};
+					    // 上传文件
+					    if (file.size >0 ) {
+					    	if (file.size > 10*1024*1024) {
+					    		alert("请选择小于10M的图片！");
+					    		$(".mui-backdrop").hide();
+					    		return;
+					    	} else if ( file.subffix != "JPG" && file.subffix != "PNG" && file.subffix != "JPEG" && file.subffix != "GIF" ){
+					    		alert("图片类型必须是.gif,jpeg,jpg,png中的一种");
+					    		return;
+					    	} else {
+					    		// 异步上传图片到服务器
+					    		$.ajaxFileUpload({
+					    			url: location.origin + "/uploadFile.pur",
+					    			type: "post",
+					    			fileElementId: "file",
+					    			success: function (res) {
+					    				res = JSON.parse($(res).text());
+					    				Vue.set(vue.model, "image", res.picture);
+					    			},
+					    			error: function (e) {
+					    				console.log(e);
+					    			}
+					    		});
+					    	}
+					    }
+					},
+					
+					// 校验表单
+					checkForm: function () {
+						if (!this.model.image || this.model.image == "") {
+							alert("请上传活动封面");
+							return false;
+						}
+						if (!this.model.price || this.model.price == "") {
+							alert("请输入活动名称");
+							return false;
+						}
+						if (!this.model.name || this.model.name == "") {
+							alert("请输入会员价格");
+							return false;
+						}
+						if (!this.model.distinguishedPrice || this.model.distinguishedPrice == "") {
+							alert("请输入嘉宾价格");
+							return false;
+						}
+						if (!this.model.manufacturerPrice || this.model.manufacturerPrice == "") {
+							alert("请输入厂商价格");
+							return false;
+						}
+						if (!this.model.startDate || this.model.startDate == "") {
+							alert("请选择开始时间");
+							return false;
+						}
+						if (!this.model.endDate || this.model.endDate == "") {
+							alert("请选择结束时间");
+							return false;
+						}
+						if (!this.model.joinEndDate || this.model.joinEndDate == "") {
+							alert("请选择报名结束时间");
+							return false;
+						}
+						if (!this.model.telephone || this.model.telephone == "") {
+							alert("请输入联系电话");
+							return false;
+						}
+						if (!this.model.hostUnit || this.model.hostUnit == "") {
+							alert("请输入主办单位名称");
+							return false;
+						}
+						if (!this.model.upperLimit || this.model.upperLimit == "") {
+							alert("请输入人数上限");
+							return false;
+						}
+						if (!this.model.address || this.model.address == "") {
+							alert("请输入地址");
+							return false;
+						}
+						if (!this.model.remark || this.model.remark == "") {
+							alert("请输入活动说明");
+							return false;
+						}
+						return true;
+					},
+					
+					// 提交表单
+					submit: function () {
+						if (this.checkForm()) {
+							
+						}
+					}
+				}
+			});
+		});
+	</script>
+
+
+</body>
+</html>

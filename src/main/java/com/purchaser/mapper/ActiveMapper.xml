@@ -275,6 +275,14 @@
 	and u.id = #{userId}
   </select>
   
+  <!-- 批量添加活动邀请码 -->
+  <insert id="addActiveCodeList" parameterType="List">
+  	insert into tb_invitation_code values
+  	<foreach collection="list" item="item" separator=",">
+  		(null, #{item.active}, #{item.code}, #{item.type}, #{item.effective}, #{item.createDate})
+  	</foreach>
+  </insert>
+  
   <!-- 校验活动邀请码 -->
   <select id="checkActiveCode" parameterType="Map" resultType="Map">
   		select c.* from tb_invitation_code c inner join tb_active a on c.active = a.id where c.effective = 0 and c.code = #{code}

@@ -34,4 +34,11 @@ public interface UserMapper {
 	 * @return
 	 */
 	int checkIsMember(Long userId);
+	
+	/**
+	 * 后台管理系统登录
+	 * @param paramMap
+	 * @return
+	 */
+	User adminLogin(Map<String, Object> paramMap);
 }

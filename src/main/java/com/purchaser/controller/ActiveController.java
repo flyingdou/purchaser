@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.purchaser.pojo.Active;
 import com.purchaser.pojo.User;
 import com.purchaser.service.ActiveService;
 import com.purchaser.util.CommentUtils;
@@ -22,6 +23,30 @@ public class ActiveController {
 
 	@Autowired
 	private ActiveService activeService;
+
+	/**
+	 * 发起活动
+	 * 
+	 * @param json
+	 * @param response
+	 * @param session
+	 */
+	@RequestMapping("/release")
+	public void release(String json, HttpServletResponse response, HttpSession session) {
+		try {
+			JSONObject param = JSONObject.parseObject(URLDecoder.decode(json, "UTF-8"));
+			Active active = JSONObject.toJavaObject(param, Active.class);
+			User user = (User) session.getAttribute("user");
+			active.setCreator(user.getId());
+			activeService.release(active);
+			JSONObject result = new JSONObject();
+			result.fluentPut("success", true);
+			CommentUtils.response(response, JSON.toJSONStringWithDateFormat(result, "yyyy-MM-dd HH:mm"));
+		} catch (Exception e) {
+			e.printStackTrace();
+			CommentUtils.response(response, JSON.toJSONString(e));
+		}
+	}
 
 	/**
 	 * 查询挑战列表

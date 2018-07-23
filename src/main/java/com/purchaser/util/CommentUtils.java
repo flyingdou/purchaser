@@ -17,8 +17,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.alibaba.fastjson.serializer.ValueFilter;
 
+import net.coobird.thumbnailator.Thumbnails;
+
 public class CommentUtils {
-	
+
 	public static SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
 
 	/**
@@ -56,12 +58,13 @@ public class CommentUtils {
 		s = Math.round(s * 1000);
 		return s;
 	}
-	
+
 	/**
 	 * JSONObject 转换时，将null值转换成""
+	 * 
 	 * @return
 	 */
-	public static ValueFilter getValueFilterNullStringFillNull () {
+	public static ValueFilter getValueFilterNullStringFillNull() {
 		ValueFilter valueFilter = new ValueFilter() {
 			@Override
 			public Object process(Object object, String name, Object value) {
@@ -73,7 +76,6 @@ public class CommentUtils {
 		};
 		return valueFilter;
 	}
-
 
 	public static String getRandomString() {
 		return "" + Math.round(Math.random() * 1000000);
@@ -265,9 +267,10 @@ public class CommentUtils {
 		// 将毫秒数转换成日期
 		return new Date(time);
 	}
-	
+
 	/**
 	 * 根据链接下载图片
+	 * 
 	 * @param urlString
 	 * @param filename
 	 * @param savePath
@@ -302,8 +305,18 @@ public class CommentUtils {
 		is.close();
 	}
 
+	/**
+	 * 图片压缩
+	 * 
+	 * @param filePath
+	 */
+	public static void compress(String filePath) {
+		try {
+			// 图片尺寸不变，压缩图片文件大小outputQuality实现,参数1为最高质量
+			Thumbnails.of(filePath).scale(1f).outputQuality(0.25f).toFile(filePath);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-	
-	
-	
 }
