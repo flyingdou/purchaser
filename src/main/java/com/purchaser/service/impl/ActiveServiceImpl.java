@@ -47,30 +47,23 @@ public class ActiveServiceImpl implements ActiveService {
 		active.setCreateDate(new Date());
 		activeMapper.insertSelective(active);
 		// 然后生成活动的邀请码(暂时20个(嘉宾10个, 厂商10个)), 保存到数据库
-		List<InvitationCode> list1 = new ArrayList<InvitationCode>();
-		List<InvitationCode> list2 = new ArrayList<InvitationCode>();
-		for (int i = 0; i < 10; i++) {
-			// 嘉宾
-			InvitationCode code1 = new InvitationCode();
-			code1.setActive(active.getId());
-			code1.setCode(UUID.randomUUID().toString().substring(0, 6));
-			code1.setType(0);
-			code1.setEffective(0);
-			code1.setCreateDate(new Date());
-			list1.add(code1);
-			
-			// 厂商
-			InvitationCode code2 = new InvitationCode();
-			code1.setActive(active.getId());
-			code1.setCode(UUID.randomUUID().toString().substring(0, 6));
-			code1.setType(1);
-			code1.setEffective(0);
-			code1.setCreateDate(new Date());
-			list2.add(code2);
+		List<InvitationCode> list = new ArrayList<InvitationCode>();
+		for (int i = 0; i < 20; i++) {
+			InvitationCode code = new InvitationCode();
+			code.setActive(active.getId());
+			code.setCode(UUID.randomUUID().toString().substring(0, 6));
+			code.setEffective(Constant.ACTIVE_CODE_USE);
+			code.setCreateDate(new Date());
+			if (i < 10) {
+				// 嘉宾
+				code.setType(Constant.ACTIVE_CODE_DISTINGUISHED);
+			} else {
+				// 厂商
+				code.setType(Constant.ACTIVE_CODE_MANUFACTURER);
+			}
+			list.add(code);
 		}
-		
-		// 最后生成活动的二维码
-		
+		activeMapper.addActiveCodeList(list);
 	}
 
 	/**

@@ -60,6 +60,9 @@ public class Active {
 
     // 活动说明
     private String remark;
+    
+    // 活动状态(1.开启, 0.关闭)
+    private Integer status;
 
     // 发布日期
     private Date createDate;
@@ -207,8 +210,16 @@ public class Active {
 	public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
     }
+	
+    public Integer getStatus() {
+		return status;
+	}
 
-    public Date getCreateDate() {
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+
+	public Date getCreateDate() {
         return createDate;
     }
 
