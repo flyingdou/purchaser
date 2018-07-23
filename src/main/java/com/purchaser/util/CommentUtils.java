@@ -11,6 +11,9 @@ import java.net.URLConnection;
 import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -77,6 +80,11 @@ public class CommentUtils {
 		return valueFilter;
 	}
 
+	
+	/**
+	 * 生成一个6位数的随机数字
+	 * @return
+	 */
 	public static String getRandomString() {
 		return "" + Math.round(Math.random() * 1000000);
 	}
@@ -249,6 +257,22 @@ public class CommentUtils {
 		}
 		return null;
 	}
+	
+	/**
+	 * 将string转换成Date，自定义格式
+	 * @param source
+	 * @param formart
+	 * @return
+	 */
+	public static Date formatString2Date(String source, String formart) {
+		SimpleDateFormat sdf = new SimpleDateFormat(formart);
+		try {
+			return sdf.parse(source);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 	/**
 	 * 时间相加的方法
@@ -319,4 +343,29 @@ public class CommentUtils {
 		}
 	}
 
+	
+	/**
+	 * 日期格式化
+	 * @param list
+	 * @param formart
+	 * @return
+	 */
+	public static List<Map<String, Object>> listDateAndFormat (List<Map<String, Object>> list, String formart) {
+		SimpleDateFormat sdf = new SimpleDateFormat(formart);
+		
+		// 遍历list
+		for (Map<String, Object> map : list) {
+			
+			// 遍历map
+			Set<String> set = map.keySet();
+			for (String string : set) {
+				if (map.get(string) instanceof Date) {
+					map.put(string, sdf.format(map.get(string)));
+				}
+			}
+		}
+		return list;
+	}
+	
+	
 }

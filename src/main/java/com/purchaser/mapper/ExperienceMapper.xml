@@ -31,7 +31,7 @@
     delete from tb_experience
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.purchaser.pojo.Experience" >
+  <insert id="insert" parameterType="com.purchaser.pojo.Experience" useGeneratedKeys="true" keyProperty="id" >
     insert into tb_experience (id, admirer, user, startTime, 
       endTime, company_name, post, 
       post_detail)
@@ -39,7 +39,7 @@
       #{endtime,jdbcType=TIMESTAMP}, #{companyName,jdbcType=VARCHAR}, #{post,jdbcType=VARCHAR}, 
       #{postDetail,jdbcType=LONGVARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.purchaser.pojo.Experience" >
+  <insert id="insertSelective" parameterType="com.purchaser.pojo.Experience" useGeneratedKeys="true" keyProperty="id" >
     insert into tb_experience
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -142,4 +142,15 @@
       post = #{post,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
+  
+  <select id="getExperiences" parameterType="String" resultType="Map">
+       select 
+                <include refid="Base_Column_List" />
+			    ,
+			    <include refid="Blob_Column_List" />
+			    from tb_experience
+			    where user = #{userId}
+  </select>
+  
+  
 </mapper>

@@ -149,9 +149,9 @@
                    <!-- 下面的内容行 -->
                    <div class='lineAreaA' >
                    
-                        <div class='lineA' v-for='exp in model.experienceList' >
-                             <div class='lineATitle'>{{exp.startTime}}至{{exp.endTime}}</div>
-                             <div class='lineAValue'>{{exp.company_name}}</div>
+                        <div class='lineA' v-for='experiencex in model.experienceList' >
+                             <div class='lineATitle'>{{experiencex.startTime}}至{{experiencex.endTime}}</div>
+                             <div class='lineAValue'>{{experiencex.company_name}}</div>
                         </div>
                         
                    </div>
@@ -202,7 +202,7 @@
                          </div>
                          
 	                     <!-- 工作简介输入框 -->
-	                     <textarea class='description' v-model='post_detail' rows="10" cols="44" placeholder="请输入工作内容"></textarea>
+	                     <textarea class='description' v-model='model.post_detail' rows="10" cols="44" placeholder="请输入工作内容"></textarea>
                          
                    </div>
                    
@@ -229,12 +229,15 @@ var experience = new Vue({
     // vue初始化方法
     create: function () {
     	// 初始化当前页面数据
-    	var url = '';
+    	var url = 'experience/getExperiences.pur';
     	var param = {};
     	requestServer(url, param, function (res) {
     		if (res.success) {
     			// 数据请求成功
     			experience.model.experienceList = res.experienceList;
+    			
+    			// 将工作履历存储起来
+    			sessionStorage.setItem("experienceList", res.experienceList);
     		} else {
     			console.log('程序异常，原因: ' + res.message);
     		}
@@ -256,6 +259,74 @@ var experience = new Vue({
     				experience.model.endTime = year + '-' + month;
     			}
     		}, 2)
+    		
+    	},
+    	
+    	// 添加工作履历
+    	addExperience: function () {
+    		var exper = experience.model;
+    		
+    		// 校验数据
+    		// startTime
+    	    if (exper.startTime.indexOf("请") > 0) {
+    	    	alert("请先选择开始时间！");
+    	    	return;
+    	    }
+    		
+    		// endTime
+    		if (exper.endTime.indexOf("请") > 0) {
+    			alert("请先选择结束时间！");
+    			return;
+    		} 
+    		
+    		// 结算时间不能小于开始时间
+    		var startTS = exper.startTime.split("-");
+    		var startDate = new Date(startTS[0],startTS[1]);
+    		var startTime = startDate.getTime();
+    		
+    		var endTS = exper.endTime.split("-");
+    		var endDate = new Date(endTS[0],endTS[1]);
+    		var endTime = endDate.getTime();
+    		if (endTime > startTime) {
+    			alert("开始时间不能大于结束时间！");
+    			return;
+    		}
+    		
+    		// company_name
+    		if (!exper.company_name || exper.company_name == '') {
+    			alert("请先填写公司名称！");
+    			return;
+    		}
+    		
+    		// post
+    		if (!exper.post || exper.post == '') {
+    			alert("请先填写在职岗位！");
+    			return;
+    		}
+    		
+    		// post_detail
+    		if (!exper.post_detail || exper.post_detail == '') {
+    			alert("请先填写工作简介！");
+    			return;
+    		}
+    		
+    		// 数据校验 通过，将数据保存到数据库
+    		var url = 'experience/saveExperience.pur';
+    		var param = {
+    				json: encodeURI(JSON.stringify(exper))
+    		};
+    		requestServer(url, param, function(res) {
+    			if (res.success) {
+    				// 数据请求成功，刷新当前页面
+    				window.location.reload();
+    			} else {
+    				console.log('程序异常，原因: ' + res.message);
+    			}
+    			
+    		})
+    		
+    		
+    		
     		
     	}
     	
