@@ -209,7 +209,7 @@
              </div>
              
              <!-- 底部保存按钮 -->
-             <div class='save'>保存</div>
+             <div class='save' @click="addExperience()">保存</div>
              
       </div>
       
@@ -222,12 +222,13 @@ var experience = new Vue({
     data:{
     	model:{
     		startTime:"请选择",
-    		endTime:"请选择"
+    		endTime:"请选择",
+    		experienceList:[]
     	}
     },
     
     // vue初始化方法
-    create: function () {
+    created: function () {
     	// 初始化当前页面数据
     	var url = 'experience/getExperiences.pur';
     	var param = {};
@@ -237,7 +238,7 @@ var experience = new Vue({
     			experience.model.experienceList = res.experienceList;
     			
     			// 将工作履历存储起来
-    			sessionStorage.setItem("experienceList", res.experienceList);
+    			sessionStorage.setItem("experienceList", JSON.stringify(res.experienceList));
     		} else {
     			console.log('程序异常，原因: ' + res.message);
     		}
@@ -287,7 +288,7 @@ var experience = new Vue({
     		var endTS = exper.endTime.split("-");
     		var endDate = new Date(endTS[0],endTS[1]);
     		var endTime = endDate.getTime();
-    		if (endTime > startTime) {
+    		if (startTime > endTime) {
     			alert("开始时间不能大于结束时间！");
     			return;
     		}
@@ -312,9 +313,7 @@ var experience = new Vue({
     		
     		// 数据校验 通过，将数据保存到数据库
     		var url = 'experience/saveExperience.pur';
-    		var param = {
-    				json: encodeURI(JSON.stringify(exper))
-    		};
+    		var param = exper;
     		requestServer(url, param, function(res) {
     			if (res.success) {
     				// 数据请求成功，刷新当前页面
