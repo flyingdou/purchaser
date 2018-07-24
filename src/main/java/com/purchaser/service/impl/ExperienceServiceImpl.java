@@ -65,4 +65,16 @@ public class ExperienceServiceImpl implements ExperienceService {
 		return ret;
 	}
 
+
+	/**
+	 * 查询用户的工作年限
+	 */
+	@Override
+	public Integer getWorkYears(Long userId) {
+		
+		
+		
+		return null;
+	}
+
 }

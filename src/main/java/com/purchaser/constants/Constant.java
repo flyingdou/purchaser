@@ -109,4 +109,9 @@ public class Constant {
 	 * 活动状态(开启)
 	 */
 	public final static Integer ACTIVE_STATUS_OPEN = 1;
+	
+	/**
+	 * 学历parent
+	 */
+	public final static Integer PARAMETER_STUDY_PARENT = 23;
 }

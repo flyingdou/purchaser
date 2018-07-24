@@ -25,5 +25,12 @@ public interface ExperienceService {
 	 * @return
 	 */
 	public JSONObject saveExperience (JSONObject param) throws Exception;
+	
+	/**
+	 * 查询用户的工作年限
+	 * @param userId
+	 * @return
+	 */
+	public Integer getWorkYears(Long userId); 
 
 }

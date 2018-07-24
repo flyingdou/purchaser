@@ -1,9 +1,13 @@
 package com.purchaser.service.impl;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -76,6 +80,28 @@ public class AdmirerServiceImpl implements AdmirerService {
 		   .fluentPut("admirer", admirer.getId())
 		   ;
 		return ret;
+	}
+
+
+	/**
+	 * 查询采购师列表
+	 */
+	@Override
+	public List<Map<String, Object>> getAdmirerList(JSONObject param) {
+		// 处理请求参数
+		HashMap<String, Object> paramMap = new HashMap<String, Object>();
+		if (param.containsKey("flag") && StringUtils.isNotBlank(param.getString("flag"))) {
+			paramMap.put("flag", param.getString("flag"));
+		}
+		if (param.containsKey("name") && StringUtils.isNotBlank(param.getString("name"))) {
+			paramMap.put("name",param.getString("name"));
+		}
+		// 查询数据
+		paramMap.put("audit", Constant.AUDIT_STATUS_PASS);
+		paramMap.put("parent", Constant.PARAMETER_STUDY_PARENT);
+		List<Map<String, Object>> admirerList = admirerMapper.getAdmirerList(paramMap);
+		
+		return admirerList;
 	}
 
 }

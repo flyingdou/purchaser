@@ -194,4 +194,50 @@
       apply_date = #{applyDate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
+  
+  
+  <select id="getAdmirerList" parameterType="Map" resultType="Map" >
+          select 
+				  a.id, u.image, u.gender, u.name, p.name as study, p.code as studyCode, xd.tf as monthDiff   
+			from 
+				  tb_admirer a LEFT JOIN tb_user u ON a.user = u.id  
+			                   LEFT JOIN tb_parameter p ON a.study = p.code AND p.parent = #{parent} 
+			                   LEFT JOIN (select SUM( TIMESTAMPDIFF(MONTH,startTime,endTime)) as tf, user from tb_experience GROUP BY user ) as xd ON xd.user = a.user 
+		   where 
+			      a.audit = #{audit}  
+			      
+			      <if test="name != ''">
+			          and u.name like '%${name}%'
+			      </if>
+		         
+		         
+		         <if test="flag != '' and flag != null ">
+		              order by 
+		         </if>
+		         <if test="flag == 10">
+		             monthDiff desc 
+		         </if>
+		         <if test="flag == 01">
+		             monthDiff asc 
+		         </if>
+		         
+		         
+		         <if test="flag == 20">
+		             studyCode asc
+		         </if>
+		         <if test="flag == 02">
+		             studyCode desc
+		         </if>
+		         
+		         
+		         <if test="flag == 30">
+		             gender desc 
+		         </if>
+		         <if test="flag == 03">
+		             gender asc
+		         </if>
+  </select>
+  
+  
+  
 </mapper>
