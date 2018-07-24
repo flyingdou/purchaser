@@ -258,8 +258,9 @@
       	         <!-- 工作履历 ，跳转二级页面-->
       	         <div class="line">
       	              <div class="title">工作履历 </div>
-      	              <div class="value">
-      	              		<span class="inputValue" v-model="model.work_experience_id">{{model.work_experience}}</span><span class="inputValue">&nbsp;&gt;</span>
+      	              <div class="value" @click="gotoExperience()">
+      	              		<span class="inputValue" v-if="experience.post">{{experience.post}}/{{experience.company_name}}</span><span class="inputValue" v-if="experience.post">&nbsp;&gt;</span>
+      	              		<span class="inputValue" v-if="!experience.post">{{experience.post}}{{experience.company_name}}</span><span class="inputValue" v-if="!experience.post">&nbsp;&gt;</span>
       	              </div>
       	         </div>
       	         
@@ -309,7 +310,22 @@
     	 
     	 var gender = [{'id':'M','value':'男'},{'id':'F','value':'女'}];
     	 pageData.gender = gender;
-    	 findUserInfo();
+    	 
+    	 var admirer = sessionStorage.getItem('admirer');
+    	 
+    	 // 初始化当前页面数据
+    	 if (!admirer || admirer == '') {
+    	 	findUserInfo();
+    	 } else {
+    		joinApply.model = JSON.parse(admirer);
+    	 }
+    	 
+    	 // 工作履历初始化
+    	 var experienceList = sessionStorage.getItem('experienceList');
+    	 if (experienceList && experienceList != '') {
+    		 experienceList = JSON.parse(experienceList);
+    		 joinApply.experience = experienceList[0];
+    	 }
     	
      })
      
@@ -364,7 +380,8 @@
     	 data: {
     		 model: {
     			 gender_name:"男"
-    		 }
+    		 },
+    		 experience: {}
     	 },
     	 
     	 // 初始化函数
@@ -508,10 +525,20 @@
     		
     	},
     	
+    	// 跳转到填写工作履历的页面
+    	gotoExperience: function () {
+    		// 去之前将本页面已填写的数据保存下来
+    		var admirer = joinApply.model;
+    		sessionStorage.setItem('admirer', JSON.stringify(admirer));
+    		window.location.href = 'purchaser/experience.jsp';
+    	},
+    	
+    	
     	
     	// 用户点击'保存'按钮时
     	save: function () {
     		var model = joinApply.model;
+    		var experience = joinApply.experience;
     		
     		// 姓名
     		if (!model.name || model.name == '') {
@@ -527,7 +554,7 @@
     		
     		// 籍贯
     		if (!model.province || model.province == '' || !model.city || model.city == '') {
-    			alert('请先填写籍贯！');
+    			alert('请先选择籍贯！');
     			return;
     		}
     		
@@ -582,7 +609,7 @@
     		}
     		
     		// 工作履历
-    		if (!model.work_experience || model.work_experience == '' || model.work_experience.length <= 0 ) {
+    		if (!experience || experience == '') {
     			alert('请先填写工作履历！');
     			return;
     		}
@@ -600,8 +627,9 @@
     			return;
     		}
     		
-    		// 数据校验通过，将用户数据存储起来
-    		sessionStorage.setItem("admirer", joinApply.model);
+    		// 数据校验通过，将数据保存到服务器
+    		
+    		
     		
     		
     		

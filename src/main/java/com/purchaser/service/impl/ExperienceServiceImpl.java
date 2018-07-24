@@ -42,9 +42,10 @@ public class ExperienceServiceImpl implements ExperienceService {
 
 	/**
 	 * 新增工作履历
+	 * @throws Exception 
 	 */
 	@Override
-	public JSONObject saveExperience(JSONObject param) {
+	public JSONObject saveExperience(JSONObject param) throws Exception {
 		JSONObject ret = new JSONObject();
 		// 初始化对象
 		Experience experience = new Experience();

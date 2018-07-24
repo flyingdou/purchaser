@@ -3,6 +3,7 @@ package com.purchaser.util;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
@@ -31,13 +32,10 @@ public class CommentUtils {
 	 * 
 	 * @param response
 	 * @param result
+	 * @throws Exception 
 	 */
-	public static void response(HttpServletResponse response, String result) {
-		try {
-			response.getWriter().write(result);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	public static void response(HttpServletResponse response, String result) throws Exception {
+		response.getWriter().write(result);
 	}
 
 	/**
@@ -172,25 +170,22 @@ public class CommentUtils {
 	 * 
 	 * @param buffer
 	 * @return
+	 * @throws Exception 
 	 */
-	public static String MD5(String buffer) {
+	public static String MD5(String buffer) throws Exception {
 		char hexDigits[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
-		try {
-			MessageDigest mdTemp = MessageDigest.getInstance("MD5");
-			mdTemp.update(buffer.getBytes("UTF-8"));
-			byte[] md = mdTemp.digest();
-			int j = md.length;
-			char str[] = new char[j * 2];
-			int k = 0;
-			for (int i = 0; i < j; i++) {
-				byte byte0 = md[i];
-				str[k++] = hexDigits[byte0 >>> 4 & 0xf];
-				str[k++] = hexDigits[byte0 & 0xf];
-			}
-			return new String(str);
-		} catch (Exception e) {
-			return null;
+		MessageDigest mdTemp = MessageDigest.getInstance("MD5");
+		mdTemp.update(buffer.getBytes("UTF-8"));
+		byte[] md = mdTemp.digest();
+		int j = md.length;
+		char str[] = new char[j * 2];
+		int k = 0;
+		for (int i = 0; i < j; i++) {
+			byte byte0 = md[i];
+			str[k++] = hexDigits[byte0 >>> 4 & 0xf];
+			str[k++] = hexDigits[byte0 & 0xf];
 		}
+		return new String(str);
 	}
 
 	/**
@@ -198,24 +193,20 @@ public class CommentUtils {
 	 * 
 	 * @param request
 	 * @return
+	 * @throws Exception 
 	 */
-	public static String readStream(HttpServletRequest request) {
-		try {
-			InputStream inStream = request.getInputStream();
-			ByteArrayOutputStream outSteam = new ByteArrayOutputStream();
-			byte[] buffer = new byte[1024];
-			int len = 0;
-			while ((len = inStream.read(buffer)) != -1) {
-				outSteam.write(buffer, 0, len);
-			}
-			outSteam.close();
-			inStream.close();
-			String resultStr = new String(outSteam.toByteArray(), "utf-8");
-			return resultStr;
-		} catch (Exception e) {
-			e.printStackTrace();
+	public static String readStream(HttpServletRequest request) throws Exception {
+		InputStream inStream = request.getInputStream();
+		ByteArrayOutputStream outSteam = new ByteArrayOutputStream();
+		byte[] buffer = new byte[1024];
+		int len = 0;
+		while ((len = inStream.read(buffer)) != -1) {
+			outSteam.write(buffer, 0, len);
 		}
-		return null;
+		outSteam.close();
+		inStream.close();
+		String resultStr = new String(outSteam.toByteArray(), "utf-8");
+		return resultStr;
 	}
 
 	/**
@@ -247,15 +238,11 @@ public class CommentUtils {
 	 * 
 	 * @param dateStr
 	 * @return
+	 * @throws Exception 
 	 */
-	public static Date formatStringToDate(String date) {
+	public static Date formatStringToDate(String date) throws Exception {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		try {
-			return sdf.parse(date);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
+		return sdf.parse(date);
 	}
 	
 	/**
@@ -263,15 +250,11 @@ public class CommentUtils {
 	 * @param source
 	 * @param formart
 	 * @return
+	 * @throws Exception
 	 */
-	public static Date formatString2Date(String source, String formart) {
+	public static Date formatString2Date(String source, String formart) throws Exception{
 		SimpleDateFormat sdf = new SimpleDateFormat(formart);
-		try {
-			return sdf.parse(source);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
+		return sdf.parse(source);
 	}
 
 	/**
@@ -333,14 +316,11 @@ public class CommentUtils {
 	 * 图片压缩
 	 * 
 	 * @param filePath
+	 * @throws IOException 
 	 */
-	public static void compress(String filePath) {
-		try {
-			// 图片尺寸不变，压缩图片文件大小outputQuality实现,参数1为最高质量
-			Thumbnails.of(filePath).scale(1f).outputQuality(0.25f).toFile(filePath);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	public static void compress(String filePath) throws IOException {
+		// 图片尺寸不变，压缩图片文件大小outputQuality实现,参数1为最高质量
+		Thumbnails.of(filePath).scale(1f).outputQuality(0.25f).toFile(filePath);
 	}
 
 	

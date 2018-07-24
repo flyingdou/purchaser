@@ -150,6 +150,7 @@
 			    <include refid="Blob_Column_List" />
 			    from tb_experience
 			    where user = #{userId}
+			    ORDER BY endTime desc 
   </select>
   
   

@@ -24,6 +24,6 @@ public interface ExperienceService {
 	 * @param param
 	 * @return
 	 */
-	public JSONObject saveExperience (JSONObject param);
+	public JSONObject saveExperience (JSONObject param) throws Exception;
 
 }

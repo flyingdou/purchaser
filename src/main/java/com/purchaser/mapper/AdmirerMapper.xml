@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.dao.AdmirerMapper" >
+<mapper namespace="com.purchaser.dao.AdmirerMapper" >
   <resultMap id="BaseResultMap" type="com.purchaser.pojo.Admirer" >
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="user" property="user" jdbcType="BIGINT" />
@@ -36,7 +36,7 @@
     delete from tb_admirer
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.purchaser.pojo.AdmirerWithBLOBs" >
+  <insert id="insert" parameterType="com.purchaser.pojo.AdmirerWithBLOBs" useGeneratedKeys="true" keyProperty="id" >
     insert into tb_admirer (id, user, address, 
       study, language, work_experience, 
       self_evaluation, creator, audit, 
@@ -48,7 +48,7 @@
       #{applyDate,jdbcType=TIMESTAMP}, #{qualification,jdbcType=LONGVARCHAR}, #{learning,jdbcType=LONGVARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.purchaser.pojo.AdmirerWithBLOBs" >
+  <insert id="insertSelective" parameterType="com.purchaser.pojo.AdmirerWithBLOBs" useGeneratedKeys="true" keyProperty="id" >
     insert into tb_admirer
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
