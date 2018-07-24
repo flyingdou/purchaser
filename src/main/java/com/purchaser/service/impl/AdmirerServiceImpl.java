@@ -4,6 +4,7 @@ import java.util.Date;
 
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,11 +28,13 @@ public class AdmirerServiceImpl implements AdmirerService {
 	/**
 	 * 注入userMapper对象
 	 */
+	@Autowired
 	private UserMapper userMapper;
 	
 	/**
 	 * 注入admirerMapper对象
 	 */
+	@Autowired
 	private AdmirerMapper admirerMapper;
 	
 	

@@ -628,6 +628,19 @@
     		}
     		
     		// 数据校验通过，将数据保存到服务器
+    		var url = 'admirer/saveAdmirer.pur';
+    		var param = model;
+    		// 请求服务器
+    		requestServer(url, param, function (res) {
+    			if (res.success) {
+    				// 数据保存成功
+    				console.log('数据保存成功，即将跳转到采购师列表页面');
+    			} else {
+    				// 程序异常
+    				console.log('程序异常，原因: ' + res.message);
+    			}
+    			
+    		});
     		
     		
     		
