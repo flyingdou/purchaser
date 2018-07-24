@@ -136,7 +136,7 @@
 					<div class="active-address">地点 : {{item.address}}</div>
 				</div>
 				<div class="active-status">
-					{{item.status == 0 ? "未开始" : item.status == 1 ? "进行中" : "已结束"}}
+					{{item.activeStatus}}
 				</div>
 			</div>
 		</div>
@@ -155,7 +155,7 @@
 					<div class="active-address">地点 : {{item.address}}</div>
 				</div>
 				<div class="active-status">
-					{{item.status == 0 ? "未开始" : item.status == 1 ? "进行中" : "已结束"}}
+					{{item.activeStatus}}
 				</div>
 			</div>
 		</div>
@@ -174,7 +174,7 @@
 					<div class="active-address">地点 : {{item.address}}</div>
 				</div>
 				<div class="active-status">
-					{{item.status == 0 ? "未开始" : item.status == 1 ? "进行中" : "已结束"}}
+					{{item.activeStatus}}
 				</div>
 			</div>
 		</div>
@@ -229,12 +229,27 @@
 					},
 					dataType: "json",
 					success: function(res){
-						vue['activeList' + (type + 1)] = res.activeList;
+						Vue.set(vue, ('activeList' + (type + 1)), res.activeList.map(vue.checkActiveStatus));
 					},
 					error: function (e) {
 						console.log(e);
 					}
 				});
+			},
+			
+			// 检查活动状态
+			checkActiveStatus: function (active) {
+				var currentTime = new Date.getTime();
+				var startDataTime = active.startDate.getTime();
+				var endDataTime = active.endDate.getTime();
+				if (currentTime < startDataTime) {
+					active.activeStatus = "未开始";
+				} else if (currentTime > startDataTime && currentTime < endDataTime) {
+					active.activeStatus = "进行中";
+				} else {
+					active.activeStatus = "已结束";
+				}
+				return active;
 			},
 			
 			// 改变当前选项卡索引

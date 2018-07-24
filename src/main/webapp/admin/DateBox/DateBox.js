@@ -59,7 +59,7 @@ define([
 	
 	//设置footer属性
 	DateBox.prototype.setFooter = function(str){
-		this.removeFootClick();
+		// this.removeFootClick();
 		var _this = this;
 		if(str == 'today'){
 			var dateTime = this.dateTime;
@@ -234,6 +234,7 @@ define([
 	DateBox.prototype.inputTime = function(){
 		this.obj.value = this.dateTime.toString(this.opts.type);
 		this.obj.blur();
+		this.obj.dispatchEvent(new Event('input'));
 	};
 	
 	return DateBox;

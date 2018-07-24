@@ -1,5 +1,6 @@
 package com.purchaser.pojo;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -50,10 +51,10 @@ public class Active {
     private String address;
 
     // 经度
-    private Long longitude;
+    private BigDecimal longitude;
 
     // 纬度
-    private Long latitude;
+    private BigDecimal latitude;
     
     // 活动类型
     private int type;
@@ -179,23 +180,23 @@ public class Active {
         this.address = address == null ? null : address.trim();
     }
 
-    public Long getLongitude() {
-        return longitude;
-    }
+    public BigDecimal getLongitude() {
+		return longitude;
+	}
 
-    public void setLongitude(Long longitude) {
-        this.longitude = longitude;
-    }
+	public void setLongitude(BigDecimal longitude) {
+		this.longitude = longitude;
+	}
 
-    public Long getLatitude() {
-        return latitude;
-    }
+	public BigDecimal getLatitude() {
+		return latitude;
+	}
 
-    public void setLatitude(Long latitude) {
-        this.latitude = latitude;
-    }
+	public void setLatitude(BigDecimal latitude) {
+		this.latitude = latitude;
+	}
 
-    public String getRemark() {
+	public String getRemark() {
         return remark;
     }
 

@@ -21,6 +21,7 @@ public interface ActiveMapper {
 
 	/**
 	 * 批量添加活动邀请码
+	 * 
 	 * @param list
 	 * @return
 	 */
@@ -32,7 +33,23 @@ public interface ActiveMapper {
 	 * @param type
 	 * @return
 	 */
-	List<Active> getActiveList(int type);
+	List<Active> getActiveList(Map<String, Object> param);
+
+	/**
+	 * 查询挑战列表(后台管理系统)
+	 * 
+	 * @param param
+	 * @return
+	 */
+	List<Map<String, Object>> getActiveListForAdmin(Map<String, Object> param);
+
+	/**
+	 * 管理系统查询活动列表总数
+	 * 
+	 * @param param
+	 * @return
+	 */
+	int getActiveListCountForAdmin();
 
 	/**
 	 * 根据id查询参加的用户列表
@@ -65,4 +82,12 @@ public interface ActiveMapper {
 	 * @return
 	 */
 	int updateActiveCodeUse(long activeCodeId);
+
+	/**
+	 * 修改活动状态
+	 * 
+	 * @param param
+	 * @return
+	 */
+	int changeActiveStatus(Map<String, Object> param);
 }

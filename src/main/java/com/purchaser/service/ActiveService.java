@@ -1,9 +1,11 @@
 package com.purchaser.service;
 
+import java.util.List;
 import java.util.Map;
 
 import com.alibaba.fastjson.JSONObject;
 import com.purchaser.pojo.Active;
+import com.purchaser.pojo.PageInfo;
 
 public interface ActiveService {
 
@@ -21,7 +23,15 @@ public interface ActiveService {
 	 * @param param
 	 * @return
 	 */
-	JSONObject getActiveList(JSONObject param);
+	List<Active> getActiveList(JSONObject param);
+
+	/**
+	 * 查询挑战列表(后台管理系统)
+	 * 
+	 * @param param
+	 * @return
+	 */
+	PageInfo getActiveListForAdmin(JSONObject param);
 
 	/**
 	 * 根据id查询挑战信息
@@ -46,4 +56,12 @@ public interface ActiveService {
 	 * @return
 	 */
 	Map<String, Object> checkActiveCode(JSONObject param);
+
+	/**
+	 * 改变活动状态
+	 * 
+	 * @param param
+	 * @return
+	 */
+	int changeActiveStatus(JSONObject param);
 }

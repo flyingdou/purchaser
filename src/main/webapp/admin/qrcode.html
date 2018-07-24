@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>活动二维码</title>
+<style>
+	.qrcode{
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 300px;
+	}
+</style>
+</head>
+<body>
+	<div id="qrcode" class="qrcode"></div>
+	<script src="js/jquery.min.js"></script>
+	<script src="js/qrcode.min.js"></script>
+	<script type="text/javascript">
+		var activeId = sessionStorage.getItem("activeId");
+		var qrcode = new QRCode(document.querySelector("#qrcode"), {
+			width : 150,
+			height : 150
+		});
+		qrcode.makeCode(activeId.toString());
+	</script>
+</body>
+</html>

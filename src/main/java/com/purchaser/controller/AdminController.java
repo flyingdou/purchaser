@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.purchaser.pojo.PageInfo;
 import com.purchaser.pojo.User;
+import com.purchaser.service.ActiveService;
 import com.purchaser.service.AdminService;
 import com.purchaser.util.CommentUtils;
 
@@ -22,6 +24,9 @@ public class AdminController {
 
 	@Autowired
 	private AdminService adminService;
+
+	@Autowired
+	private ActiveService activeService;
 
 	/**
 	 * 管理员登录
@@ -60,12 +65,58 @@ public class AdminController {
 		}
 	}
 
+	/**
+	 * 跳转页面
+	 * 
+	 * @param url
+	 * @param request
+	 * @param response
+	 */
 	@RequestMapping("/toPage")
 	public void toAdmin(String url, HttpServletRequest request, HttpServletResponse response) {
 		try {
 			request.getRequestDispatcher(url).forward(request, response);
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * 查询挑战列表
+	 * 
+	 * @param json
+	 * @return
+	 */
+	@RequestMapping("/getActiveList")
+	public void getActiveList(String json, HttpServletResponse response) {
+		try {
+			JSONObject param = JSONObject.parseObject(URLDecoder.decode(json, "UTF-8"));
+			param.fluentPut("forAdmin", "forAdmin");
+			PageInfo pageInfo = activeService.getActiveListForAdmin(param);
+			CommentUtils.response(response, JSON.toJSONStringWithDateFormat(pageInfo, "yyyy-MM-dd HH:mm"));
+		} catch (Exception e) {
+			e.printStackTrace();
+			CommentUtils.response(response, JSON.toJSONString(e));
+		}
+	}
+
+	/**
+	 * 改变挑战状态
+	 * 
+	 * @param json
+	 * @param response
+	 */
+	@RequestMapping("/changeActiveStatus")
+	public void changeActiveStatus(String json, HttpServletResponse response) {
+		try {
+			JSONObject param = JSONObject.parseObject(URLDecoder.decode(json, "UTF-8"));
+			activeService.changeActiveStatus(param);
+			JSONObject result = new JSONObject();
+			result.fluentPut("success", true);
+			CommentUtils.response(response, JSON.toJSONString(result));
+		} catch (Exception e) {
+			e.printStackTrace();
+			CommentUtils.response(response, JSON.toJSONString(e));
 		}
 	}
 }

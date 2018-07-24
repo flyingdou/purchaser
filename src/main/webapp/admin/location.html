@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<base href="<%=basePath%>">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+<title>选择经纬度</title>
+<script charset="utf-8" src="https://map.qq.com/api/js?v=2.exp"></script>
+<style type="text/css">
+	html,body{
+		margin: 0;
+		padding: 0;
+		width: 100%;
+		height: 100%;
+	}
+</style>
+</head>
+<body>
+	<div id="allmap" style="width: 100%; height: 100%;"></div>
+	<script>
+		var lat = 30.53069759743673;
+		var lng = 114.31637048721313;
+		var center = new qq.maps.LatLng(lat, lng);
+		var map = new qq.maps.Map("allmap", {
+			center: center,
+			zoom: 20
+		});
+		var marker = new qq.maps.Marker({
+		    position: center,
+		    map: map,
+		    animation:qq.maps.MarkerAnimation.BOUNCE
+		});
+		
+		var listener = qq.maps.event.addListener(
+			    map,
+			    'click',
+			    function(event) {
+			        lat = event.latLng.getLat();
+			    	lng = event.latLng.getLng();
+		    	    marker.position.lat = lat;
+		    	    marker.position.lng = lng;
+		    	    var marker2 = new qq.maps.Marker({
+		    	        position: event.latLng,
+		    	        map: map,
+		    	        animation:qq.maps.MarkerAnimation.BOUNCE
+		    	    });
+		    	    marker = marker2;
+		    	    
+		    	    var model = JSON.parse(sessionStorage.getItem("model"));
+		    	    model.longitude = lng;
+		    	    model.latitude = lat;
+		    	    sessionStorage.setItem("model", JSON.stringify(model));
+		    	    history.go(-1);
+			    }
+			);
+	</script>
+</body>
+</html>

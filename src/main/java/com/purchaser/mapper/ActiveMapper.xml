@@ -55,7 +55,7 @@
       #{createDate,jdbcType=TIMESTAMP}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.purchaser.pojo.Active" >
+  <insert id="insertSelective" parameterType="com.purchaser.pojo.Active" useGeneratedKeys="true" keyProperty="id">
     insert into tb_active
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -269,9 +269,29 @@
     where id = #{id,jdbcType=BIGINT}
   </update>
   
-  <!-- 查询挑战列表 -->
-  <select id="getActiveList" parameterType="int" resultMap="BaseResultMap">
-  	 select id,name,image,start_date,end_date,join_end_date,address from tb_active where type = #{type} and status = 1
+  <!-- 查询活动列表 -->
+  <select id="getActiveList" parameterType="Map" resultMap="BaseResultMap">
+  	 select id,name,image,start_date,end_date,join_end_date,address from tb_active where 1=1
+  	 <if test="type != null and type != ''">
+  	 	and type = #{type}
+  	 </if>
+  	 <if test="status != null and type != ''">
+  	 	and status = #{status}
+  	 </if>
+  	 	order by create_date desc
+  </select>
+  
+  <!-- 管理系统查询活动列表 -->
+  <select id="getActiveListForAdmin" parameterType="Map" resultType="Map">
+  	 select a.id,a.name,u.name createor,a.price,a.distinguished_price,a.manufacturer_price,
+	 a.start_date,a.end_date,a.join_end_date,a.telephone,a.host_unit,a.upper_limit,a.address,
+	 a.type,a.status,a.create_date from tb_active a inner join tb_user u on a.creator = u.id
+	 order by a.create_date desc	limit #{start}, #{pageSize}
+  </select>
+  
+  <!-- 管理系统查询活动列表总数 -->
+  <select id="getActiveListCountForAdmin" resultType="int">
+  	 select count(a.id) from tb_active a inner join tb_user u on a.creator = u.id
   </select>
   
   <!-- 根据id查询参加的用户列表 -->
@@ -289,7 +309,7 @@
   
   <!-- 批量添加活动邀请码 -->
   <insert id="addActiveCodeList" parameterType="List">
-  	insert into tb_invitation_code values
+  	insert into tb_invitation_code(id, active, code, type, effective, create_date) values
   	<foreach collection="list" item="item" separator=",">
   		(null, #{item.active}, #{item.code}, #{item.type}, #{item.effective}, #{item.createDate})
   	</foreach>
@@ -302,7 +322,12 @@
   </select>
   
   <!-- 修改活动邀请码更改为已使用 -->
-  <select id="updateActiveCodeUse" parameterType="Long">
+  <update id="updateActiveCodeUse" parameterType="Long">
   		update tb_invitation_code set effective = 1 where id = #{activeCodeId}
-  </select>
+  </update>
+  
+  <!-- 改变活动状态 -->
+  <update id="changeActiveStatus" parameterType="Map">
+  		update tb_active set status = #{status} where id = #{activeId}
+  </update>
 </mapper>

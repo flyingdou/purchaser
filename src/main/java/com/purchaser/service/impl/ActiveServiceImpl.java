@@ -11,14 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.purchaser.constants.Constant;
 import com.purchaser.dao.ActiveMapper;
 import com.purchaser.dao.SignMapper;
 import com.purchaser.pojo.Active;
 import com.purchaser.pojo.InvitationCode;
+import com.purchaser.pojo.PageInfo;
 import com.purchaser.pojo.Sign;
 import com.purchaser.service.ActiveService;
 import com.purchaser.util.CommentUtils;
@@ -44,6 +43,7 @@ public class ActiveServiceImpl implements ActiveService {
 	@Override
 	public void release(Active active) {
 		// 首先生成一条活动数据
+		active.setStatus(Constant.ACTIVE_STATUS_OPEN);
 		active.setCreateDate(new Date());
 		activeMapper.insertSelective(active);
 		// 然后生成活动的邀请码(暂时20个(嘉宾10个, 厂商10个)), 保存到数据库
@@ -70,27 +70,32 @@ public class ActiveServiceImpl implements ActiveService {
 	 * 查询挑战列表
 	 */
 	@Override
-	public JSONObject getActiveList(JSONObject param) {
-		List<Active> activeList = activeMapper.getActiveList(param.getIntValue("type"));
-		JSONArray activeListJson = new JSONArray();
-		for (Active active : activeList) {
-			// 活动状态: 0.未开始, 1.进行中, 2.已结束
-			int status = 0;
-			if (active.getStartDate().getTime() < new Date().getTime()) {
-				status = 0;
-			} else if (active.getStartDate().getTime() >= new Date().getTime()
-					&& active.getStartDate().getTime() <= new Date().getTime()) {
-				status = 1;
-			} else {
-				status = 2;
-			}
-			JSONObject activeJson = JSONObject.parseObject(JSON.toJSONStringWithDateFormat(active, "yyyy-MM-dd HH:mm"));
-			activeJson.fluentPut("status", status);
-			activeListJson.add(activeJson);
+	public List<Active> getActiveList(JSONObject param) {
+		return activeMapper.getActiveList(param);
+	}
+
+	/**
+	 * 查询挑战列表(后台管理系统)
+	 */
+	@Override
+	public PageInfo getActiveListForAdmin(JSONObject param) {
+		PageInfo pageInfo = null;
+		if (param.containsKey("currentPage")) {
+			pageInfo = JSONObject.toJavaObject(param, PageInfo.class);
+		} else {
+			pageInfo = new PageInfo();
+			pageInfo.setCurrentPage(1);
+			pageInfo.setPageSize(15);
 		}
-		JSONObject result = new JSONObject();
-		result.fluentPut("success", true).fluentPut("activeList", activeListJson);
-		return result;
+		int start = (pageInfo.getCurrentPage() - 1) * pageInfo.getPageSize();
+		int pageSize = pageInfo.getPageSize();
+		param.fluentPut("start", start);
+		param.fluentPut("pageSize", pageSize);
+		List<Map<String, Object>> activeList = activeMapper.getActiveListForAdmin(param);
+		int count = activeMapper.getActiveListCountForAdmin();
+		pageInfo.setTotalCount(count);
+		pageInfo.setData(activeList);
+		return pageInfo;
 	}
 
 	/**
@@ -122,7 +127,7 @@ public class ActiveServiceImpl implements ActiveService {
 
 		// 签到检查2: 当前用户签到位置
 		double distance = CommentUtils.GetDistance(param.getDoubleValue("latitude"), param.getDoubleValue("longitude"),
-				active.getLatitude(), active.getLongitude());
+				active.getLatitude().doubleValue(), active.getLongitude().doubleValue());
 		if (distance > Constant.SIGN_MAX_DISTANCE) {
 			result.fluentPut("success", false).fluentPut("message", "签到距离超出3000米 , 无法签到");
 			return result;
@@ -147,5 +152,14 @@ public class ActiveServiceImpl implements ActiveService {
 	public Map<String, Object> checkActiveCode(JSONObject param) {
 
 		return activeMapper.checkActiveCode(param);
+	}
+
+	/**
+	 * 改变活动状态
+	 */
+	@Override
+	public int changeActiveStatus(JSONObject param) {
+
+		return activeMapper.changeActiveStatus(param);
 	}
 }
