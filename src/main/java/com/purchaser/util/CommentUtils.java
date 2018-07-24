@@ -32,10 +32,13 @@ public class CommentUtils {
 	 * 
 	 * @param response
 	 * @param result
-	 * @throws Exception 
 	 */
-	public static void response(HttpServletResponse response, String result) throws Exception {
-		response.getWriter().write(result);
+	public static void response(HttpServletResponse response, String result){
+		try {
+			response.getWriter().write(result);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
