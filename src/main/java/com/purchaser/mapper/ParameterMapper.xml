@@ -95,7 +95,7 @@
   <!-- 根据父id查询子记录 -->
   <select id="findParameterByParent" resultType="Map" parameterType="Map">
          select 
-         p.id, p.name as value, p.parent, p.value as price
+         p.id, p.name as value, p.parent, p.value as price, p.code
          from tb_parameter p 
          where p.parent = #{parent}
   </select>

@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.purchaser.constants.Constant;
 import com.purchaser.dao.AdmirerMapper;
@@ -64,7 +65,7 @@ public class AdmirerServiceImpl implements AdmirerService {
 		AdmirerWithBLOBs admirer = new AdmirerWithBLOBs();
 		admirer.setUser(user.getId());
 		admirer.setAddress(param.getString("address"));
-		admirer.setStudy(param.getString("study"));
+		admirer.setStudy(param.getString("study_code"));
 		admirer.setLanguage(param.getString("language"));
 		admirer.setQualification(param.getString("qualification"));
 		admirer.setLearning(param.getString("learning"));
@@ -102,6 +103,34 @@ public class AdmirerServiceImpl implements AdmirerService {
 		List<Map<String, Object>> admirerList = admirerMapper.getAdmirerList(paramMap);
 		
 		return admirerList;
+	}
+
+
+	/**
+	 * 查询采购师详情
+	 */
+	@Override
+	public JSONObject admirerDetail(JSONObject param) {
+		HashMap<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("id", param.getString("id"));
+		paramMap.put("audit", Constant.AUDIT_STATUS_PASS);
+		paramMap.put("parent", Constant.PARAMETER_STUDY_PARENT);
+		paramMap.put("user", param.getString("user"));
+		Map<String, Object> admirerMap = admirerMapper.admirerDetail(paramMap);
+		return JSONObject.parseObject(JSON.toJSONString(admirerMap));
+	}
+
+
+	/**
+	 * 通过采购师id查询user
+	 */
+	@Override
+	public JSONObject getUserByAdmirer(String admirerId) {
+		HashMap<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("id", admirerId);
+		paramMap.put("audit", Constant.AUDIT_STATUS_PASS);
+		Map<String, Object> userMap = admirerMapper.getUserByAdmirer(paramMap);
+		return JSONObject.parseObject(JSON.toJSONString(userMap));
 	}
 
 }

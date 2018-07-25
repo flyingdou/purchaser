@@ -224,8 +224,8 @@
       	         <!-- 学历 -->
       	         <div class="line">
       	              <div class="title">学历 </div>
-      	              <div class="value">
-      	              		<input class="inputValue" v-model="model.study" type="text" placeholder="请输入最高学历"/>
+      	              <div class="value" @click="selectStudy()">
+      	              		<span class="inputValue">{{model.study}}</span><span class="inputValue">&nbsp;&gt;</span>
       	              </div>
       	         </div>
       	         
@@ -326,6 +326,31 @@
     		 experienceList = JSON.parse(experienceList);
     		 joinApply.experience = experienceList[0];
     	 }
+    	 
+    	 // 请求服务器，查询学历类型
+    	 var param = {
+    			 study_type: 23
+    	 };
+    	 $.ajax({
+    		 url:'member/findParameters.pur',
+    		 data: {
+    			 json: encodeURI(JSON.stringify(param))
+    		 },
+    		 dataType: 'json',
+    		 success: function (res) {
+    			 if (res.success) {
+    				 // 数据请求成功
+    				 pageData.studyType = res.studyType;
+    			 } else {
+    				 // 程序异常，数据请求失败
+    				 console.log('程序异常，原因: ' + res.message);
+    			 }
+    		 },
+    		 error: function (e) {
+    			 console.log('网络异常！');
+    		 }
+    	 })
+    	 
     	
      })
      
@@ -358,6 +383,11 @@
     					 var src = 'http://purchaser.ecartoon.com.cn/picture/' + dou.image;
     					 $("#previwer").attr({"src": src});
     				 }
+    	    		 
+    	    		 // 学历初始化
+    	    		 if (!dou.study || dou.study == '') {
+    	    			 dou.study = "请选择";
+    	    		 }
     			     
     				 // 数据请求成功
     				 joinApply.model = dou;
@@ -443,6 +473,19 @@
     					joinApply.model.gender = res.id;
     				}
     			 });
+    		 },
+    		 
+    		 // 选择学历，弹出层
+    		 selectStudy: function () {
+    			 createSelector({
+    				 data: pageData.studyType,
+    				 title: "选择学历",
+    				 callback: function (res) {
+    					 console.log(res);
+    					 joinApply.model.study = res.value;
+    					 joinApply.model.study_code = res.code;
+    				 }
+    			 })
     		 },
     		 
     		 
@@ -584,7 +627,7 @@
     		
     		// 学历
     		if (!model.study || model.study == '' ) {
-    			alert('请先填写学历！');
+    			alert('请先选择学历！');
     			return;
     		}
     		

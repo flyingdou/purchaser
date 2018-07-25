@@ -21,10 +21,29 @@ public interface AdmirerService {
 	 */
 	public JSONObject saveAdmirer (JSONObject param, HttpSession session);
 	
+	
 	/**
 	 * 查询采购师列表
 	 * @param param
 	 * @return
 	 */
 	public List<Map<String, Object>> getAdmirerList (JSONObject param);
+	
+	
+	/**
+	 * 通过采购师id查询user
+	 * @param admirerId
+	 * @return
+	 */
+	public JSONObject getUserByAdmirer (String admirerId);
+	
+	
+	/**
+	 * 查询采购师详情信息
+	 * @param param
+	 * @return
+	 */
+	public JSONObject admirerDetail (JSONObject param);
+	
+	
 }

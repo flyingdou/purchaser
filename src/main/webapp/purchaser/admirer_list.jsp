@@ -416,11 +416,11 @@
 					location.href = "purchaser/admirer_release.jsp";
 				},
 				
-				// 到供应商详情页面
+				// 跳转到采购师详情页面
 				toDetail: function (index) {
-					var supplierId = this["contentList" + (this.currentIndex + 1)][index].id;
-					sessionStorage.setItem("supplierId", supplierId);
-					location.href = "purchaser/supplier_detail.jsp";
+					var admirerId = this["contentList" + (this.currentIndex + 1)][index].id;
+					sessionStorage.setItem("admirerId", admirerId);
+					location.href = "purchaser/admirer_detail.jsp";
 				}
 			},
 			

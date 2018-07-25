@@ -93,4 +93,40 @@ public class AdmirerController {
 	}
 	
 	
+	
+	/**
+	 * 根据采购师id查询采购师详情
+	 * @param response
+	 * @param json
+	 */
+	@RequestMapping("/admirerDetailById")
+	@ResponseBody
+	public void admirerDetailById (HttpServletResponse response, String json) {
+		JSONObject ret = new JSONObject();
+		try {
+			// 处理请求参数
+			JSONObject param = JSONObject.parseObject(URLDecoder.decode(json, "UTF-8"));
+			
+			// 查询user
+			JSONObject userJson = admirerService.getUserByAdmirer(param.getString("id"));
+			
+			param.fluentPut("user", userJson.getString("user"));
+			// 查询信息
+			JSONObject admirerDetail = admirerService.admirerDetail(param);
+			ret.fluentPut("success", true)
+			   .fluentPut("message", "OK")
+			   .fluentPut("admirerDetail", admirerDetail)
+			   ;
+		} catch (Exception e) {
+			ret.fluentPut("success", false)
+			   .fluentPut("message", e.toString())
+			   ;
+			e.printStackTrace();
+		}
+		
+		// 返回数据
+		CommentUtils.response(response, JSON.toJSONString(ret));
+	}
+	
+	
 }

@@ -238,6 +238,34 @@
 		         </if>
   </select>
   
+  <select id="admirerDetail" parameterType="Map" resultType="Map">
+			select    
+			          u.name, u.gender, u.id_card_num, u.concord, u.mobilephone, u.email, u.image,
+			          a.id, a.address, p.name as study, a.language, a.qualification, a.learning,
+			          a.self_evaluation, ep.post, ep.company_name 
+			 from   
+			        
+					  tb_admirer a LEFT JOIN tb_parameter p ON a.study = p.code AND p.parent = #{parent} 
+								   LEFT JOIN tb_user u ON a.user = u.id 
+			          LEFT JOIN 
+			          (SELECT e.post, e.company_name, e.user from tb_experience e  where e.user = #{user}  ORDER BY endTime desc LIMIT 1 ) ep 
+			          ON ep.user = a.user 
+			
+			where 
+			          a.id = #{id} 
+			          and a.audit = #{audit}
+  </select>
+  
+  <!-- 通过采购师id查询user -->
+  <select id="getUserByAdmirer" parameterType="Map" resultType="Map">
+           select 
+                  a.user
+             from 
+                  tb_admirer a 
+            where 
+                  a.id = #{id}
+                  and a.audit = #{audit}
+  </select>
   
   
 </mapper>
