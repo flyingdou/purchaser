@@ -61,51 +61,16 @@
 						<i class="icon-shopping-cart icon-large"></i> Admin
 					</h1>
 					<ul class="side-nav">
-						<li class="dropdown"><a class="dropdown-toggle"
-							data-toggle="collapse" data-target="#user-dropdown"
-							href="javascript:void(0)"> <!-- <i class="icon-home"></i> -->
-								用户管理<b class="caret"></b>
-						</a>
-							<ul id="user-dropdown" class="collapse">
-								<li><a href="javascript:void(0)">用户列表</a></li>
-								<li><a href="javascript:void(0)">会员信息录入</a></li>
-								<li><a href="javascript:void(0)"> 设定会员收费标准</a></li>
-							</ul></li>
-						<li class="dropdown"><a class="dropdown-toggle"
-							data-toggle="collapse" data-target="#website-dropdown"
-							href="javascript:void(0)"> <!-- <i class="icon-sitemap"></i> -->
-								活动管理<b class="caret"></b>
-						</a>
-							<ul id="website-dropdown" class="collapse">
-								<li><a href="toPage.pur?url=active_release.html">发起活动</a></li>
-								<li><a href="toPage.pur?url=active_list.html">活动列表</a></li>
-							</ul></li>
-						<li class="dropdown"><a class="dropdown-toggle"
-							data-toggle="collapse" data-target="#store-dropdown"
-							href="javascript:void(0)"> <!-- <i class="icon-shopping-cart"></i> -->
-								采购师管理 <b class="caret"></b>
-						</a>
-							<ul id="store-dropdown" class="collapse">
-								<li><a href="javascript:void(0)"> 采购师录入审核</a></li>
-							</ul></li>
-						<li class="dropdown"><a class="dropdown-toggle"
-							data-toggle="collapse" data-target="#reports-dropdown"
-							href="javascript:void(0)"> <!-- <i class="icon-signal"></i> -->
-								供应商管理 <b class="caret"></b>
-						</a>
-							<ul id="reports-dropdown" class="collapse">
-								<li><a href="javascript:void(0)">供应商库录入审核</a></li>
-							</ul></li>
-						<li class="dropdown"><a class="dropdown-toggle"
-							data-toggle="collapse" data-target="#members-dropdown"
-							href="javascript:void(0)"> <!-- <i class="icon-group"></i> -->
-								内容管理 <b class="caret"></b>
-						</a>
-							<ul id="members-dropdown" class="collapse">
-								<li><a href="javascript:void(0)"> 编辑内容列表</a></li>
-							</ul></li>
+						<li class="dropdown" v-for="(item1, i) in nav">
+							<a class="dropdown-toggle" data-toggle="collapse" :data-target="'#sub-nav-' + i"
+								:href="item1.link"> <!-- <i class="icon-home"></i> -->
+									{{item1.name}}<b class="caret"></b>
+							</a>
+							<ul :id="'sub-nav-' + i" class="collapse">
+								<li v-for="(item2, i) in item1.sub_nav"><a :href="item2.link">{{item2.name}}</a></li>
+							</ul>
+						</li>
 					</ul>
-
 				</div>
 				<!-- end main-left-col -->
 
@@ -267,6 +232,7 @@
 	<script src="js/jquery.min.js"></script>
 	<script src="js/ajaxfileupload.js"></script>
 	<script src="js/bootstrap.js"></script>
+	<script src="js/nav_config.js"></script>
 	<script src="js/required.js"></script>
 	<script src="../purchaser/js/commonUtils.js"></script>
 	<script type="text/javascript">
@@ -286,6 +252,7 @@
 			 vue = new Vue({
 				el: "#wraper",
 				data: {
+					nav: nav,
 					base_picture_url: location.origin + "/picture/",
 					model: {}
 				},

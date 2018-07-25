@@ -16,6 +16,7 @@ import com.purchaser.pojo.PageInfo;
 import com.purchaser.pojo.User;
 import com.purchaser.service.ActiveService;
 import com.purchaser.service.AdminService;
+import com.purchaser.service.SupplierService;
 import com.purchaser.util.CommentUtils;
 
 @Controller
@@ -27,6 +28,9 @@ public class AdminController {
 
 	@Autowired
 	private ActiveService activeService;
+
+	@Autowired
+	private SupplierService supplierService;
 
 	/**
 	 * 管理员登录
@@ -91,7 +95,6 @@ public class AdminController {
 	public void getActiveList(String json, HttpServletResponse response) {
 		try {
 			JSONObject param = JSONObject.parseObject(URLDecoder.decode(json, "UTF-8"));
-			param.fluentPut("forAdmin", "forAdmin");
 			PageInfo pageInfo = activeService.getActiveListForAdmin(param);
 			CommentUtils.response(response, JSON.toJSONStringWithDateFormat(pageInfo, "yyyy-MM-dd HH:mm"));
 		} catch (Exception e) {
@@ -112,6 +115,44 @@ public class AdminController {
 			JSONObject param = JSONObject.parseObject(URLDecoder.decode(json, "UTF-8"));
 			activeService.changeActiveStatus(param);
 			JSONObject result = new JSONObject();
+			result.fluentPut("success", true);
+			CommentUtils.response(response, JSON.toJSONString(result));
+		} catch (Exception e) {
+			e.printStackTrace();
+			CommentUtils.response(response, JSON.toJSONString(e));
+		}
+	}
+
+	/**
+	 * 查询供应商列表(后台管理系统)
+	 * 
+	 * @param json
+	 * @param response
+	 */
+	@RequestMapping("/getSupplierList")
+	public void getSupplierList(String json, HttpServletResponse response) {
+		try {
+			JSONObject param = JSONObject.parseObject(URLDecoder.decode(json, "UTF-8"));
+			PageInfo pageInfo = supplierService.getSupplierListForAdmin(param);
+			CommentUtils.response(response, JSON.toJSONStringWithDateFormat(pageInfo, "yyyy-MM-dd HH:mm"));
+		} catch (Exception e) {
+			e.printStackTrace();
+			CommentUtils.response(response, JSON.toJSONString(e));
+		}
+	}
+
+	/**
+	 * 审核供应商
+	 * 
+	 * @param json
+	 * @param response
+	 */
+	@RequestMapping("/supplierAudit")
+	public void supplierAudit(String json, HttpServletResponse response) {
+		try {
+			JSONObject param = JSONObject.parseObject(URLDecoder.decode(json, "UTF-8"));
+			JSONObject result = new JSONObject();
+			supplierService.supplierAudit(param);
 			result.fluentPut("success", true);
 			CommentUtils.response(response, JSON.toJSONString(result));
 		} catch (Exception e) {

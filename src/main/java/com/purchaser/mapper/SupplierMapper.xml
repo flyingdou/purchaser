@@ -295,7 +295,7 @@
     select 
     <include refid="Base_Column_List" />
     from tb_supplier
-    where 1=1
+    where audit = 1
     <if test="business != null and business != '' or 0 == business">
     	and business = #{business}
     </if>
@@ -303,4 +303,23 @@
     	and name like '%${name}%'
     </if>
   </select>
+  
+  <!-- 查询供应商列表(后台管理系统) -->
+  <select id="getSupplierListForAdmin" resultType="Map" parameterType="Map">
+  	select s.id,s.name,s.registered_capital,s.representative,s.address,
+	s.create_date,s.workers,s.business,s.factory_area,s.official_network,
+	s.contact,s.duty,s.mobilephone,s.email,s.fax_number,u.name creator,
+	s.audit,s.apply_date from tb_supplier s inner join tb_user u on s.creator = u.id 
+	order by s.apply_date desc limit #{start},#{pageSize}
+  </select>
+  
+  <!-- 查询供应商列表总数(后台管理系统) -->
+  <select id="getSupplierListForAdminCount" resultType="int">
+  	select count(s.id) from tb_supplier s inner join tb_user u on s.creator = u.id 
+  </select>
+  
+  <!-- 供应商审核 -->
+  <update id="supplierAudit" parameterType="Map">
+  	update tb_supplier set audit = #{audit} where id = #{supplierId}
+  </update>
 </mapper>

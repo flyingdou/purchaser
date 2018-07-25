@@ -14,16 +14,16 @@
 <link href="css/font-awesome.css" rel="stylesheet">
 <link href="css/admin.css" rel="stylesheet">
 <style type="text/css">
-	.table{
-		margin-top: 30px;
-		width: 1530px;
-	}
-	
-	.float{
-		position: fixed;
-		bottom: 20px;
-		right: 10px;
-	}
+.table {
+	margin-top: 30px;
+	width: 1530px;
+}
+
+.float {
+	position: fixed;
+	bottom: 20px;
+	right: 10px;
+}
 </style>
 </head>
 <body>
@@ -35,54 +35,18 @@
 						<i class="icon-shopping-cart icon-large"></i> Admin
 					</h1>
 					<ul class="side-nav">
-						<li class="dropdown"><a class="dropdown-toggle"
-							data-toggle="collapse" data-target="#user-dropdown"
-							href="javascript:void(0)"> <!-- <i class="icon-home"></i> -->
-								用户管理<b class="caret"></b>
-						</a>
-							<ul id="user-dropdown" class="collapse">
-								<li><a href="javascript:void(0)">用户列表</a></li>
-								<li><a href="javascript:void(0)">会员信息录入</a></li>
-								<li><a href="javascript:void(0)"> 设定会员收费标准</a></li>
-							</ul></li>
-						<li class="dropdown"><a class="dropdown-toggle"
-							data-toggle="collapse" data-target="#website-dropdown"
-							href="javascript:void(0)"> <!-- <i class="icon-sitemap"></i> -->
-								活动管理<b class="caret"></b>
-						</a>
-							<ul id="website-dropdown" class="collapse">
-								<li><a href="toPage.pur?url=active_release.html">发起活动</a></li>
-								<li><a href="toPage.pur?url=active_list.html">活动列表</a></li>
-							</ul></li>
-						<li class="dropdown"><a class="dropdown-toggle"
-							data-toggle="collapse" data-target="#store-dropdown"
-							href="javascript:void(0)"> <!-- <i class="icon-shopping-cart"></i> -->
-								采购师管理 <b class="caret"></b>
-						</a>
-							<ul id="store-dropdown" class="collapse">
-								<li><a href="javascript:void(0)"> 采购师录入审核</a></li>
-							</ul></li>
-						<li class="dropdown"><a class="dropdown-toggle"
-							data-toggle="collapse" data-target="#reports-dropdown"
-							href="javascript:void(0)"> <!-- <i class="icon-signal"></i> -->
-								供应商管理 <b class="caret"></b>
-						</a>
-							<ul id="reports-dropdown" class="collapse">
-								<li><a href="javascript:void(0)">供应商库录入审核</a></li>
-							</ul></li>
-						<li class="dropdown"><a class="dropdown-toggle"
-							data-toggle="collapse" data-target="#members-dropdown"
-							href="javascript:void(0)"> <!-- <i class="icon-group"></i> -->
-								内容管理 <b class="caret"></b>
-						</a>
-							<ul id="members-dropdown" class="collapse">
-								<li><a href="javascript:void(0)"> 编辑内容列表</a></li>
-							</ul></li>
+						<li class="dropdown" v-for="(item1, i) in nav">
+							<a class="dropdown-toggle" data-toggle="collapse" :data-target="'#sub-nav-' + i"
+								:href="item1.link"> <!-- <i class="icon-home"></i> -->
+									{{item1.name}}<b class="caret"></b>
+							</a>
+							<ul :id="'sub-nav-' + i" class="collapse">
+								<li v-for="(item2, i) in item1.sub_nav"><a :href="item2.link">{{item2.name}}</a></li>
+							</ul>
+						</li>
 					</ul>
-
 				</div>
 				<!-- end main-left-col -->
-
 			</div>
 			<!-- end span2 -->
 
@@ -123,42 +87,52 @@
 							<td style="text-align: center;">{{item.host_unit}}</td>
 							<td style="text-align: center;">{{item.upper_limit}}</td>
 							<td style="text-align: center;">{{item.address}}</td>
-							<td style="text-align: center;">{{item.type | showActiveType}}</td>
+							<td style="text-align: center;">{{item.type |
+								showActiveType}}</td>
 							<td style="text-align: center;">{{item.create_date}}</td>
-							<td style="text-align: center;">{{item.status | showActiveStatus}}</td>
-							<td style="text-align: center;"><a href="javascript:void(0)" @click="getQRCode(i)">查看二维码</a></td>
-							<td>
-								<a href="javascript:void(0)" v-if="item.status == 0" @click="changeStatus(i, 1)">开启</a>
-								<a href="javascript:void(0)" v-if="item.status == 1" @click="changeStatus(i, 0)">关闭</a>
-								<a href="javascript:void(0)" @click="getActiveDetail(i)">查看详情</a>
-								<a href="javascript:void(0)" @click="updateActive(i)">编辑</a>
-							</td>
+							<td style="text-align: center;">{{item.status |
+								showActiveStatus}}</td>
+							<td style="text-align: center;"><a href="javascript:void(0)"
+								@click="getQRCode(i)">查看二维码</a></td>
+							<td><a href="javascript:void(0)" v-if="item.status == 0"
+								@click="changeStatus(i, 1)">开启</a> <a href="javascript:void(0)"
+								v-if="item.status == 1" @click="changeStatus(i, 0)">关闭</a> <a
+								href="javascript:void(0)" @click="getActiveDetail(i)">查看详情</a> <a
+								href="javascript:void(0)" @click="updateActive(i)">编辑</a></td>
 						</tr>
 					</tbody>
 				</table>
 				<ul class="pagination float">
 					<li><a href="javascript:void(0)">当前页:{{pageInfo.currentPage}}</a></li>
 					<li><a href="javascript:void(0)">共:{{pageInfo.totalPage}}页</a></li>
-				    <li><a href="javascript:void(0)" @click="paging(0)">上一页</a></li>
-				    <li><a href="javascript:void(0)" @click="paging(1)">下一页</a></li>
-				    <li><a href="javascript:void(0)"><input type="text" id="page" style="margin: 0; padding: 0 5px; outline: none; width: 50px; height: 100%;" v-model="model.page" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"/></a></li>
-				    <li><a href="javascript:void(0)" @click="paging(2)">直达</a></li>
+					<li><a href="javascript:void(0)" @click="paging(0)">上一页</a></li>
+					<li><a href="javascript:void(0)" @click="paging(1)">下一页</a></li>
+					<li><a href="javascript:void(0)"><input type="text"
+							id="page"
+							style="margin: 0; padding: 0 5px; outline: none; width: 50px; height: 100%;"
+							v-model="model.page"
+							onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
+							onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" /></a></li>
+					<li><a href="javascript:void(0)" @click="paging(2)">直达</a></li>
 				</ul>
 			</div>
 			<!-- end span10 -->
 		</div>
 		<!-- end row -->
-	</div><!-- end container -->
+	</div>
+	<!-- end container -->
 
 	<script src="js/jquery.min.js"></script>
 	<script src="js/qrcode.min.js"></script>
 	<script src="js/bootstrap.js"></script>
+	<script src="js/nav_config.js"></script>
 	<script src="../purchaser/js/commonUtils.js"></script>
 	<script src="../purchaser/js/vue.min.js"></script>
 	<script type="text/javascript">
 		var vue = new Vue({
 			el: "#wraper",
 			data: {
+				nav: nav,
 				pageInfo: {},
 				model: {},
 				qrcode: {}

@@ -1,5 +1,6 @@
 package com.purchaser.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.alibaba.fastjson.JSONObject;
 import com.purchaser.dao.ContentMapper;
 import com.purchaser.pojo.Content;
+import com.purchaser.pojo.User;
 import com.purchaser.service.ContentService;
 
 @Service
@@ -27,6 +29,17 @@ public class ContentServiceImpl implements ContentService {
 		List<Content> contentList = contentMapper.getContentList(param);
 		result.fluentPut("success", true).fluentPut("contentList", contentList);
 		return result;
+	}
+
+	/**
+	 * 发布内容
+	 */
+	@Override
+	public int release(JSONObject param, User user) {
+		Content content = JSONObject.toJavaObject(param, Content.class);
+		content.setSetTop(0);
+		content.setCreateDate(new Date());
+		return contentMapper.insertSelective(content);
 	}
 
 }

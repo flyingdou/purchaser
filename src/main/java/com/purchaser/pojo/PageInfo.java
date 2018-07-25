@@ -14,18 +14,21 @@ public class PageInfo {
 
 	private int pageSize;
 
+	private int start;
+
 	private int totalCount;
 
 	private int totalPage;
 
 	private List<?> data;
-	
+
 	public int getCurrentPage() {
 		return currentPage;
 	}
 
 	public void setCurrentPage(int currentPage) {
 		this.currentPage = currentPage;
+		this.start = (this.currentPage - 1) * this.pageSize;
 	}
 
 	public int getPageSize() {
@@ -34,6 +37,14 @@ public class PageInfo {
 
 	public void setPageSize(int pageSize) {
 		this.pageSize = pageSize;
+	}
+
+	public int getStart() {
+		return start;
+	}
+
+	public void setStart(int start) {
+		this.start = start;
 	}
 
 	public int getTotalCount() {

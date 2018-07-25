@@ -80,17 +80,8 @@ public class ActiveServiceImpl implements ActiveService {
 	@Override
 	public PageInfo getActiveListForAdmin(JSONObject param) {
 		PageInfo pageInfo = null;
-		if (param.containsKey("currentPage")) {
-			pageInfo = JSONObject.toJavaObject(param, PageInfo.class);
-		} else {
-			pageInfo = new PageInfo();
-			pageInfo.setCurrentPage(1);
-			pageInfo.setPageSize(15);
-		}
-		int start = (pageInfo.getCurrentPage() - 1) * pageInfo.getPageSize();
-		int pageSize = pageInfo.getPageSize();
-		param.fluentPut("start", start);
-		param.fluentPut("pageSize", pageSize);
+		pageInfo = JSONObject.toJavaObject(param, PageInfo.class);
+		param.fluentPut("start", pageInfo.getStart());
 		List<Map<String, Object>> activeList = activeMapper.getActiveListForAdmin(param);
 		int count = activeMapper.getActiveListCountForAdmin();
 		pageInfo.setTotalCount(count);

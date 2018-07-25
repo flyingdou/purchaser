@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.alibaba.fastjson.JSONObject;
+import com.purchaser.pojo.PageInfo;
 import com.purchaser.pojo.Supplier;
 import com.purchaser.pojo.User;
 
@@ -38,4 +39,19 @@ public interface SupplierService {
 	 */
 	Supplier getSupplier(JSONObject param);
 
+	/**
+	 * 查询供应商
+	 * 
+	 * @param param
+	 * @return
+	 */
+	PageInfo getSupplierListForAdmin(JSONObject param);
+
+	/**
+	 * 供应商审核
+	 * 
+	 * @param param
+	 * @return
+	 */
+	int supplierAudit(JSONObject param);
 }

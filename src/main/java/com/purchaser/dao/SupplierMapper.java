@@ -25,4 +25,27 @@ public interface SupplierMapper {
 	 * @return
 	 */
 	List<Supplier> getSupplierList(Map<String, Object> param);
+
+	/**
+	 * 查询供应商列表(后台管理系统)
+	 * 
+	 * @param param
+	 * @return
+	 */
+	List<Map<String, Object>> getSupplierListForAdmin(Map<String, Object> param);
+
+	/**
+	 * 查询供应商列表总数(后台管理系统)
+	 * 
+	 * @return
+	 */
+	int getSupplierListForAdminCount();
+
+	/**
+	 * 供应商审核
+	 * 
+	 * @param param
+	 * @return
+	 */
+	int supplierAudit(Map<String, Object> param);
 }

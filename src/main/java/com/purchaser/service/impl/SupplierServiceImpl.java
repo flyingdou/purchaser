@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.alibaba.fastjson.JSONObject;
 import com.purchaser.constants.Constant;
 import com.purchaser.dao.SupplierMapper;
+import com.purchaser.pojo.PageInfo;
 import com.purchaser.pojo.Supplier;
 import com.purchaser.pojo.User;
 import com.purchaser.service.SupplierService;
@@ -71,6 +72,20 @@ public class SupplierServiceImpl implements SupplierService {
 	}
 
 	/**
+	 * 查询供应商列表(后台管理系统)
+	 */
+	@Override
+	public PageInfo getSupplierListForAdmin(JSONObject param) {
+		PageInfo pageInfo = JSONObject.toJavaObject(param, PageInfo.class);
+		param.fluentPut("start", pageInfo.getStart());
+		List<Map<String, Object>> supplierList = supplierMapper.getSupplierListForAdmin(param);
+		int totalCount = supplierMapper.getSupplierListForAdminCount();
+		pageInfo.setTotalCount(totalCount);
+		pageInfo.setData(supplierList);
+		return pageInfo;
+	}
+
+	/**
 	 * 查询供应商
 	 * 
 	 * @param json
@@ -79,5 +94,13 @@ public class SupplierServiceImpl implements SupplierService {
 	@Override
 	public Supplier getSupplier(JSONObject param) {
 		return supplierMapper.selectByPrimaryKey(param.getLong("supplierId"));
+	}
+
+	/**
+	 * 供应商审核
+	 */
+	@Override
+	public int supplierAudit(JSONObject param) {
+		return supplierMapper.supplierAudit(param);
 	}
 }

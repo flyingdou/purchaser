@@ -27,6 +27,9 @@ public class Content {
 
     // 内容链接
     private String contentUrl;
+    
+    // 0: 不置顶, 1: 置顶
+    private int setTop;
 
     // 创建日期
     private Date createDate;
@@ -87,7 +90,15 @@ public class Content {
         this.contentUrl = contentUrl == null ? null : contentUrl.trim();
     }
 
-    public Date getCreateDate() {
+    public int getSetTop() {
+		return setTop;
+	}
+
+	public void setSetTop(int setTop) {
+		this.setTop = setTop;
+	}
+
+	public Date getCreateDate() {
         return createDate;
     }
 
