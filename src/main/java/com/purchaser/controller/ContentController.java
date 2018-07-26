@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.purchaser.pojo.Content;
 import com.purchaser.pojo.User;
 import com.purchaser.service.ContentService;
 import com.purchaser.util.CommentUtils;
@@ -55,6 +56,24 @@ public class ContentController {
 			JSONObject result = new JSONObject();
 			result.fluentPut("success", true);
 			CommentUtils.response(response, JSON.toJSONString(result));
+		} catch (Exception e) {
+			e.printStackTrace();
+			CommentUtils.response(response, JSON.toJSONString(e));
+		}
+	}
+
+	/**
+	 * 查询内容
+	 * 
+	 * @param json
+	 * @param response
+	 */
+	@RequestMapping("/getContent")
+	public void getContent(String json, HttpServletResponse response) {
+		try {
+			JSONObject param = JSONObject.parseObject(URLDecoder.decode(json, "UTF-8"));
+			Content content = contentService.getContent(param);
+			CommentUtils.response(response, JSON.toJSONStringWithDateFormat(content, "yyyy-MM-dd HH:mm"));
 		} catch (Exception e) {
 			e.printStackTrace();
 			CommentUtils.response(response, JSON.toJSONString(e));

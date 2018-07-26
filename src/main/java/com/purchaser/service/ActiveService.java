@@ -42,6 +42,14 @@ public interface ActiveService {
 	Map<String, Object> getActiveById(JSONObject param);
 
 	/**
+	 * 修改活动数据
+	 * 
+	 * @param param
+	 * @return
+	 */
+	int updateActive(JSONObject param);
+
+	/**
 	 * 活动签到
 	 * 
 	 * @param param

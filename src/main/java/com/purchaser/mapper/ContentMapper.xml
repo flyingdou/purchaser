@@ -140,13 +140,35 @@
   <!-- 查询内容列表 -->
   <select id="getContentList" parameterType="Map" resultMap="BaseResultMap">
   	select <include refid="Base_Column_List" />
-	from tb_content where content_type = #{contentType} 
+	from tb_content where 1=1
+	<if test="contentType != null and contentType != ''">
+		and content_type = #{contentType}
+	</if> 
 	<if test="classification != null and classification != '' or 0 == classification">
 		and classification = #{classification}
 	</if>
 	<if test="setTop != null and setTop != '' or 0 == setTop">
 		and set_top = #{setTop}
 	</if>
-	order by create_date desc
+		order by create_date desc
+	<if test="start != null and start != '' or 0 == start">
+		limit #{start},#{pageSize}
+	</if>
   </select>
+  
+  <!-- 查询内容总数 -->
+  <select id="getContentListCount" parameterType="Map" resultType="int"> 
+  	select count(id) from tb_content where 1=1
+  	<if test="contentType != null and contentType != ''">
+		and content_type = #{contentType}
+	</if> 
+	<if test="classification != null and classification != '' or 0 == classification">
+		and classification = #{classification}
+	</if>
+  </select>
+  
+  <!-- 内容置顶 -->
+  <update id="contentSetTop" parameterType="Map">
+  	update tb_content set set_top = #{setTop} where id = #{contentId}
+  </update>
 </mapper>

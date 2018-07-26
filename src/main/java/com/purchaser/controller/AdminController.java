@@ -16,6 +16,7 @@ import com.purchaser.pojo.PageInfo;
 import com.purchaser.pojo.User;
 import com.purchaser.service.ActiveService;
 import com.purchaser.service.AdminService;
+import com.purchaser.service.ContentService;
 import com.purchaser.service.SupplierService;
 import com.purchaser.util.CommentUtils;
 
@@ -31,6 +32,9 @@ public class AdminController {
 
 	@Autowired
 	private SupplierService supplierService;
+
+	@Autowired
+	private ContentService contentService;
 
 	/**
 	 * 管理员登录
@@ -153,6 +157,61 @@ public class AdminController {
 			JSONObject param = JSONObject.parseObject(URLDecoder.decode(json, "UTF-8"));
 			JSONObject result = new JSONObject();
 			supplierService.supplierAudit(param);
+			result.fluentPut("success", true);
+			CommentUtils.response(response, JSON.toJSONString(result));
+		} catch (Exception e) {
+			e.printStackTrace();
+			CommentUtils.response(response, JSON.toJSONString(e));
+		}
+	}
+
+	/**
+	 * 查询内容列表(后台管理系统)
+	 * 
+	 * @param json
+	 * @param response
+	 */
+	@RequestMapping("/getContentList")
+	public void getContentList(String json, HttpServletResponse response) {
+		try {
+			JSONObject param = JSONObject.parseObject(URLDecoder.decode(json, "UTF-8"));
+			PageInfo pageInfo = contentService.getContentListForAdmin(param);
+			CommentUtils.response(response, JSON.toJSONStringWithDateFormat(pageInfo, "yyyy-MM-dd HH:mm"));
+		} catch (Exception e) {
+			e.printStackTrace();
+			CommentUtils.response(response, JSON.toJSONString(e));
+		}
+	}
+
+	/**
+	 * 内容置顶
+	 * 
+	 * @param json
+	 * @param response
+	 */
+	@RequestMapping("/contentSetTop")
+	public void contentSetTop(String json, HttpServletResponse response) {
+		try {
+			JSONObject param = JSONObject.parseObject(URLDecoder.decode(json, "UTF-8"));
+			JSONObject result = new JSONObject();
+			contentService.contentSetTop(param);
+			result.fluentPut("success", true);
+			CommentUtils.response(response, JSON.toJSONString(result));
+		} catch (Exception e) {
+			e.printStackTrace();
+			CommentUtils.response(response, JSON.toJSONString(e));
+		}
+	}
+
+	/**
+	 * 修改内容
+	 */
+	@RequestMapping("/updateContent")
+	public void updateContent(String json, HttpServletResponse response) {
+		try {
+			JSONObject param = JSONObject.parseObject(URLDecoder.decode(json, "UTF-8"));
+			JSONObject result = new JSONObject();
+			contentService.updateContent(param);
 			result.fluentPut("success", true);
 			CommentUtils.response(response, JSON.toJSONString(result));
 		} catch (Exception e) {

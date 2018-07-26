@@ -84,7 +84,7 @@
 						<div class="col-sm-10 control-input active-image">
 							<img :src="base_picture_url + model.image" class="img-rounded" v-if="model.image && model.operation != 0" 
 								@click="javascript:document.querySelector('#file').click()" />
-							<img :src="base_picture_url + model.image" class="img-rounded" v-if="model.image && model.operation == 0" />
+							<img :src="base_picture_url + model.image" class="img-rounded" disabled v-if="model.image && model.operation == 0" />
 							<div style="height: 98px; line-height: 100px; text-align: center; border: 1px solid #BBB;" v-if="!model.image" 
 								@click="javascript:document.querySelector('#file').click()">
 								请选择图片
@@ -96,27 +96,40 @@
 						<label for="firstname" class="col-sm-2 control-label">内容名称</label>
 						<div class="col-sm-10 control-input">
 							<input type="text" class="form-control" id="firstname"
-								placeholder="请输入内容名称" v-model="model.name">
+								placeholder="请输入内容名称" v-model="model.name" v-if="model.operation != 0">
+							<input type="text" class="form-control" id="firstname"
+								placeholder="请输入内容名称" disabled v-model="model.name" v-if="model.operation == 0">
 						</div>
 					</div>
 					<div class="form-group">
 						<label for="firstname" class="col-sm-2 control-label">内容描述</label>
 						<div class="col-sm-10 control-input">
 							<input type="text" class="form-control" id="firstname"
-								placeholder="请输入内容描述" v-model="model.remark" >
+								placeholder="请输入内容描述" v-model="model.remark" v-if="model.operation != 0">
+							<input type="text" class="form-control" id="firstname"
+								placeholder="请输入内容描述" disabled v-model="model.remark" v-if="model.operation == 0">
 						</div>
 					</div>
 					<div class="form-group">
 						<label for="firstname" class="col-sm-2 control-label">内容链接</label>
 						<div class="col-sm-10 control-input">
 							<input type="text" class="form-control" id="firstname"
-								placeholder="请输入内容链接" v-model="model.contentUrl" >
+								placeholder="开头需添加http://或https://" v-model="model.contentUrl" v-if="model.operation != 0">
+							<input type="text" class="form-control" id="firstname"
+								placeholder="请输入内容链接" disabled v-model="model.contentUrl" v-if="model.operation == 0">
 						</div>
 					</div>
 					<div class="form-group">
 						<label for="firstname" class="col-sm-2 control-label">内容类型</label>
 						<div class="col-sm-10 control-input">
-							<select v-model="model.contentType" @change="changeClassification()">
+							<select v-model="model.contentType" v-if="model.operation != 0" @change="changeClassification()">
+								<option value="review">精彩回顾</option>
+								<option value="party">党群活动</option>
+								<option value="product">名优产品</option>
+								<option value="purchase">采购需求</option>
+								<option value="recruit">招聘求职</option>
+							</select>
+							<select disabled v-model="model.contentType" v-if="model.operation == 0" @change="changeClassification()">
 								<option value="review">精彩回顾</option>
 								<option value="party">党群活动</option>
 								<option value="product">名优产品</option>
@@ -125,15 +138,23 @@
 							</select>
 						</div>
 					</div>
-					<div class="form-group" v-if="isShow">
+					<div class="form-group" v-if="model.contentType == 'product' || model.contentType == 'purchase' || model.contentType == 'recruit'">
 						<label for="firstname" class="col-sm-2 control-label">内容分类</label>
 						<div class="col-sm-10 control-input">
 							<select v-model="model.classification" v-if="model.operation != 0">
-								<option v-for="(item,i) in classificationList" :value="item.value">{{item.name}}</option>
+								<option v-for="(item,i) in productClassification" :value="item.value" v-if="model.contentType == 'product'">{{item.name}}</option>
+								<option v-for="(item,i) in purchaseClassification" :value="item.value" v-if="model.contentType == 'purchase'">{{item.name}}</option>
+								<option v-for="(item,i) in recruitClassification" :value="item.value" v-if="model.contentType == 'recruit'">{{item.name}}</option>
+							</select>
+							<select disabled v-model="model.classification" v-if="model.operation == 0">
+								<option v-for="(item,i) in productClassification" :value="item.value" v-if="model.contentType == 'product'">{{item.name}}</option>
+								<option v-for="(item,i) in purchaseClassification" :value="item.value" v-if="model.contentType == 'purchase'">{{item.name}}</option>
+								<option v-for="(item,i) in recruitClassification" :value="item.value" v-if="model.contentType == 'recruit'">{{item.name}}</option>
 							</select>
 						</div>
 					</div>
-					<div class="submit-button" @click="submit()" v-if="model.operation != 0">确定</div>
+					<div class="submit-button" @click="submit()" v-if="!model.operation">确定</div>
+					<div class="submit-button" @click="updateContent()" v-if="model.operation && model.operation != 0">确定</div>
 				</form>
 			</div>
 			<!-- end span10 -->
@@ -155,11 +176,34 @@
 				nav: nav,
 				base_picture_url: location.origin + "/picture/",
 				model: {},
-				classificationList: [],
-				isShow: false
+				productClassification: [
+					{value: 0, name: "原辅材料"},
+					{value: 1, name: "机械电子"},
+					{value: 2, name: "其他"}
+				],
+				purchaseClassification: [
+					{value: 0, name: "原辅材料"},
+					{value: 1, name: "机械电子"},
+					{value: 2, name: "其他"}
+				],
+				recruitClassification: [
+					{value: 0, name: "招聘信息"},
+					{value: 1, name: "求职信息"}
+				]
 			},
 			created: function () {
-				Vue.set(this.model, "contentType", "review");
+				if (this.GetQueryString("contentId")) {
+					var operation = this.GetQueryString("operation");
+					var contentId = this.GetQueryString("contentId");
+					if (operation == 0) {
+						document.title = "内容详情";
+					} else {
+						document.title = "修改内容";
+					}
+					this.getContent(operation, contentId);
+				} else {
+					Vue.set(this.model, "contentType", "review");	
+				}
 			},
 			methods: {
 				// 取URL中参数
@@ -170,46 +214,20 @@
 				     if(r!=null)return  unescape(r[2]); return null;
 				},
 				
+				getContent: function (operation, contentId) {
+					var url = location.origin + "/content/getContent.pur";
+					var param = {
+							contentId: contentId
+					}
+					requestServer(url, param, function(res) {
+						res.operation = operation;
+						Vue.set(vue, "model", res);
+					})
+				},
+				
 				// 改变内容分类
 				changeClassification: function () {
-					switch (this.model.contentType) {
-						case "product":
-							Vue.set(this, "isShow", true);
-							var classificationList = [
-								{value: 0, name: "原辅材料"},
-								{value: 1, name: "机械电子"},
-								{value: 2, name: "其他"}
-							];
-							Vue.set(this, "classificationList", classificationList);
-							Vue.set(this.model, "classification", 0);
-							break;
-							
-						case "purchase":
-							Vue.set(this, "isShow", true);
-							var classificationList = [
-								{value: 0, name: "原辅材料"},
-								{value: 1, name: "机械电子"},
-								{value: 2, name: "其他"}
-							];
-							Vue.set(this, "classificationList", classificationList);
-							Vue.set(this.model, "classification", 0);
-							break;
-							
-						case "recruit":
-							Vue.set(this, "isShow", true);
-							var classificationList = [
-								{value: 0, name: "招聘信息"},
-								{value: 1, name: "求职信息"}
-							];
-							Vue.set(this, "classificationList", classificationList);
-							Vue.set(this.model, "classification", 0);
-							break;
-	
-						default:
-							Vue.set(this, "isShow", false);
-							Vue.set(this.model, "classification", null);
-							break;
-					}
+					Vue.set(this.model, "classification", 0);
 				},
 				
 				// 上传图片
@@ -261,6 +279,10 @@
 						alert("请输入内容链接");
 						return;
 					}
+					if (this.model.contentUrl.indexOf("http://") == -1 && this.model.contentUrl.indexOf("https://") == -1) {
+						alert("链接开头请加上http://或者https://");
+						return;
+					}
 					return true;
 				},
 				
@@ -268,9 +290,28 @@
 				submit: function () {
 					if (this.checkForm()) {
 						var url = location.origin + "/content/release.pur";
-						requestServer(url, this.model, function (res) {
+						var param = this.model;
+						if (this.model.contentType != "product" && this.model.contentType != "purchase" && this.model.contentType != "recruit") {
+							param.classification = null;
+						}
+						requestServer(url, param, function (res) {
 							alert("发起成功!");
 							location.href = location.origin + "/admin/toPage.pur?url=content_list.html";
+						});
+					}
+				},
+				
+				// 修改内容
+				updateContent: function () {
+					if (this.checkForm()) {
+						var url = location.origin + "/admin/updateContent.pur";
+						var param = this.model;
+						if (this.model.contentType != "product" && this.model.contentType != "purchase" && this.model.contentType != "recruit") {
+							param.classification = null;
+						}
+						requestServer(url, param, function (res) {
+							alert("修改成功!");
+							location.href = location.origin + "/admin/toPage.pur?url=content_release.html&operation=0&contentId=" + vue.model.id;
 						});
 					}
 				}

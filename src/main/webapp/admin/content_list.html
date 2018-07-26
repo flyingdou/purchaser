@@ -2,9 +2,267 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>活动列表</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<!-- Le styles -->
+<link href="http://fonts.googleapis.com/css?family=Oxygen|Marck+Script"
+	rel="stylesheet" type="text/css">
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/font-awesome.css" rel="stylesheet">
+<link href="css/admin.css" rel="stylesheet">
+<style type="text/css">
+.table {
+	margin-top: 30px;
+	width: 1130px;
+}
+
+.float {
+	position: fixed;
+	bottom: 20px;
+	right: 10px;
+}
+</style>
 </head>
 <body>
+	<div class="container" id="wraper">
+		<div class="row">
+			<div class="span2">
+				<div class="main-left-col">
+					<h1>
+						<i class="icon-shopping-cart icon-large"></i> Admin
+					</h1>
+					<ul class="side-nav">
+						<li class="dropdown" v-for="(item1, i) in nav">
+							<a class="dropdown-toggle" data-toggle="collapse" :data-target="'#sub-nav-' + i"
+								:href="item1.link"> <!-- <i class="icon-home"></i> -->
+									{{item1.name}}<b class="caret"></b>
+							</a>
+							<ul :id="'sub-nav-' + i" class="collapse">
+								<li v-for="(item2, i) in item1.sub_nav"><a :href="item2.link">{{item2.name}}</a></li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+				<!-- end main-left-col -->
+			</div>
+			<!-- end span2 -->
 
+			<div class="span10">
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th style="text-align: center;">内容名称</th>
+							<th style="text-align: center;">内容类型</th>
+							<th style="text-align: center;">内容分类</th>
+							<th style="text-align: center;">内容链接</th>
+							<th style="text-align: center;">创建日期</th>
+							<th style="text-align: center;">是否轮播图展示</th>
+							<th style="text-align: center;">操作</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr v-for="(item,i) in pageInfo.data">
+							<td style="text-align: center;">{{item.name}}</td>
+							<td style="text-align: center;">{{item.contentType | showContentType}}</td>
+							<td style="text-align: center;">{{item.classificationText}}</td>
+							<td style="text-align: center;"><a :href="item.contentUrl" target="_bank">{{item.contentUrl}}</a></td>
+							<td style="text-align: center;">{{item.createDate}}</td>
+							<td style="text-align: center;">{{item.setTop | showSetTopStatus}}</td>
+							<td style="width: 120px;">
+								<a href="javascript:void(0)" v-if="item.setTop == 0" @click="contentSetTop(i, 1)">展示</a>
+								<a href="javascript:void(0)" v-if="item.setTop == 1" @click="contentSetTop(i, 0)">取消</a>
+								<a href="javascript:void(0)" @click="getContentDetail(i)">查看详情</a>
+								<a href="javascript:void(0)" @click="goUpdateContent(i)">编辑</a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<ul class="pagination float">
+					<li><a href="javascript:void(0)">当前页:{{pageInfo.currentPage}}</a></li>
+					<li><a href="javascript:void(0)">共:{{pageInfo.totalPage}}页</a></li>
+					<li><a href="javascript:void(0)" @click="paging(0)">上一页</a></li>
+					<li><a href="javascript:void(0)" @click="paging(1)">下一页</a></li>
+					<li><a href="javascript:void(0)"><input type="text"
+							id="page"
+							style="margin: 0; padding: 0 5px; outline: none; width: 50px; height: 100%;"
+							v-model="model.page"
+							onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
+							onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" /></a></li>
+					<li><a href="javascript:void(0)" @click="paging(2)">直达</a></li>
+				</ul>
+			</div>
+			<!-- end span10 -->
+		</div>
+		<!-- end row -->
+	</div>
+	<!-- end container -->
+
+	<script src="js/jquery.min.js"></script>
+	<script src="js/qrcode.min.js"></script>
+	<script src="js/bootstrap.js"></script>
+	<script src="js/nav_config.js"></script>
+	<script src="../purchaser/js/commonUtils.js"></script>
+	<script src="../purchaser/js/vue.min.js"></script>
+	<script type="text/javascript">
+		var vue = new Vue({
+			el: "#wraper",
+			data: {
+				nav: nav,
+				pageInfo: {},
+				model: {},
+				qrcode: {}
+			},
+			created: function () {
+				this.init();
+			},
+			
+			methods: {
+				// 初始化
+				init: function () {
+					var param = {
+							pageSize: 15
+					}
+					if (sessionStorage.getItem("contentCurrentPage")) {
+						param.currentPage = sessionStorage.getItem("contentCurrentPage");
+						sessionStorage.removeItem("contentCurrentPage");
+					} else {
+						param.currentPage = 1;
+					}
+					this.getContentList(param);
+				},
+				
+				// 查询挑战列表
+				getContentList: function (param) {
+					// 请求数据
+					var url = location.origin + "/admin/getContentList.pur";
+					requestServer(url, param, function(res) {
+						res.data.map(vue.converClassification);
+						Vue.set(vue, "pageInfo", res);
+					})
+				},
+				
+				// 内容分类转换
+				converClassification: function (content) {
+					switch (content.contentType) {
+						case "product":
+							content.classificationText = ["原辅材料", "机械电子", "其他"][content.classification];
+							return content;
+							break;
+							
+						case "purchase":
+							content.classificationText = ["原辅材料", "机械电子", "其他"][content.classification];
+							return content;
+							break;
+							
+						case "recruit":
+							content.classificationText = ["招聘信息", "求职信息"][content.classification];
+							return content;
+							break;
+	
+						default:
+							content.classificationText = "无";
+							return content;
+							break;
+					}
+				},
+			
+				// 内容置顶
+				contentSetTop: function (index, setTop) {
+					var url = location.origin + "/admin/contentSetTop.pur";
+					var contentList = vue.pageInfo.data;
+					var param = {
+							contentId: contentList[index].id,
+							setTop: setTop
+					}
+					requestServer(url, param, function(res) {
+						contentList[index].setTop = setTop;
+						Vue.set(vue.pageInfo, "data", contentList);
+					})
+				},
+				
+				// 翻页
+				paging: function (type) {
+					// 计算页码
+					var currentPage = this.pageInfo.currentPage;
+					if (type == 0) {
+						// 上一页
+						if (currentPage <= 1) {
+							return;
+						}
+						currentPage--;
+					} else if (type == 1) {
+						// 下一页
+						if (currentPage >= this.pageInfo.totalPage) {
+							return;
+						}
+						currentPage++;
+					} else {
+						// 直达
+						if (!this.model.page || this.model.page == "" || this.model.page < 1 || this.model.page > this.pageInfo.totalPage || isNaN(this.model.page)) {
+							alert("页码无效");
+							return;
+						}
+						currentPage = this.model.page;
+					}
+					var param = {
+							currentPage: currentPage,
+							pageSize: 15
+					}
+					this.getContentList(param);
+				},
+				
+				// 查看内容详情
+				getContentDetail: function (index) {
+					var content = this.pageInfo.data[index];
+					sessionStorage.setItem("contentCurrentPage", vue.pageInfo.currentPage);
+					location.href = "toPage.pur?url=content_release.html&operation=0&contentId=" + content.id;
+				},
+				
+				// 去修改内容页面
+				goUpdateContent: function (index) {
+					var content = this.pageInfo.data[index];
+					sessionStorage.setItem("contentCurrentPage", vue.pageInfo.currentPage);
+					location.href = "toPage.pur?url=content_release.html&operation=1&contentId=" + content.id;
+				}
+			},
+			
+			filters: {
+				
+				// 显示内容类型
+				showContentType: function (value) {
+					switch (value) {
+						case "review":
+							return "精彩回顾";
+							break;
+							
+						case "party":
+							return "党群活动";
+							break;
+					
+						case "product":
+							return "名优产品";
+							break;
+							
+						case "purchase":
+							return "采购需求";
+							break;
+							
+						case "recruit":
+							return "招聘求职";
+							break;
+					}
+				},
+				
+				// 显示置顶状态
+				showSetTopStatus: function (value) {
+					return ['未展示', '已展示'][value];
+				}
+				
+			}
+		});
+	</script>
 </body>
 </html>

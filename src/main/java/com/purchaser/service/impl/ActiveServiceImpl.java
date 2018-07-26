@@ -103,6 +103,15 @@ public class ActiveServiceImpl implements ActiveService {
 	}
 
 	/**
+	 * 修改活动数据
+	 */
+	@Override
+	public int updateActive(JSONObject param) {
+		Active active = JSONObject.toJavaObject(param, Active.class);
+		return activeMapper.updateByPrimaryKeySelective(active);
+	}
+
+	/**
 	 * 活动签到
 	 */
 	@Override

@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.alibaba.fastjson.JSONObject;
 import com.purchaser.dao.ContentMapper;
 import com.purchaser.pojo.Content;
+import com.purchaser.pojo.PageInfo;
 import com.purchaser.pojo.User;
 import com.purchaser.service.ContentService;
 
@@ -32,6 +33,20 @@ public class ContentServiceImpl implements ContentService {
 	}
 
 	/**
+	 * 查询内容列表(后台管理系统)
+	 */
+	@Override
+	public PageInfo getContentListForAdmin(JSONObject param) {
+		PageInfo pageInfo = JSONObject.toJavaObject(param, PageInfo.class);
+		param.fluentPut("start", pageInfo.getStart());
+		List<Content> contentList = contentMapper.getContentList(param);
+		int totalCount = contentMapper.getContentListCount(param);
+		pageInfo.setTotalCount(totalCount);
+		pageInfo.setData(contentList);
+		return pageInfo;
+	}
+
+	/**
 	 * 发布内容
 	 */
 	@Override
@@ -42,4 +57,28 @@ public class ContentServiceImpl implements ContentService {
 		return contentMapper.insertSelective(content);
 	}
 
+	/**
+	 * 内容置顶
+	 */
+	@Override
+	public int contentSetTop(JSONObject param) {
+		return contentMapper.contentSetTop(param);
+	}
+
+	/**
+	 * 查询内容
+	 */
+	@Override
+	public Content getContent(JSONObject param) {
+		return contentMapper.selectByPrimaryKey(param.getLong("contentId"));
+	}
+
+	/**
+	 * 修改内容
+	 */
+	@Override
+	public int updateContent(JSONObject param) {
+		Content content = JSONObject.toJavaObject(param, Content.class);
+		return contentMapper.updateByPrimaryKeySelective(content);
+	}
 }

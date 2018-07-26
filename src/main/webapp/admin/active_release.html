@@ -220,7 +220,8 @@
 						<textarea class="form-control" rows="6" style="resize: none;" v-model="model.remark" v-if="model.operation != 0"></textarea>
 						<textarea class="form-control" rows="6" style="resize: none;" disabled v-model="model.remark" v-if="model.operation == 0"></textarea>
 					</div>
-					<div class="submit-button" @click="submit()" v-if="model.operation != 0">确定</div>
+					<div class="submit-button" @click="submit()" v-if="!model.operation">确定</div>
+					<div class="submit-button" @click="updateActive()" v-if="model.operation && model.operation != 0">确定</div>
 				</form>
 			</div>
 			<!-- end span10 -->
@@ -402,6 +403,18 @@
 								alert("发起成功!");
 								sessionStorage.setItem("model", "");
 								location.href = location.origin + "/admin/toPage.pur?url=active_list.html";
+							});
+						}
+					},
+					
+					// 修改活动
+					updateActive: function () {
+						if (this.checkForm()) {
+							var url = location.origin + "/active/updateActive.pur";
+							requestServer(url, this.model, function (res) {
+								alert("修改成功!");
+								sessionStorage.setItem("model", "");
+								location.href = location.origin + "/admin/toPage.pur?url=active_release.html&operation=0&activeId=" + vue.model.id;
 							});
 						}
 					}

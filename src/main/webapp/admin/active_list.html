@@ -94,11 +94,12 @@
 								showActiveStatus}}</td>
 							<td style="text-align: center;"><a href="javascript:void(0)"
 								@click="getQRCode(i)">查看二维码</a></td>
-							<td><a href="javascript:void(0)" v-if="item.status == 0"
-								@click="changeStatus(i, 1)">开启</a> <a href="javascript:void(0)"
-								v-if="item.status == 1" @click="changeStatus(i, 0)">关闭</a> <a
-								href="javascript:void(0)" @click="getActiveDetail(i)">查看详情</a> <a
-								href="javascript:void(0)" @click="updateActive(i)">编辑</a></td>
+							<td>
+								<a href="javascript:void(0)" v-if="item.status == 0"	@click="changeStatus(i, 1)">开启</a> 
+								<a href="javascript:void(0)" v-if="item.status == 1" @click="changeStatus(i, 0)">关闭</a> 
+								<a href="javascript:void(0)" @click="getActiveDetail(i)">查看详情</a> 
+								<a href="javascript:void(0)" @click="updateActive(i)">编辑</a>
+							</td>
 						</tr>
 					</tbody>
 				</table>
@@ -147,8 +148,9 @@
 					var param = {
 							pageSize: 15
 					}
-					if (sessionStorage.getItem("currentPage")) {
-						param.currentPage = sessionStorage.getItem("currentPage");
+					if (sessionStorage.getItem("activeCurrentPage")) {
+						param.currentPage = sessionStorage.getItem("activeCurrentPage");
+						sessionStorage.removeItem("activeCurrentPage");
 					} else {
 						param.currentPage = 1;
 					}
@@ -182,21 +184,21 @@
 				getQRCode: function (index) {
 					var active = this.pageInfo.data[index];
 					sessionStorage.setItem("activeId", active.id);
-					sessionStorage.setItem("currentPage", vue.pageInfo.currentPage);
+					sessionStorage.setItem("activeCurrentPage", vue.pageInfo.currentPage);
 					location.href = location.origin + "/admin/toPage.pur?url=qrcode.html";
 				},
 				
 				// 查看活动详情
 				getActiveDetail: function (index) {
 					var activeId = vue.pageInfo.data[index].id;
-					sessionStorage.setItem("currentPage", vue.pageInfo.currentPage);
+					sessionStorage.setItem("activeCurrentPage", vue.pageInfo.currentPage);
 					location.href = location.origin + "/admin/toPage.pur?url=active_release.html&operation=0&activeId=" + activeId;
 				},
 				
 				// 修改活动信息
 				updateActive: function (index) {
 					var activeId = vue.pageInfo.data[index].id;
-					sessionStorage.setItem("currentPage", vue.pageInfo.currentPage);
+					sessionStorage.setItem("activeCurrentPage", vue.pageInfo.currentPage);
 					location.href = location.origin + "/admin/toPage.pur?url=active_release.html&operation=1&activeId=" + activeId;
 				},
 				

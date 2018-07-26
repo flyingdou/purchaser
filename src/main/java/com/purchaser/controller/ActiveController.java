@@ -88,6 +88,26 @@ public class ActiveController {
 	}
 
 	/**
+	 * 修改活动数据
+	 * 
+	 * @param json
+	 * @param response
+	 */
+	@RequestMapping("/updateActive")
+	public void updateActive(String json, HttpServletResponse response) {
+		try {
+			JSONObject param = JSONObject.parseObject(URLDecoder.decode(json, "UTF-8"));
+			activeService.updateActive(param);
+			JSONObject result = new JSONObject();
+			result.fluentPut("success", true);
+			CommentUtils.response(response, JSON.toJSONString(result));
+		} catch (Exception e) {
+			e.printStackTrace();
+			CommentUtils.response(response, JSON.toJSONString(e));
+		}
+	}
+
+	/**
 	 * 活动签到
 	 * 
 	 * @param json
