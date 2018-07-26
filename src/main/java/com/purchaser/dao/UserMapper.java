@@ -1,5 +1,6 @@
 package com.purchaser.dao;
 
+import java.util.List;
 import java.util.Map;
 
 import com.purchaser.pojo.User;
@@ -41,4 +42,19 @@ public interface UserMapper {
 	 * @return
 	 */
 	User adminLogin(Map<String, Object> paramMap);
+	
+	
+	/**
+	 * 查询用户列表
+	 * @param param
+	 * @return
+	 */
+	List<Map<String, Object>> getUserList4admin (Map<String, Object> param);
+	
+	/**
+	 * 查询用户列表总条数
+	 * @return
+	 */
+	int getUserListCount4admin();
+	
 }

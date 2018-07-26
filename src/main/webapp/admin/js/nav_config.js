@@ -5,7 +5,7 @@ var nav = [
 		name : "用户管理", 
 		link : "javascript:void(0)", 
 		sub_nav : [
-			{name : "用户列表" , link : "javascript:void(0)"},
+			{name : "用户列表" , link : "toPage.pur?url=user_list.html"},
 			{name : "会员信息录入" , link : "javascript:void(0)"},
 			{name : "设定会员收费标准" , link : "javascript:void(0)"}
 		]

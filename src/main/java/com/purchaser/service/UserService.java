@@ -3,6 +3,7 @@ package com.purchaser.service;
 import javax.servlet.http.HttpServletRequest;
 
 import com.alibaba.fastjson.JSONObject;
+import com.purchaser.pojo.PageInfo;
 import com.purchaser.pojo.User;
 
 /*
@@ -40,4 +41,10 @@ public interface UserService {
 	 * @return
 	 */
 	public Boolean userIsMember (Long userId);
+	
+	/**
+	 * 查询微信登录用户列表
+	 * @return
+	 */
+	public PageInfo userList4admin (JSONObject param);
 }

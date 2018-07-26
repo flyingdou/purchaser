@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>用户列表</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<!-- Le styles -->
+<link href="http://fonts.googleapis.com/css?family=Oxygen|Marck+Script"
+	rel="stylesheet" type="text/css">
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/font-awesome.css" rel="stylesheet">
+<link href="css/admin.css" rel="stylesheet">
+<style type="text/css">
+.table {
+	margin-top: 30px;
+	width: 1530px;
+}
+
+.float {
+	position: fixed;
+	bottom: 20px;
+	right: 10px;
+}
+</style>
+</head>
+<body>
+	<div class="container" id="wraper">
+		<div class="row">
+			<div class="span2">
+				<div class="main-left-col">
+					<h1>
+						<i class="icon-shopping-cart icon-large"></i> Admin
+					</h1>
+					<ul class="side-nav">
+						<li class="dropdown" v-for="(item1, i) in nav">
+							<a class="dropdown-toggle" data-toggle="collapse" :data-target="'#sub-nav-' + i"
+								:href="item1.link"> 
+									{{item1.name}}<b class="caret"></b>
+							</a>
+							<ul :id="'sub-nav-' + i" class="collapse">
+								<li v-for="(item2, i) in item1.sub_nav"><a :href="item2.link">{{item2.name}}</a></li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+				<!-- end main-left-col -->
+			</div>
+			<!-- end span2 -->
+
+			<div class="span10">
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th style="text-align: center;">姓名</th>
+							<th style="text-align: center;">性别</th>
+							<th style="text-align: center;">身份证号</th>
+							<th style="text-align: center;">籍贯</th>
+							<th style="text-align: center;">手机号</th>
+							<th style="text-align: center;">邮箱</th>
+							<th style="text-align: center;">注册日期</th>
+							<th style="text-align: center;">是否为会员</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr v-for="(item,i) in pageInfo.data">
+							<td style="text-align: center;">{{item.name}}</td>
+							<td style="text-align: center;">{{item.gender | gender}}</td>
+							<td style="text-align: center;">{{item.id_card_num}}</td>
+							<td style="text-align: center;">{{item.concord}}</td>
+							<td style="text-align: center;">{{item.mobilephone}}</td>
+							<td style="text-align: center;">{{item.email}}</td>
+							<td style="text-align: center;">{{item.register_date}}</td>
+							<td style="text-align: center;">{{item.isMember | isMember}}</td>
+						</tr>
+					</tbody>
+				</table>
+				<ul class="pagination float">
+					<li><a href="javascript:void(0)">当前页:{{pageInfo.currentPage}}</a></li>
+					<li><a href="javascript:void(0)">共:{{pageInfo.totalPage}}页</a></li>
+					<li><a href="javascript:void(0)" @click="paging(0)">上一页</a></li>
+					<li><a href="javascript:void(0)" @click="paging(1)">下一页</a></li>
+					<li><a href="javascript:void(0)"><input type="text"
+							id="page"
+							style="margin: 0; padding: 0 5px; outline: none; width: 50px; height: 100%;"
+							v-model="model.page"
+							onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
+							onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" /></a></li>
+					<li><a href="javascript:void(0)" @click="paging(2)">直达</a></li>
+				</ul>
+			</div>
+			<!-- end span10 -->
+		</div>
+		<!-- end row -->
+	</div>
+	<!-- end container -->
+
+	<script src="js/jquery.min.js"></script>
+	<script src="js/qrcode.min.js"></script>
+	<script src="js/bootstrap.js"></script>
+	<script src="js/nav_config.js"></script>
+	<script src="../purchaser/js/commonUtils.js"></script>
+	<script src="../purchaser/js/vue.min.js"></script>
+	<script type="text/javascript">
+		var vue = new Vue({
+			el: "#wraper",
+			data: {
+				nav: nav,
+				pageInfo: {},
+				model: {}
+			},
+			created: function () {
+				this.init();
+			},
+			
+			methods: {
+				// 初始化
+				init: function () {
+					var param = {
+							pageSize: 15,
+							currentPage: 1
+					}
+					
+					
+					this.getUserList(param);
+				},
+				
+				// 查询用户列表
+				getUserList: function (param) {
+					// 请求数据
+					var url = location.origin + "/user/getUserList4admin.pur";
+					requestServer(url, param, function(res) {
+						Vue.set(vue, "pageInfo", res);
+					})
+				},
+				
+				// 翻页
+				paging: function (type) {
+					// 计算页码
+					var currentPage = this.pageInfo.currentPage;
+					if (type == 0) {
+						// 上一页
+						if (currentPage <= 1) {
+							return;
+						}
+						currentPage--;
+					} else if (type == 1) {
+						// 下一页
+						if (currentPage >= this.pageInfo.totalPage) {
+							return;
+						}
+						currentPage++;
+					} else {
+						// 直达
+						if (!this.model.page || this.model.page == "" || this.model.page < 1 || this.model.page > this.pageInfo.totalPage || isNaN(this.model.page)) {
+							alert("页码无效");
+							return;
+						}
+						currentPage = this.model.page;
+					}
+					var param = {
+							currentPage: currentPage,
+							pageSize: 15
+					}
+					
+					this.getUserList(param);
+				}
+			},
+			
+			filters: {
+				// 性别
+				gender: function (value) {
+					if (value == 'M') {
+						value = '男';
+					} else {
+						value = '女';
+					}
+					return value;
+				},
+				
+				// 是否为会员
+				isMember: function (value) {
+					value = parseInt(value);
+					if (value == 0) {
+						value = '否';
+					} 
+					if (value == 1) {
+						value = '是';
+					}
+					return value;
+				}
+				
+			}
+		});
+	</script>
+</body>
+</html>

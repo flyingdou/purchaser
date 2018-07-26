@@ -191,4 +191,22 @@
   	select <include refid="Base_Column_List"/> from tb_user
   	where mobilephone = #{account} and password = #{password}
   </select>
+  
+  <!-- 查询用户列表 -->
+  <select id="getUserList4admin" parameterType="Map" resultType="Map">
+		  select 
+					u.id, u.name, u.gender, u.id_card_num, u.concord, u.mobilephone, u.email, u.register_date,
+					(CASE WHEN  ISNULL((select m.id from tb_member m where m.user = u.id)) THEN false ELSE true END) isMember 
+			from 
+					tb_user u limit #{start},#{pageSize}
+  </select>
+  
+  <!-- 查询用户列表总条数 -->
+  <select id="getUserListCount4admin" resultType="Integer">
+            select 
+                    count(id) as count 
+              from 
+                    tb_user 
+  </select>
+  
 </mapper>

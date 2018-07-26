@@ -1,6 +1,7 @@
 package com.purchaser.service.impl;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +15,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.purchaser.constants.Constant;
 import com.purchaser.dao.UserMapper;
+import com.purchaser.pojo.PageInfo;
 import com.purchaser.pojo.User;
 import com.purchaser.service.UserService;
 import com.purchaser.util.CommentUtils;
@@ -151,6 +153,27 @@ public class UserServiceImpl implements UserService {
 			flag = true;
 		}
 		return flag;
+	}
+
+	
+	/**
+	 * 获取微信用户列表
+	 */
+	@Override
+	public PageInfo userList4admin(JSONObject param) {
+		PageInfo pageInfo = null;
+		pageInfo = JSONObject.toJavaObject(param, PageInfo.class);
+		param.fluentPut("start", pageInfo.getStart());
+		// 查询用户列表
+		List<Map<String, Object>> userList = userMapper.getUserList4admin(param);
+		
+		// 查询totalCount
+		int count = userMapper.getUserListCount4admin();
+		pageInfo.setTotalCount(count);
+		pageInfo.setData(userList);
+		
+		// 返回数据
+		return pageInfo;
 	}
 
 }
