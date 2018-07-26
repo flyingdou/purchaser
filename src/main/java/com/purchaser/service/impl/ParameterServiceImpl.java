@@ -32,6 +32,7 @@ public class ParameterServiceImpl implements ParameterService {
 	public JSONObject findParameters(JSONObject param) {
 		JSONObject ret = new JSONObject();
 		Map<String, Object> mapDou = new HashMap<String, Object>();
+		// 行业类型
 		if (param.containsKey("business") && StringUtils.isNotEmpty(param.getString("business"))) {
 			mapDou.clear();
 			mapDou.put("parent", param.getInteger("business"));
@@ -39,6 +40,7 @@ public class ParameterServiceImpl implements ParameterService {
 			ret.fluentPut("business", JSON.parseArray(JSON.toJSONString(business)));
 		}
 		
+		// 公司类型
 		if (param.containsKey("company_type") && StringUtils.isNotEmpty(param.getString("company_type"))) {
 			mapDou.clear();
 			mapDou.put("parent", param.getInteger("company_type"));
@@ -46,11 +48,20 @@ public class ParameterServiceImpl implements ParameterService {
 			ret.fluentPut("company_type", JSON.parseArray(JSON.toJSONString(company_type)));
 		}
 		
+		// 会员类型
 		if (param.containsKey("type") && StringUtils.isNotEmpty(param.getString("type"))) {
 			mapDou.clear();
 			mapDou.put("parent", param.getInteger("type"));
 			List<Map<String, Object>> type = parameterMap.findParameterByParent(mapDou);
 			ret.fluentPut("type", JSON.parseArray(JSON.toJSONString(type)));
+		}
+		
+		// 学历类型
+		if (param.containsKey("study_type") && StringUtils.isNotEmpty(param.getString("study_type"))) {
+			mapDou.clear();
+			mapDou.put("parent", param.getString("study_type"));
+			List<Map<String, Object>> studyType = parameterMap.findParameterByParent(mapDou);
+			ret.fluentPut("studyType", studyType);
 		}
 		
 		ret.fluentPut("success", true).fluentPut("message", "OK");

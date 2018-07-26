@@ -10,32 +10,55 @@ import java.util.Date;
 public class Member {
     private Long id;
 
-    // user表外键
+    /**
+     *  user表外键
+     */
     private Long user;
 
-    // 职务
+    /**
+     *  职务
+     */
     private String duty;
 
-    // 所属公司
+    /**
+     *  所属公司
+     */
     private String affiliation;
 
-    // 企业类型
+    /**
+     *  企业类型
+     */
     private Integer companyType;
 
-    // 行业类别
+    /**
+     *  行业类别
+     */
     private Integer business;
 
-    // 会员类型(会员费用表外键)
+    /**
+     *  会员类型(会员费用表外键)
+     */
     private Integer type;
 
-    // 审核状态(0:未审核, 1:审核通过, 2:审核未通过)
+    /**
+     *  审核状态(0:未审核, 1:审核通过, 2:审核未通过)
+     */
     private Integer audit;
 
-    // 申请日期
+    /**
+     *  申请日期
+     */
     private Date applyDate;
     
-    // 是否有效 (0:无效, 1:有效, 2:过了有效期，需重新付费生效)
+     /**
+      * 是否有效 (0:无效, 1:有效, 2:过了有效期，需重新付费生效)
+      */
     private Integer valid;
+    
+    /**
+     * 会员编号 
+     */
+    private String no;
 
     
     /**
@@ -120,6 +143,14 @@ public class Member {
 
     public void setValid(Integer valid) {
         this.valid = valid;
+    }
+    
+    public String getNo() {
+        return no;
+    }
+
+    public void setNo(String no) {
+        this.no = no == null ? null : no.trim();
     }
     
 }

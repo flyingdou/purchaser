@@ -23,9 +23,25 @@ public interface AdmirerMapper {
     
     /**
      * 查询采购师列表
-     * @param audit
+     * @param paramMap
      * @return
      */
     List<Map<String, Object>> getAdmirerList(Map<String, Object> paramMap);
+    
+    
+    /**
+     * 查询采购师详情
+     * @param paramMap
+     * @return
+     */
+    Map<String, Object> admirerDetail (Map<String, Object> paramMap);
+    
+    
+    /**
+     * 通过采购师id查询user
+     * @param paramMap
+     * @return
+     */
+    Map<String, Object> getUserByAdmirer (Map<String, Object> paramMap);
     
 }

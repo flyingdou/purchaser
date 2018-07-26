@@ -39,6 +39,9 @@ public class MemberServiceImpl implements MemberService {
 	@Autowired
 	private MemberPriceMapper mpMapper;
 	
+	/**
+	 * 查询会员信息
+	 */
 	@Override
 	public JSONObject findMemberInfo(Long userId) {
 		Map<String, Object> paramMap = new HashMap<String, Object>();
@@ -48,6 +51,9 @@ public class MemberServiceImpl implements MemberService {
 		return JSON.parseObject(JSON.toJSONString(memberInfoMap, CommentUtils.getValueFilterNullStringFillNull()));
 	}
 
+	/**
+	 * 保存会员信息
+	 */
 	@Override
 	public JSONObject saveMember(JSONObject param, HttpServletRequest request) {
 		// 更新用户基本数据
@@ -73,6 +79,7 @@ public class MemberServiceImpl implements MemberService {
 		
 		// 增加会员数据
 		Member member = new Member();
+		member.setNo(CommentUtils.getRandomByDate(6, "yyyy"));
 		member.setUser(user.getId());
 		member.setAffiliation(param.getString("affiliation"));
 		member.setType(mp.getId().intValue());
@@ -103,5 +110,20 @@ public class MemberServiceImpl implements MemberService {
 		Map<String, Object> priceMap = memberMapper.getMemberPrice(userId);
 		return JSON.parseObject(JSON.toJSONString(priceMap));
 	}
+
+	
+	
+	/**
+	 * 查询会员简要信息
+	 */
+	@Override
+	public JSONObject memberSimple(Long userId) {
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("userId", userId);
+		paramMap.put("valid", Constant.MEMBER_VALID);
+		Map<String, Object> memberMap = memberMapper.memberSimple(paramMap);
+		return 	JSON.parseObject(JSON.toJSONString(memberMap, CommentUtils.dateformatValue("yyyy-MM-dd")));
+	}
+
 
 }
