@@ -117,7 +117,7 @@ public class ActiveServiceImpl implements ActiveService {
 	@Override
 	public JSONObject sign(JSONObject param) {
 		JSONObject result = new JSONObject();
-		Active active = activeMapper.selectByPrimaryKey(param.getLong("resultStr"));
+		Active active = activeMapper.selectByPrimaryKey(param.getLong("activeId"));
 
 		// 签到检查1: 当前用户是否加入本活动
 		if (activeMapper.checkUserJoinActiveByActiveId(param) < 1) {

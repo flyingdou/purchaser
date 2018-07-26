@@ -170,7 +170,7 @@
 				},
 				
 				// 获取地理位置和扫码结果
-				getLocationAndCod: function (callback) {
+				getLocationAndCode: function (callback) {
 					wx.getLocation({
 					    success: function (location) {
 							wx.scanQRCode({
@@ -208,7 +208,10 @@
 					// 获取地理位置和扫码结果
 					this.getLocationAndCod(function (res) {
 						// 请求服务端签到接口
-						vue.requestServer("", res, callback);
+						var url = "active/sign.pur";
+						var param = res;
+						param.activeId = res.resultStr;
+						vue.requestServer(url, param, callback);
 					});
 				}
 				

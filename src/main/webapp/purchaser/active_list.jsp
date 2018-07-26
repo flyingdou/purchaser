@@ -151,7 +151,7 @@
 				</div>
 				<div class="active-content">
 					<div class="active-name">{{item.name}}</div>
-					<div class="active-start-time">开始时间 : {{item.start_date}}</div>
+					<div class="active-start-time">开始时间 : {{item.startDate}}</div>
 					<div class="active-address">地点 : {{item.address}}</div>
 				</div>
 				<div class="active-status">
@@ -229,7 +229,7 @@
 					},
 					dataType: "json",
 					success: function(res){
-						Vue.set(vue, ('activeList' + (type + 1)), res.activeList.map(vue.checkActiveStatus));
+						Vue.set(vue, ('activeList' + (type + 1)), res.map(vue.checkActiveStatus));
 					},
 					error: function (e) {
 						console.log(e);
@@ -239,9 +239,9 @@
 			
 			// 检查活动状态
 			checkActiveStatus: function (active) {
-				var currentTime = new Date.getTime();
-				var startDataTime = active.startDate.getTime();
-				var endDataTime = active.endDate.getTime();
+				var currentTime = new Date().getTime();
+				var startDataTime = new Date(active.startDate).getTime();
+				var endDataTime = new Date(active.endDate).getTime();
 				if (currentTime < startDataTime) {
 					active.activeStatus = "未开始";
 				} else if (currentTime > startDataTime && currentTime < endDataTime) {
