@@ -19,6 +19,8 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.alibaba.fastjson.serializer.ValueFilter;
 
 import net.coobird.thumbnailator.Thumbnails;
@@ -80,6 +82,27 @@ public class CommentUtils {
 		};
 		return valueFilter;
 	}
+	
+	
+	/**
+	 * 将date类型的数据，格式化为自己想要的格式
+	 * @param format
+	 * @return
+	 */
+	public static ValueFilter dateformatValue (String format) {
+		SimpleDateFormat sdf = new SimpleDateFormat(format);
+		ValueFilter valueFilter = new ValueFilter() {
+			@Override
+			public Object process(Object object, String name, Object value) {
+				if (value instanceof Date) {
+					value = sdf.format(value);
+				}
+				return value;
+			}
+		};
+		
+		return valueFilter;
+	}
 
 	
 	/**
@@ -117,7 +140,33 @@ public class CommentUtils {
 		}
 		return sdf.format(new Date()) + String.valueOf(Math.round(Math.random() * param));
 	}
+	
+	
+	/**
+	 * 获取当前日期加上指定位数的随机数(日期格式自定义)
+	 * @param count
+	 * @param format
+	 * @return
+	 */
+	public static String getRandomByDate(int count, String format) {
+		// 设置默认值
+		if (StringUtils.isBlank(format)) {
+			format = "yyyyMMdd";
+		}
+		SimpleDateFormat sdf = new SimpleDateFormat(format);
+		int param = 1;
+		for (int i = 0; i < count; i++) {
+			param *= 10;
+		}
+		return sdf.format(new Date()) + String.valueOf(Math.round(Math.random() * param));
+	}
+	
 
+	/**
+	 * 生成新的文件名
+	 * @param fileName
+	 * @return
+	 */
 	public static String getNewFileName(String fileName) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 		String newFileName = sdf.format(new Date()) + getRandomString();
@@ -349,6 +398,7 @@ public class CommentUtils {
 		}
 		return list;
 	}
+	
 	
 	
 }

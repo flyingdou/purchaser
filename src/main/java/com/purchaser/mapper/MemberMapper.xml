@@ -3,6 +3,7 @@
 <mapper namespace="com.purchaser.dao.MemberMapper" >
   <resultMap id="BaseResultMap" type="com.purchaser.pojo.Member" >
     <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="no" property="no" jdbcType="VARCHAR"/>
     <result column="user" property="user" jdbcType="BIGINT" />
     <result column="duty" property="duty" jdbcType="VARCHAR" />
     <result column="affiliation" property="affiliation" jdbcType="VARCHAR" />
@@ -14,7 +15,7 @@
     <result column="valid" property="valid" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, user, duty, affiliation, company_type, business, type, audit, apply_date, valid
+    id, no, user, duty, affiliation, company_type, business, type, audit, apply_date, valid
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
@@ -27,11 +28,11 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.purchaser.pojo.Member" useGeneratedKeys="true" keyProperty="id" >
-    insert into tb_member (id, user, duty, 
+    insert into tb_member (id, no, user, duty, 
       affiliation, company_type, business, 
       type, audit, apply_date, valid
       )
-    values (#{id,jdbcType=BIGINT}, #{user,jdbcType=BIGINT}, #{duty,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=BIGINT}, #{no,jdbcType=VARCHAR}, #{user,jdbcType=BIGINT}, #{duty,jdbcType=VARCHAR}, 
       #{affiliation,jdbcType=VARCHAR}, #{companyType,jdbcType=INTEGER}, #{business,jdbcType=INTEGER}, 
       #{type,jdbcType=INTEGER}, #{audit,jdbcType=INTEGER}, #{applyDate,jdbcType=TIMESTAMP}, #{valid,jdbcType=INTEGER}
       )
@@ -41,6 +42,9 @@
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
+      </if>
+      <if test="no != null" >
+        no,
       </if>
       <if test="user != null" >
         user,
@@ -74,6 +78,9 @@
       <if test="id != null" >
         #{id,jdbcType=BIGINT},
       </if>
+      <if test="no != null" >
+        #{no,jdbcType=VARCHAR},
+      </if>
       <if test="user != null" >
         #{user,jdbcType=BIGINT},
       </if>
@@ -106,6 +113,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.purchaser.pojo.Member" >
     update tb_member
     <set >
+      <if test="no != null" >
+        no = #{no,jdbcType=VARCHAR},
+      </if>
       <if test="user != null" >
         user = #{user,jdbcType=BIGINT},
       </if>
@@ -138,7 +148,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.purchaser.pojo.Member" >
     update tb_member
-    set user = #{user,jdbcType=BIGINT},
+      set no = #{no,jdbcType=VARCHAR},
+      user = #{user,jdbcType=BIGINT},
       duty = #{duty,jdbcType=VARCHAR},
       affiliation = #{affiliation,jdbcType=VARCHAR},
       company_type = #{companyType,jdbcType=INTEGER},
@@ -176,6 +187,19 @@
 			                  INNER JOIN tb_member_price mp ON m.type = mp.id 
 		   where 
 			        u.id = #{userId}   
+  </select>
+  
+  
+  <!-- 查询会员简单的信息 -->
+  <select id="memberSimple" parameterType="Map" resultType="Map">
+          select 
+					u.name, u.image, m.duty, m.no, mp.type_name,
+					DATE_ADD(m.apply_date,INTERVAL 1 YEAR) as valid_period 
+			from 
+			      	tb_user u LEFT JOIN tb_member m ON u.id = m.user and m.valid = #{valid} 
+			                  LEFT JOIN tb_member_price mp ON m.type = mp.id 
+		   where 
+					u.id = #{userId} 
   </select>
   
 </mapper>

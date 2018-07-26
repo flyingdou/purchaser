@@ -5,11 +5,14 @@ import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.purchaser.pojo.User;
 import com.purchaser.service.MemberService;
@@ -50,6 +53,7 @@ public class MemberController {
 	 * 查询参数列表中的参数
 	 */
 	@RequestMapping("/findParameters")
+	@ResponseBody
 	public void findParameters (HttpServletResponse response, String json) {
 		JSONObject ret = new JSONObject();
 		try {
@@ -68,6 +72,7 @@ public class MemberController {
 	 * 根据用户id查询用户的基本信息
 	 */
 	@RequestMapping("/findUser")
+	@ResponseBody
 	public void findUser(HttpServletRequest request, HttpServletResponse response) {
 		JSONObject ret = new JSONObject();
 		try {
@@ -86,6 +91,7 @@ public class MemberController {
 	 * 查询采购师的基本信息
 	 */
 	@RequestMapping("/findPurchaserInfo")
+	@ResponseBody
 	public void findPurchaserInfo (HttpServletRequest request, HttpServletResponse response) {
 		JSONObject ret = new JSONObject();
 		try {
@@ -119,6 +125,7 @@ public class MemberController {
 	 * @param json
 	 */
 	@RequestMapping("/saveMember")
+	@ResponseBody
 	public void saveMember (HttpServletRequest request, HttpServletResponse response, String json) {
 		JSONObject ret = new JSONObject();
 		try {
@@ -142,6 +149,7 @@ public class MemberController {
 	 * @param response
 	 */
 	@RequestMapping("/getMemberPrice")
+	@ResponseBody
 	public void getMemberPrice (HttpServletRequest request, HttpServletResponse response) {
 		JSONObject ret = new JSONObject();
 		try {
@@ -162,4 +170,73 @@ public class MemberController {
 		CommentUtils.response(response, ret.toJSONString());
 	}
 	
+
+	/**
+	 * 查询当前会员的详情
+	 * @param response
+	 * @param session
+	 */
+	@RequestMapping("/memberDetail")
+	@ResponseBody
+    public void memberDetail (HttpServletResponse response, HttpSession session) {
+    	JSONObject ret = new JSONObject();
+    	try {
+			// 用户登录
+    		User user = (User) session.getAttribute("user");
+    		JSONObject memberDetail = memberService.findMemberInfo(user.getId());
+    		
+    		ret.fluentPut("success", true)
+    		   .fluentPut("message", "OK")
+    		   .fluentPut("memberDetail", memberDetail);
+    		   ;
+		} catch (Exception e) {
+			ret.fluentPut("success", false)
+			   .fluentPut("message", e.toString())
+			   ;
+			e.printStackTrace();
+		}
+    	
+    	// 返回数据
+    	CommentUtils.response(response, JSON.toJSONString(ret));
+    	
+    }
+
+	
+	/**
+	 * 查询当前登录用户的简要会员信息
+	 * @param response
+	 * @param session
+	 */
+	@RequestMapping("/memberSimple")
+	@ResponseBody
+	public void memberSimple (HttpServletResponse response, HttpSession session) {
+		JSONObject ret = new JSONObject();
+		try {
+			// 用户登录
+			User user = (User) session.getAttribute("user");
+			
+			// 查询当前用户是否为有效会员
+			Boolean isMember = userService.userIsMember(user.getId());
+			
+			// 查询会员简要信息
+			JSONObject memberInfo = memberService.memberSimple(user.getId());
+			
+			ret.fluentPut("success", true)
+			   .fluentPut("message", "OK")
+			   .fluentPut("isMember", isMember)
+			   .fluentPut("memberInfo", memberInfo)
+			   ;
+			
+		} catch (Exception e) {
+			ret.fluentPut("success", false)
+			   .fluentPut("message", e.toString())
+			   ;
+			e.printStackTrace();
+		}
+		
+		// 返回数据
+		CommentUtils.response(response, JSON.toJSONString(ret));
+	}
+
+
 }

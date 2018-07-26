@@ -30,4 +30,15 @@ public interface MemberService {
 	 * @return
 	 */
 	public JSONObject getMemberPrice (Long userId);
+	
+	
+	/**
+	 * 查询会员简要信息
+	 * @param userId
+	 * @return
+	 */
+	public JSONObject memberSimple (Long userId);
+	
+	
+	
 }

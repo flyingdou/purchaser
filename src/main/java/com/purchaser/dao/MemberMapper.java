@@ -17,7 +17,26 @@ public interface MemberMapper {
 
     int updateByPrimaryKey(Member record);
     
+    /**
+     * 查询会员详情接口
+     * @param paramMap
+     * @return
+     */
     Map<String, Object> findMemberInfo (Map<String, Object> paramMap);
     
+    
+    /**
+     * 查询会员价格
+     * @param userId
+     * @return
+     */
     Map<String, Object> getMemberPrice (Long userId);
+    
+    /**
+     * 查询会员简要信息
+     * @param paramMap
+     * @return
+     */
+    Map<String, Object> memberSimple (Map<String, Object> paramMap);
+    
 }
