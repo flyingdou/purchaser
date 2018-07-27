@@ -1,5 +1,8 @@
 package com.purchaser.service;
 
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
 import com.alibaba.fastjson.JSONObject;
@@ -47,4 +50,10 @@ public interface UserService {
 	 * @return
 	 */
 	public PageInfo userList4admin (JSONObject param);
+	
+	/**
+	 * 查询可以成为会员的用户
+	 * @return
+	 */
+	public List<Map<String, Object>> userList4release ();
 }

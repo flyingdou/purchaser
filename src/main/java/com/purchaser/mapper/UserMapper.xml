@@ -209,4 +209,22 @@
                     tb_user 
   </select>
   
+  <select id="getUserList4release" resultType="Map">
+		select 
+		        tx.* 
+		  from 
+		
+				(  
+						select 
+								u.id, u.image, u.name, u.id_card_num, u.mobilephone, u.email,
+		                        SUBSTRING_INDEX(u.concord,"/",1) as province, SUBSTRING_INDEX(u.concord,"/",-1) as city, 
+								(CASE WHEN  ISNULL((select m.id from tb_member m where m.user = u.id)) THEN false ELSE true END) isMember 
+						  from 
+								 tb_user u 
+				 ) tx
+		 
+		   where 
+			      tx.isMember = 0  
+  </select>
+  
 </mapper>

@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,6 +59,10 @@ public class MemberServiceImpl implements MemberService {
 	public JSONObject saveMember(JSONObject param, HttpServletRequest request) {
 		// 更新用户基本数据
 		User user = (User) request.getSession().getAttribute("user");
+		if (param.containsKey("user") && StringUtils.isNotBlank(param.getString("user"))) {
+			// 后台管理系统进来的
+			user = userMapper.selectByPrimaryKey(param.getLong("user"));
+		}
 		user.setName(param.getString("name"));
 		user.setMobilephone(param.getString("mobilephone"));
 		user.setImage(param.getString("image"));

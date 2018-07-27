@@ -57,4 +57,10 @@ public interface UserMapper {
 	 */
 	int getUserListCount4admin();
 	
+	/**
+	 * 查询不是会员的用户
+	 * @return
+	 */
+	List<Map<String, Object>> getUserList4release ();
+	
 }

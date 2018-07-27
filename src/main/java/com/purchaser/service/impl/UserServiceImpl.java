@@ -1,5 +1,6 @@
 package com.purchaser.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -174,6 +175,17 @@ public class UserServiceImpl implements UserService {
 		
 		// 返回数据
 		return pageInfo;
+	}
+
+	
+	/**
+	 * 查询可以成为会员的用户
+	 */
+	@Override
+	public List<Map<String, Object>> userList4release() {
+		List<Map<String, Object>> userList = new ArrayList<Map<String,Object>>();
+		userList = userMapper.getUserList4release();
+		return userList;
 	}
 
 }
