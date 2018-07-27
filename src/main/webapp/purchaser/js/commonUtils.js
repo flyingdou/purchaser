@@ -1,14 +1,19 @@
 /**
  * 图片裁剪显示
+ * 
+ * @param selector
+ * @returns
  */
-function clipImgs (selector) {
-	setTimeout(function(){
-		$(selector).each(function(){
+function clipImgs(selector) {
+	setTimeout(function() {
+		$(selector).each(function() {
 			var defaultHeight = $(this).parent().height();
 			var imgHeight = $(this).height();
-			if(imgHeight > defaultHeight){
+			if (imgHeight > defaultHeight) {
 				var deviation = 0 - ((imgHeight - defaultHeight) * 0.5);
-				$(this).css({"margin-top": deviation + "px"});
+				$(this).css({
+					"margin-top" : deviation + "px"
+				});
 			}
 		});
 	}, 10);
@@ -16,18 +21,39 @@ function clipImgs (selector) {
 
 /**
  * 请求服务端
+ * 
+ * @param url
+ * @param param
+ * @param callback
+ * @returns
  */
-function requestServer (url, param, callback) {
+function requestServer(url, param, success, error) {
 	$.ajax({
-		url: url,
-		type: "post",
-		data: {
-			json: encodeURI(JSON.stringify(param))
+		url : url,
+		type : "post",
+		data : {
+			json : encodeURI(JSON.stringify(param))
 		},
-		dataType: "json",
-		success: callback,
-		error: function (e) {
-			console.log(e);
-		}
+		dataType : "json",
+		success : success,
+		error : error
 	});
 }
+
+/**
+ * 判断登录
+ * 
+ * @param e
+ * @returns
+ */
+(function(e) {
+	if (location.href.indexOf("/admin/") != -1 && location.href.indexOf("/admin/login.html") == -1) {
+		var url = location.origin + "/admin/toPage.pur?url=user_list.html";
+		var param = {}
+		requestServer(url, param, null, function(e) {
+			if (e.responseText.indexOf("/admin/login.pur") != -1) {
+				location.href = location.origin + "/admin/login.html";
+			}
+		})
+	}
+})();
