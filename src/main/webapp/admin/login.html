@@ -14,7 +14,7 @@
 		    <div class="login_form">
 		    	<div class="user">
 		        	<input class="text_value" value="" name="username" type="text" id="username" v-model="model.account">
-		            <input class="text_value" value="" name="password" type="password" id="password" v-model="model.password">
+		            <input class="text_value" value="" name="password" type="password" id="password" v-model="model.password" @keyup.enter="login()" >
 		        </div>
 		        <button class="button" id="submit" type="button" @click="login()">登录</button>
 		    </div>
