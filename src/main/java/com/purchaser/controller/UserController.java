@@ -157,5 +157,39 @@ public class UserController {
 		
 	}
 
+	
+	
+	
+	/**
+	 * 校验验证码
+	 * @param response
+	 * @param request
+	 * @param json
+	 */
+	@RequestMapping("/validCode")
+	@ResponseBody
+	public void validCode (HttpServletResponse response, HttpServletRequest request, String json) {
+		JSONObject ret = new JSONObject();
+		try {
+			// 处理请求参数
+			JSONObject param = JSONObject.parseObject(URLDecoder.decode(json, "UTF-8"));
+			String mobilephone = param.getString("mobilephone");
+			// 随机生成code, 并将code存于session中
+			Validcode validcode = new Validcode(mobilephone, request);
+			Boolean isRightful = validcode.isRightful(param.getString("code"));
+			ret.fluentPut("success", true)
+			   .fluentPut("isRightful", isRightful)
+			;
+		} catch (Exception e) {
+			ret.fluentPut("success", false)
+			.fluentPut("message", e.toString())
+			;
+			e.printStackTrace();
+		}
+		
+		// 返回数据
+		CommentUtils.response(response, JSON.toJSONString(ret));
+		
+	}
 
 }

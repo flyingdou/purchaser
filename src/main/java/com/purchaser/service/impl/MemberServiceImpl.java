@@ -22,6 +22,7 @@ import com.purchaser.pojo.MemberPrice;
 import com.purchaser.pojo.User;
 import com.purchaser.service.MemberService;
 import com.purchaser.util.CommentUtils;
+import com.purchaser.util.Validcode;
 
 /*
  * 作者: dou
@@ -57,6 +58,16 @@ public class MemberServiceImpl implements MemberService {
 	 */
 	@Override
 	public JSONObject saveMember(JSONObject param, HttpServletRequest request) {
+		JSONObject ret = new JSONObject();
+		// 校验验证码是否有效
+		Validcode valid = new Validcode(param.getString("mobilephone"), request);
+		Boolean isRightful = valid.isRightful(param.getString("code"));
+		if (!isRightful) {
+			ret.fluentPut("success", false)
+			   .fluentPut("message", "验证码不正确或超时！")
+			   ;
+			return ret;
+		}
 		// 更新用户基本数据
 		User user = (User) request.getSession().getAttribute("user");
 		if (param.containsKey("user") && StringUtils.isNotBlank(param.getString("user"))) {
@@ -97,7 +108,7 @@ public class MemberServiceImpl implements MemberService {
 		// 持久化数据
 		memberMapper.insert(member);
 		
-		JSONObject ret = new JSONObject();
+		
 		ret.fluentPut("success", true)
 		   .fluentPut("message", "OK")
 		   .fluentPut("memberId", member.getId())

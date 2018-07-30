@@ -44,11 +44,11 @@ public class Validcode {
 	
 	/**
 	 * 校验验证码是否正确
-	 * @param mobilephone
 	 * @param code
 	 * @return
 	 */
-	public Boolean isRightful (String mobilephone, String code) {
+	public Boolean isRightful (String code) {
+		String mobilephone = this.mobilephone;
 		String sessionCode = (String) request.getSession().getAttribute(mobilephone);
 		if (StringUtils.isNotBlank(sessionCode) && sessionCode.equals(code)) {
 			return true;

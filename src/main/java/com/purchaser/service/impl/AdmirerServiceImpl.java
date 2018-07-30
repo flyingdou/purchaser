@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +20,7 @@ import com.purchaser.dao.UserMapper;
 import com.purchaser.pojo.AdmirerWithBLOBs;
 import com.purchaser.pojo.User;
 import com.purchaser.service.AdmirerService;
+import com.purchaser.util.Validcode;
 
 /*
  * 作者: dou
@@ -47,10 +48,23 @@ public class AdmirerServiceImpl implements AdmirerService {
 	 * 保存采购师
 	 */
 	@Override
-	public JSONObject saveAdmirer(JSONObject param, HttpSession session) {
+	public JSONObject saveAdmirer(JSONObject param, HttpServletRequest request) {
 		JSONObject ret = new JSONObject();
+		
+		// 校验验证码
+		Validcode valid = new  Validcode(param.getString("mobilephone"), request);
+		Boolean isRightful = valid.isRightful(param.getString("code"));
+		
+		// 验证码校验不通过时
+		if (!isRightful) {
+			ret.fluentPut("success", false)
+			   .fluentPut("message", "验证码错误或超时！")
+			   ;
+			return ret;
+		}
+		
 		// 用户基本信息修改保存
-		User user = (User) session.getAttribute("user");
+		User user = (User) request.getSession().getAttribute("user");
 		user.setName(param.getString("name"));
 		user.setGender(param.getString("gender"));
 		user.setIdCardNum(param.getString("id_card_num"));

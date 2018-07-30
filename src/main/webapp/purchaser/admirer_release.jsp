@@ -551,20 +551,34 @@
     			return;
     		}
     		
-    		// 手机号校验通过，访问后台服务器，发送短信验证码(暂时不发送)
-    		// 倒计时60秒
-    		x = 60;
-    		setTimeout(function () {
-	    	    x--;
-	    	    if ( x > 0 ) {
-	    	    	joinApply.model.sendCode = '0';
-		    		joinApply.model.countdown = x;
-		    		setTimeout(arguments.callee, 1000);
-	    	    } else {
-	    	    	joinApply.model.sendCode = '1';
-	    	    }
-	    	    
-    		}, 0);
+    		// 手机号校验通过，访问后台服务器，发送短信验证码
+    		var url = 'user/getMobilecode.pur';
+    		var param = {
+    				mobilephone:mobilephone
+    		};
+    		requestServer(url, param, function (res) {
+    			if (res.success) {
+    				// 短信发送成功
+    				alert('验证码已下发至您的手机，请注意查收！');
+    				
+    				// 倒计时60秒
+    	    		x = 60;
+    	    		setTimeout(function () {
+    		    	    x--;
+    		    	    if ( x > 0 ) {
+    		    	    	joinApply.model.sendCode = '0';
+    			    		joinApply.model.countdown = x;
+    			    		setTimeout(arguments.callee, 1000);
+    		    	    } else {
+    		    	    	joinApply.model.sendCode = '1';
+    		    	    }
+    		    	    
+    	    		}, 0);
+    				
+    				
+    			}
+    		})
+    		
     		
     	},
     	

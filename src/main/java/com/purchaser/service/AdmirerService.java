@@ -8,7 +8,7 @@ package com.purchaser.service;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
 
 import com.alibaba.fastjson.JSONObject;
 
@@ -19,7 +19,7 @@ public interface AdmirerService {
 	 * @param param
 	 * @return
 	 */
-	public JSONObject saveAdmirer (JSONObject param, HttpSession session);
+	public JSONObject saveAdmirer (JSONObject param, HttpServletRequest request);
 	
 	
 	/**

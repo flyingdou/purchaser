@@ -4,6 +4,7 @@ import java.net.URLDecoder;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -42,12 +43,12 @@ public class AdmirerController {
 	 */
 	@RequestMapping("/saveAdmirer")
 	@ResponseBody
-	public void saveAdmirer (HttpServletResponse response, HttpSession session, String json) {
+	public void saveAdmirer (HttpServletResponse response, HttpServletRequest request, String json) {
 		JSONObject ret = new JSONObject();
 		try {
 			// 处理请求参数
 			JSONObject param = JSONObject.parseObject(URLDecoder.decode(json, "UTF-8"));
-			ret = admirerService.saveAdmirer(param, session);
+			ret = admirerService.saveAdmirer(param, request);
 		} catch (Exception e) {
 			ret.fluentPut("success", false)
 			   .fluentPut("message", e.toString())

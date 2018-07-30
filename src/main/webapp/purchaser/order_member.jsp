@@ -228,7 +228,8 @@
     						function(res) {
     							if (res.err_msg == "get_brand_wcpay_request:ok") {
     								alert('购买成功!');
-    								location.href = "eproductorderwx!findOrder.asp";
+    								// 购买成功，跳转到会员中心
+    								location.href = "purchaser/member_center.jsp";
     							} else if (res.err_msg == "get_brand_wcpay_request:cancel") {
     								// alert("已取消支付!");
     							} else {
