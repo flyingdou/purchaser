@@ -329,7 +329,7 @@
 				// 页面初始化
 				init: function () {
 					if ("${user}" == "") {
-						location.href = "user/checkLogin.pur?redirectURL=" + encodeURI("purchaser/supplier_list.jsp");
+						location.href = "user/checkLogin.pur?redirectURL=" + encodeURI("admirer_list");
 					}
 					
 					// 初始化顶部栏选项
