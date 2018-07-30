@@ -401,6 +401,17 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 			created : function() {
 				// 初始化页面
 				this.init();
+				
+				// 键盘弹起隐藏按钮
+				var $_e = $(".funButton");
+				var oHeight = $_e[0].offsetTop;
+				$(window).resize(function(){
+			    if($_e[0].offsetTop < oHeight){
+			    		$_e.css("z-index","-1");
+					} else {
+						$_e.css("z-index","1");
+					}
+				});
 			},
 
 			// 自定义方法
