@@ -4,6 +4,7 @@ import java.net.URLDecoder;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +15,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.purchaser.constants.Constant;
 import com.purchaser.pojo.PageInfo;
 import com.purchaser.service.ParameterService;
 import com.purchaser.service.UserService;
 import com.purchaser.util.CommentUtils;
+import com.purchaser.util.MessageManager;
+import com.purchaser.util.Validcode;
 
 /**
  * 
@@ -115,6 +119,43 @@ public class UserController {
 		
 	}
 
+	
+	
+	/**
+	 * 发送验证码
+	 * @param response
+	 * @param request
+	 * @param json
+	 */
+	@RequestMapping("/getMobilecode")
+	@ResponseBody
+	public void getMobilecode (HttpServletResponse response, HttpServletRequest request, String json) {
+		JSONObject ret = new JSONObject();
+		try {
+			// 处理请求参数
+			JSONObject param = JSONObject.parseObject(URLDecoder.decode(json, "UTF-8"));
+			String mobilephone = param.getString("mobilephone");
+			// 随机生成code, 并将code存于session中
+			Validcode validcode = new Validcode(mobilephone, request);
+			String code = validcode.getCode();
+			// 发送短信验证码
+			JSONObject sendParam = new JSONObject();
+			sendParam.fluentPut("code", code);
+			MessageManager.sendSms(mobilephone, Constant.VALID_CODE_TEMPLATE, JSON.toJSONString(sendParam));
+			ret.fluentPut("code", code)
+			   .fluentPut("success", true)
+			   ;
+		} catch (Exception e) {
+			ret.fluentPut("success", false)
+			   .fluentPut("message", e.toString())
+			   ;
+			e.printStackTrace();
+		}
+		
+		// 返回数据
+		CommentUtils.response(response, JSON.toJSONString(ret));
+		
+	}
 
 
 }

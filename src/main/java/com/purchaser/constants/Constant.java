@@ -16,6 +16,33 @@ public class Constant {
 	public final static String APP_KEY = "6F0CC7EDB4E4E828BB4E37BE5B93E4C7";
 
 	/**
+	 *  产品名称:云通信短信API产品,开发者无需替换
+	 */
+    public final static  String PRODUCT = "Dysmsapi";
+    
+    /**
+     *  产品域名,开发者无需替换
+     */
+    public final static String DOMAIN = "dysmsapi.aliyuncs.com";
+
+    /**
+     *  此处需要替换成开发者自己的AK(在阿里云访问控制台寻找)
+     */
+    public final static String ACCESSKEY_ID = "LTAIEBpPW8aDSjKX";
+    public final static String ACCESSKEY_SECRET = "x9wTapvynUDLiyHg3zdWuVjGs3JFxj";
+    
+    /**
+     * 短信平台签名
+     */
+    public final static String SIGN_NAME = "厦门采协";
+    
+    /**
+     * 验证码模板id
+     */
+    public final static String VALID_CODE_TEMPLATE = "SMS_140700241";
+	
+	
+	/**
 	 * 签到最大距离
 	 */
 	public final static double SIGN_MAX_DISTANCE = 3000;
