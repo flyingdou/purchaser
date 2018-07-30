@@ -126,6 +126,26 @@ public class CommentUtils {
 		}
 		return String.valueOf(Math.round(Math.random() * param));
 	}
+	
+	
+	/**
+	 * 获得指定位数的随机数
+	 * 
+	 * @param count
+	 * @return
+	 */
+	public static String getRandomFullStr(int count) {
+		String str = "";
+		for (int i = 0; i < count; i++) {
+			Double x = Math.random() * 10;
+			Integer ig = x.intValue();
+			str += String.valueOf(ig);
+		}
+		return str;
+		
+		
+	}
+	
 
 	/**
 	 * 获取当前日期加上指定位数的随机数

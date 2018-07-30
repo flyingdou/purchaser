@@ -78,7 +78,7 @@ public class Validcode {
 	 * @return
 	 */
 	public String getCode() {
-		this.code = CommentUtils.getRandom(6);
+		this.code = CommentUtils.getRandomFullStr(6);
 		// 将code存储起来
 		this.request.getSession().setAttribute(mobilephone, this.code);
 		return code;
