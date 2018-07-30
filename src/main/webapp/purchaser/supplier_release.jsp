@@ -384,9 +384,9 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 				model : {
 					sendCode : 1,
 					createDate : '',
-					businessValue : '',
-					imageList : []
+					businessValue : ''
 				},
+				imageList : [],
 				timeout: 0
 			},
 
