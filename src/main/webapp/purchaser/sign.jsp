@@ -109,7 +109,7 @@
 			<div class="message message-tip" v-if="signStatus">
 				{{message}}
 			</div>
-			<div class="sign-button" v-if="!signStatus">
+			<div class="sign-button" @click="sign()" v-if="!signStatus">
 				开始扫码
 			</div>
 		</div>
