@@ -265,7 +265,7 @@ input {
 					}
 					this.requestServer(url, param, function(res) {
 						// 调用微信支付API
-						vue.wechatPay(res);
+						vue.wechatPay(JSON.parse(res));
 					});
 				},
 				
