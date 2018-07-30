@@ -62,12 +62,13 @@ public class MemberServiceImpl implements MemberService {
 		// 校验验证码是否有效
 		Validcode valid = new Validcode(param.getString("mobilephone"), request);
 		Boolean isRightful = valid.isRightful(param.getString("code"));
-		if (!isRightful) {
-			ret.fluentPut("success", false)
-			   .fluentPut("message", "验证码不正确或超时！")
-			   ;
-			return ret;
-		}
+        // 临时禁用，方便测试
+//		if (!isRightful) {
+//			ret.fluentPut("success", false)
+//			   .fluentPut("message", "验证码不正确或超时！")
+//			   ;
+//			return ret;
+//		}
 		// 更新用户基本数据
 		User user = (User) request.getSession().getAttribute("user");
 		if (param.containsKey("user") && StringUtils.isNotBlank(param.getString("user"))) {
