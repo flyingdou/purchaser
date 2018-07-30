@@ -49,7 +49,7 @@ public class UserController {
 	@RequestMapping("/checkLogin")
 	public String checkLogin(String redirectURL) {
 		try {
-			return URLDecoder.decode(redirectURL, "UTF-8");
+			return "redirect:/" + URLDecoder.decode(redirectURL, "UTF-8");
 		} catch (Exception e) {
 			e.printStackTrace();
 			return "www.ecartoon.com.cn";

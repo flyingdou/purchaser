@@ -141,12 +141,14 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 }
 
 .business_scope {
-	padding: 10px;
+	padding: 10px 5%;
+	width: 90%;
 	height: 100px;
 	font-size: 14px;
 	color: #BBB;
 	border: none;
 	outline: none;
+	resize: none;
 }
 
 .footerFill {
@@ -375,7 +377,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 			<div class="footer getMobilecode" v-if="model.sendCode == '1' "
 				@click='sendMobileCode()'>获取验证码</div>
 			<div class="footer countdown" v-if="model.sendCode == '0'">重新获取({{timeout}})</div>
-			<div class="footer pay" @click='submit()'>支付</div>
+			<div class="footer pay" @click='submit()'>保存</div>
 		</div>
 	</div>
 	<script>

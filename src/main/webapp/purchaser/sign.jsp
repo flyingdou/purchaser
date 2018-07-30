@@ -124,6 +124,8 @@
 			},
 			created: function () {
 				this.message = "您没有报名参加本次活动 , 请联系会务工作人员";
+				
+				this.init();
 			},
 			methods: {
 				
@@ -149,26 +151,25 @@
 						location.href = "user/checkLogin.pur?redirectURL=" + encodeURI("sign");
 					}
 					
-					var url = location.href.split("#")[0];
-					// 创建回调
-					var callback = res => {
-						//微信sdk配置
-						wx.config({
-						    debug: false, 
-						    appId: res.appid, 
-						    timestamp: res.timestamp, 
-						    nonceStr: res.nonceStr, 
-						    signature: res.signature,
-						    jsApiList: [        
-						       "getLocation",    
-						       "scanQRCode"
-						    ] 
-						});
-					}
-					
-					// 请求服务端
-					this.requestServer("wechat/jsapiSign.pur", {url:url}, callback);
-					
+					// 请求微信签名，准备调用jsapi接口
+					$.ajax({
+						url : "wechat/jsapiSign.pur",
+						data : {
+							url : location.href.split("#")[0]
+						},
+						success : function(sign) {
+							sign = JSON.parse(sign);
+							wx.config({
+								debug : false,
+								appId : sign.appid,
+								timestamp : sign.timestamp,
+								nonceStr : sign.nonceStr,
+								signature : sign.signature,
+								jsApiList : [ "chooseImage", "uploadImage",
+										"downloadImage" ]
+							});
+						}
+					})
 				},
 				
 				// 获取地理位置和扫码结果
