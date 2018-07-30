@@ -28,10 +28,11 @@
 
 <style type="text/css">
 html, body {
-	width: 100%;
-	height: auto;
 	margin: 0;
 	padding: 0;
+	width: 100%;
+	height: 100%;
+	min-height: 100%;
 	background: #f0f2f2;
 }
 
@@ -368,7 +369,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 		<div class="footerFill"></div>
 
 		<!-- 底部功能按钮 -->
-		<div class="funButton">
+		<div class="funButton" v-if="!isHide">
 			<div class="footer getMobilecode" v-if="model.sendCode == '1' "
 				@click='sendMobileCode()'>获取验证码</div>
 			<div class="footer countdown" v-if="model.sendCode == '0'">重新获取({{timeout}})</div>
@@ -378,7 +379,6 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 	<script>
 		var vue = new Vue({
 			el : "#wraper",
-
 			data : {
 				businessList : [],
 				model : {
@@ -387,7 +387,8 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 					businessValue : ''
 				},
 				imageList : [],
-				timeout: 0
+				timeout: 0,
+				isHide: false
 			},
 
 			// 初始化函数
@@ -395,16 +396,6 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 				// 初始化页面
 				this.init();
 				
-				// 键盘弹起隐藏按钮
-				var $_e = $(".funButton");
-				var oHeight = $_e[0].offsetTop;
-				$(window).resize(function(){
-			    if($_e[0].offsetTop < oHeight){
-			    		$_e.css("z-index","-1");
-					} else {
-						$_e.css("z-index","1");
-					}
-				});
 			},
 
 			// 自定义方法
