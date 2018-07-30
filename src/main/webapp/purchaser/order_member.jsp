@@ -143,7 +143,7 @@
 		<div class="price-wraper">
 			<div>价格:</div>
 			<div style="color: #E60012;">
-				<span style="font-size: 9px;">¥</span> {{model.price | toFixed()}}元
+				<span style="font-size: 9px;">¥</span> {{model.price | toFixed}}元
 			</div>
 		</div>
 		<div style="height: 10px;background-color: #F0F0F2;"></div>
@@ -170,11 +170,11 @@
         				if (res.success) {
         					order.model = res;
         				} else {
-        					console.log('程序异常，原因: ' + res.message);
+        					alert('程序异常，原因: ' + res.message);
         				}
         			},
         			error: function (e) {
-        				console.log('网络异常');
+        				alert('网络异常');
         			}
         		})
         	},
@@ -206,7 +206,7 @@
         				},
         				success: function (res) {
         					// 调用微信支付方法
-        					order.wechatPay(res);
+        					order.wechatPay(JSON.parse(res));
         				},
         				error: function (e) {
         					console.log('网络异常');

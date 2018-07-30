@@ -75,7 +75,7 @@ public class OrderServiceImpl implements OrderService {
 		order.setNo(CommentUtils.getRandomByDate(4));
 		order.setProductId(param.getLong("productId"));
 		order.setProductType(param.getString("productType"));
-		order.setMoney(param.getLong("price"));
+		order.setMoney(param.getDouble("price"));
 		order.setUser(user.getId());
 		order.setStatus(Constant.ORDER_STATUS_BEPAIED);
 		order.setCreateDate(new Date());

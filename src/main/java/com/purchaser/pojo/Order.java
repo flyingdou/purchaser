@@ -20,7 +20,7 @@ public class Order {
     private Long productId;
 
     // 订单金额
-    private Long money;
+    private Double money;
     
     private Long User;
 
@@ -65,11 +65,11 @@ public class Order {
         this.productId = productId;
     }
 
-    public Long getMoney() {
+    public Double getMoney() {
         return money;
     }
 
-    public void setMoney(Long money) {
+    public void setMoney(Double money) {
         this.money = money;
     }
 

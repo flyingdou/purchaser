@@ -21,7 +21,7 @@ public class Login implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 
-		String[] paths = { "/register", "/login", "/simpleLogin", "/wechatLogin", "/weixinNotify" };
+		String[] paths = { "/register", "/login", "/simpleLogin", "/wechatLogin", "/weixinNotify", "/wechat/updateOrder" };
 		String adminPath = "/admin";
 
 		boolean check = false;
