@@ -24,6 +24,7 @@ html, body {
 	padding: 0;
 	width: 100%;
 	height: 100%;
+	background-color: #FFF;
 }
 
 img {
@@ -150,7 +151,7 @@ input {
 				<div>请输入邀请码</div>
 				<div>
 					<input type="text" placeholder="请输入6位邀请码"
-						style="text-align: right;" v-model="code" />
+						style="text-align: right;" v-model="code" style="background-color: #F0F0F2; outline: none;"/>
 				</div>
 			</div>
 			<div class="code-button" @click="checkCode()">确定</div>
@@ -163,7 +164,7 @@ input {
 		</div>
 		<div style="height: 10px; background-color: #F0F0F2;"></div>
 		<!-- 支付按钮 -->
-		<div class="payment-button-wraper" @click="payMent()">
+		<div class="payment-button-wraper" @click="payMent()" v-if="!isHide">
 			<div class="payment-button">确定支付</div>
 		</div>
 	</div>
@@ -175,11 +176,17 @@ input {
 				isMember: 0,
 				finalPrice: 0,
 				code: '',
-				activeCode: {}
+				activeCode: {},
+				isHide: false
 			},
 			created: function () {
 				// 页面初始化
 				this.init();
+				
+				// ios软键盘弹出不会触发resize事件
+			    $(window).resize(function(){ 
+			    	Vue.set(vue, "isHide", vue.isHide ? false : true);
+			    });
 			},
 			methods: {
 				// 请求服务端

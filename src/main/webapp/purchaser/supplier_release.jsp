@@ -537,6 +537,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 					requestServer(url, param, function(res) {
 						if (res.success) {
 							// 倒计时60秒
+							alert('验证码已下发至您的手机，请注意查收！');
 							var timeout = 60;
 							setTimeout(function() {
 								timeout--;
