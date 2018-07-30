@@ -46,11 +46,11 @@ public class SupplierServiceImpl implements SupplierService {
 		}
 		if (supplier.getImage2() != null) {
 			String image2 = wechatApiManager.downloadPicture(supplier.getImage2());
-			supplier.setImage1(image2);
+			supplier.setImage2(image2);
 		}
 		if (supplier.getImage3() != null) {
 			String image3 = wechatApiManager.downloadPicture(supplier.getImage3());
-			supplier.setImage1(image3);
+			supplier.setImage3(image3);
 		}
 		supplier.setCreator(user.getId());
 		supplier.setAudit(Constant.AUDIT_STATUS_NOT);
