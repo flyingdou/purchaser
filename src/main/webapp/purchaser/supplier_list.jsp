@@ -307,10 +307,11 @@
 				
 				// 根据行业类别查询供应商列表
 				getSupplierList: function () {
+					var businessList = [23, 22, 24];
 					// 创建参数对象
 					var url = "supplier/getSupplierList.pur";
 					var param = {
-						business: this.currentIndex
+						business: businessList[this.currentIndex]
 					}
 					// 请求服务端数据
 					this.requestServer(url, param, function (res) {

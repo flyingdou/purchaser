@@ -240,8 +240,6 @@ input {
 				
 				// 支付
 				payMent: function () {
-					location.href = "purchaser/pay_success_active.jsp";
-					return;
 					
 					if (this.isMember == 0 && !this.activeCode.id) {
 						alert("您没有会员权限，请先验证邀请码");

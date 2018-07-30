@@ -101,7 +101,7 @@ public class WechatApiManager {
 			// 处理请求参数
 			WechatApiManager wechatManager = new WechatApiManager(Constant.APP_ID, Constant.APP_SECRET);
 			DownloadPictureRequest downPic = new DownloadPictureRequest();
-			String downPicUrl = wechatManager.getDownloadUrl(downPic, String.valueOf(mediaId));
+			String downPicUrl = wechatManager.getDownloadUrl(downPic, mediaId);
 			// 生成图片名, 保存图片
 			String filename = CommentUtils.getRandomByDate(6) + ".jpg";
 			CommentUtils.download(downPicUrl, filename, Constant.PICTURE_PATH);
