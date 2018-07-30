@@ -46,15 +46,23 @@ public class ActiveServiceImpl implements ActiveService {
 		active.setStatus(Constant.ACTIVE_STATUS_OPEN);
 		active.setCreateDate(new Date());
 		activeMapper.insertSelective(active);
+	}
+
+	/**
+	 * 生成活动邀请码
+	 */
+	@Override
+	public void createActiveCode(Active active, int distinguishedCodeCount, int manufacturerCodeCount) {
 		// 然后生成活动的邀请码(暂时20个(嘉宾10个, 厂商10个)), 保存到数据库
 		List<InvitationCode> list = new ArrayList<InvitationCode>();
-		for (int i = 0; i < 20; i++) {
+		int sumCount = distinguishedCodeCount + manufacturerCodeCount;
+		for (int i = 0; i < sumCount; i++) {
 			InvitationCode code = new InvitationCode();
 			code.setActive(active.getId());
 			code.setCode(UUID.randomUUID().toString().substring(0, 6));
 			code.setEffective(Constant.ACTIVE_CODE_USE);
 			code.setCreateDate(new Date());
-			if (i < 10) {
+			if (i < distinguishedCodeCount) {
 				// 嘉宾
 				code.setType(Constant.ACTIVE_CODE_DISTINGUISHED);
 			} else {

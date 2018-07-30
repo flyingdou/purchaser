@@ -18,6 +18,14 @@ public interface ActiveService {
 	void release(Active active);
 
 	/**
+	 * 生成活动邀请码(参数: 活动对象, 嘉宾邀请码数量, 厂商邀请码数量)
+	 * 
+	 * @param distinguishedCodeCount
+	 * @param manufacturerCodeCount
+	 */
+	void createActiveCode(Active active, int distinguishedCodeCount, int manufacturerCodeCount);
+
+	/**
 	 * 查询挑战列表
 	 * 
 	 * @param param

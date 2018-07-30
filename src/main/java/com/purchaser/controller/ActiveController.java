@@ -37,10 +37,15 @@ public class ActiveController {
 	public void release(String json, HttpServletResponse response, HttpSession session) {
 		try {
 			JSONObject param = JSONObject.parseObject(URLDecoder.decode(json, "UTF-8"));
+			// 生成一条活动数据
 			Active active = JSONObject.toJavaObject(param, Active.class);
 			User user = (User) session.getAttribute("user");
 			active.setCreator(user.getId());
 			activeService.release(active);
+			// 生成活动对应的邀请码
+			int distinguishedCodeCount = param.getIntValue("distinguishedCodeCount");
+			int manufacturerCodeCount = param.getIntValue("manufacturerCodeCount");
+			activeService.createActiveCode(active, distinguishedCodeCount, manufacturerCodeCount);
 			JSONObject result = new JSONObject();
 			result.fluentPut("success", true);
 			CommentUtils.response(response, JSON.toJSONStringWithDateFormat(result, "yyyy-MM-dd HH:mm"));
