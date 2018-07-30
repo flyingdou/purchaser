@@ -240,7 +240,7 @@
       
       function init () {
     	  if ("${user}" == "") {
-				location.href = "user/checkLogin.pur?redirectURL=" + encodeURI("member_center");
+				location.href = "user/checkLogin.pur?redirectURL=" + encodeURI("purchaser/member_center.jsp");
     	  }
     	  
     	  var bodyHeight = $("body").innerHeight();

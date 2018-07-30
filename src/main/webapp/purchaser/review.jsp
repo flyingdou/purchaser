@@ -140,7 +140,7 @@
 				// 初始化
 				init: function () {
 					if ("${user}" == "") {
-						location.href = "user/checkLogin.pur?redirectURL=" + encodeURI("review");
+						location.href = "user/checkLogin.pur?redirectURL=" + encodeURI("purchaser/review.jsp");
 					}
 					
 					var param = {contentType : "review"}

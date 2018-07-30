@@ -148,7 +148,7 @@
 				// 初始化
 				init: function () {
 					if ("${user}" == "") {
-						location.href = "user/checkLogin.pur?redirectURL=" + encodeURI("sign");
+						location.href = "user/checkLogin.pur?redirectURL=" + encodeURI("purchaser/sign.jsp");
 					}
 					
 					// 请求微信签名，准备调用jsapi接口
