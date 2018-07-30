@@ -140,7 +140,7 @@
 				// 初始化
 				init: function () {
 					if ("${user}" == "") {
-						location.href = "user/checkLogin.pur?redirectURL=" + encodeURI("party.jsp");
+						location.href = "user/checkLogin.pur?redirectURL=" + encodeURI("party");
 					}
 					
 					var param = {contentType : "party"}

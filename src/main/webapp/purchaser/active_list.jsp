@@ -200,7 +200,7 @@
 			// 初始化
 			init: function () {
 				if ("${user}" == "") {
-					location.href = "user/checkLogin.pur?redirectURL=" + encodeURI("active_list.jsp");
+					location.href = "user/checkLogin.pur?redirectURL=" + encodeURI("active_list");
 				}
 				
 				// 初始化顶部栏选项

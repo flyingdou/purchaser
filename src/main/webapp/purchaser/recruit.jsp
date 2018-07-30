@@ -224,7 +224,7 @@
 				// 初始化
 				init: function () {
 					if ("${user}" == "") {
-						location.href = "user/checkLogin.pur?redirectURL=" + encodeURI("recruit.jsp");
+						location.href = "user/checkLogin.pur?redirectURL=" + encodeURI("recruit");
 					}
 					
 					// 初始化顶部栏选项

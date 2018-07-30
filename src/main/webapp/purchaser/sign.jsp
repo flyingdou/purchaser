@@ -144,7 +144,7 @@
 				// 初始化
 				init: function () {
 					if ("${user}" == "") {
-						location.href = "user/checkLogin.pur?redirectURL=" + encodeURI("sign.jsp");
+						location.href = "user/checkLogin.pur?redirectURL=" + encodeURI("sign");
 					}
 					
 					var url = location.href.split("#")[0];
