@@ -191,13 +191,13 @@
         		}
         	},
         	
-        	method: {
+        	methods: {
         		// 生成订单，并签名
         		createOrder: function () {
         			var param = {};
         			param.productId = this.model.memberId;
         			param.productType = "M";
-        			param.price = model.price;
+        			param.price = this.model.price;
         			$.ajax({
         				url: 'order/createOrder.pur',
         				dataType: 'json',
@@ -215,7 +215,7 @@
         		},
         		
         		// 调用微信支付API
-        		wechatPay: function (paySign) {
+        		wechatPay: function (res) {
         			WeixinJSBridge.invoke('getBrandWCPayRequest',
     						{
     							"appId" : res.appId,
@@ -225,13 +225,13 @@
     							"signType" : res.signType,
     							"paySign" : res.paySign
     						},
-    						function(res) {
-    							if (res.err_msg == "get_brand_wcpay_request:ok") {
+    						function(resx) {
+    							if (resx.err_msg == "get_brand_wcpay_request:ok") {
     								alert('购买成功!');
     								// 购买成功，跳转到会员中心
     								location.href = "purchaser/member_center.jsp";
-    							} else if (res.err_msg == "get_brand_wcpay_request:cancel") {
-    								// alert("已取消支付!");
+    							} else if (resx.err_msg == "get_brand_wcpay_request:cancel") {
+    							    alert("已取消支付!");
     							} else {
     								alert("未知原因,支付失败,请稍后再试")
     							}
