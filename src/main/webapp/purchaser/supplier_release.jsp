@@ -527,20 +527,30 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 						alert('请先输入手机号！');
 						return;
 					}
-
-					// 手机号校验通过，访问后台服务器，发送短信验证码(暂时不发送)
-					// 倒计时60秒
-					var timeout = 60;
-					setTimeout(function() {
-						timeout--;
-						if (timeout > 0) {
-							vue.model.sendCode = '0';
-							vue.timeout = timeout;
-							setTimeout(arguments.callee, 1000);
+					
+					// 手机号校验通过，访问后台服务器，发送短信验证码
+					var url = "user/getMobilecode.pur";
+					var param = {
+						mobilephone: mobilephone
+					}
+					requestServer(url, param, function(res) {
+						if (res.success) {
+							// 倒计时60秒
+							var timeout = 60;
+							setTimeout(function() {
+								timeout--;
+								if (timeout > 0) {
+									vue.model.sendCode = '0';
+									vue.timeout = timeout;
+									setTimeout(arguments.callee, 1000);
+								} else {
+									vue.model.sendCode = '1';
+								}
+							}, 0);
 						} else {
-							vue.model.sendCode = '1';
+							alert(res.message);
 						}
-					}, 0);
+					})
 				},
 
 				// 提交资料
@@ -668,7 +678,12 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 						},
 						dataType: "json",
 						success: function (res) {
-							console.log(res)
+							if (res.success) {
+								alert("发布成功!");
+								location.href = "purchaser/supplier_list.jsp";
+							} else {
+								alert(res.message);
+							}
 						}
 					});
 				}

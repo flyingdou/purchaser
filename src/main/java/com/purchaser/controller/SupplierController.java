@@ -1,11 +1,12 @@
 package com.purchaser.controller;
 
 import java.net.URLDecoder;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,7 @@ import com.purchaser.pojo.Supplier;
 import com.purchaser.pojo.User;
 import com.purchaser.service.SupplierService;
 import com.purchaser.util.CommentUtils;
+import com.purchaser.util.Validcode;
 
 @Controller
 @RequestMapping("/supplier")
@@ -32,11 +34,22 @@ public class SupplierController {
 	 * @param response
 	 */
 	@RequestMapping("/release")
-	public void release(String json, HttpServletResponse response, HttpSession session) {
+	public void release(String json, HttpServletResponse response, HttpServletRequest request) {
 		try {
 			JSONObject param = JSONObject.parseObject(URLDecoder.decode(json, "UTF-8"));
+			// 首先校验短信验证码
+			Validcode validcode = new Validcode(param.getString("mobilephone"), request);
+			if (!validcode.isRightful(param.getString("code"))) {
+				Map<String, Object> reslutMap = new HashMap<String, Object>();
+				reslutMap.put("success", false);
+				reslutMap.put("message", "验证码错误");
+				CommentUtils.response(response, JSON.toJSONString(reslutMap));
+				return;
+			}
+
+			// 生成一条供应商数据
 			Supplier supplier = JSON.toJavaObject(param, Supplier.class);
-			User user = (User) session.getAttribute("user");
+			User user = (User) request.getSession().getAttribute("user");
 			Map<String, Object> reslutMap = supplierService.release(supplier, user);
 			CommentUtils.response(response, JSON.toJSONString(reslutMap));
 		} catch (Exception e) {

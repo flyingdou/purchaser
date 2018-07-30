@@ -53,7 +53,7 @@ public class ActiveServiceImpl implements ActiveService {
 	 */
 	@Override
 	public void createActiveCode(Active active, int distinguishedCodeCount, int manufacturerCodeCount) {
-		// 然后生成活动的邀请码(暂时20个(嘉宾10个, 厂商10个)), 保存到数据库
+		// 生成活动的邀请码, 保存到数据库
 		List<InvitationCode> list = new ArrayList<InvitationCode>();
 		int sumCount = distinguishedCodeCount + manufacturerCodeCount;
 		for (int i = 0; i < sumCount; i++) {
@@ -105,8 +105,14 @@ public class ActiveServiceImpl implements ActiveService {
 		Map<String, Object> result = new HashMap<String, Object>();
 		Active active = activeMapper.selectByPrimaryKey(param.getLong("activeId"));
 		List<Map<String, Object>> userList = activeMapper.getJionUserListById(param.getString("activeId"));
+		param.put("type", 0);
+		List<Map<String, Object>> distinguishedCodeList = activeMapper.getActiveCodeList(param);
+		param.put("type", 1);
+		List<Map<String, Object>> manufacturerCodeList = activeMapper.getActiveCodeList(param);
 		result.put("active", active);
 		result.put("userList", userList);
+		result.put("distinguishedCodeList", distinguishedCodeList);
+		result.put("manufacturerCodeList", manufacturerCodeList);
 		return result;
 	}
 

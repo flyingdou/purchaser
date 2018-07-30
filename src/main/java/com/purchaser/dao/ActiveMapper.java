@@ -60,6 +60,14 @@ public interface ActiveMapper {
 	List<Map<String, Object>> getJionUserListById(String activeId);
 
 	/**
+	 * 查询活动邀请码
+	 * 
+	 * @param param
+	 * @return
+	 */
+	List<Map<String, Object>> getActiveCodeList(Map<String, Object> param);
+
+	/**
 	 * 检查用户是否已经参加活动
 	 * 
 	 * @param queryParam

@@ -50,6 +50,40 @@
 	border-radius: 5px;
 	cursor: pointer;
 }
+
+ul,li{
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.activeCodeWraper{
+	display: flex;
+	justify-content: center;
+}
+
+.activeCodeList{
+	margin: 0 auto;
+	margin-top: 10px;
+	width: auto;
+	overflow: hidden;
+}
+
+.activeCodeTitle{
+	float: left;
+}
+
+.activeCodeContent{
+	float: left;
+	margin-left: 10px;
+	overflow: hidden;
+}
+
+.activeCodeItem{
+	float: left;
+	margin-left: 10px;
+}
+
 </style>
 </head>
 <body>
@@ -73,7 +107,6 @@
 					</ul>
 				</div>
 				<!-- end main-left-col -->
-
 			</div>
 			<!-- end span2 -->
 
@@ -234,6 +267,24 @@
 						<textarea class="form-control" rows="6" style="resize: none;" v-model="model.remark" v-if="model.operation != 0"></textarea>
 						<textarea class="form-control" rows="6" style="resize: none;" disabled v-model="model.remark" v-if="model.operation == 0"></textarea>
 					</div>
+					
+					<div class="activeCodeWraper" v-if="model.operation == 0">
+						<div class="activeCodeList">
+							<div class="activeCodeTitle">嘉宾邀请码:</div>
+							<ul class="activeCodeContent">
+								<li class="activeCodeItem" v-for="(item, i) in distinguishedCodeList">{{item.code}}</li>
+							</ul>
+						</div>
+					</div>
+					<div class="activeCodeWraper" v-if="model.operation == 0">
+						<div class="activeCodeList">
+							<div class="activeCodeTitle">厂商邀请码:</div>
+							<ul class="activeCodeContent">
+								<li class="activeCodeItem" v-for="(item, i) in manufacturerCodeList">{{item.code}}</li>
+							</ul>
+						</div>
+					</div>
+					
 					<div class="submit-button" @click="submit()" v-if="!model.operation">确定</div>
 					<div class="submit-button" @click="updateActive()" v-if="model.operation && model.operation != 0">确定</div>
 				</form>
@@ -269,7 +320,9 @@
 				data: {
 					nav: nav,
 					base_picture_url: location.origin + "/picture/",
-					model: {}
+					model: {},
+					distinguishedCodeList: [],
+					manufacturerCodeList: []
 				},
 				created: function () {
 					if (this.GetQueryString("activeId")) {
@@ -281,6 +334,8 @@
 							var data = res.active;
 							data.operation = vue.GetQueryString("operation");
 							Vue.set(vue, "model", res.active);
+							Vue.set(vue, "distinguishedCodeList", res.distinguishedCodeList);
+							Vue.set(vue, "manufacturerCodeList", res.manufacturerCodeList);
 							// 修改页面标题
 							if (data.operation == 0) {
 								document.title = "活动详情";

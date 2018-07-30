@@ -28,6 +28,11 @@
     end_date, join_end_date, telephone, host_unit, upper_limit, address, longitude, latitude, 
     remark, type, status, create_date
   </sql>
+  
+  <sql id="activeCode_Column_List" >
+    id, active, code, type, effective, create_date
+  </sql>
+  
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
@@ -298,6 +303,20 @@
   <select id="getJionUserListById" parameterType="String" resultType="Map">
   	select u.id,u.name,u.image from tb_user u inner join tb_order o on u.id = o.user
 	where o.status = 1 and o.product_type = 'B' and o.product_id = #{activeId}
+  </select>
+  
+  <!-- 根据id查询活动邀请码 -->
+  <select id="getActiveCodeList" parameterType="Map" resultType="Map">
+  	select 
+  	<include refid="activeCode_Column_List"></include>
+  	from tb_invitation_code
+    where 1 = 1
+    <if test="activeId != null and activeId != ''">
+    	and active = #{activeId}
+    </if>
+    <if test="type != null and type != '' or 0 == type">
+      	and type = #{type}
+    </if>
   </select>
   
   <!-- 检查用户是否已经参加活动 -->
