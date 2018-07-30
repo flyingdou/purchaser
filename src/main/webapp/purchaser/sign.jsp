@@ -94,10 +94,10 @@
 	<div id="wraper">
 		<div class="user_info">
 			<div class="user-image">
-				<img src="https://www.ecartoon.com.cn/picture/wangyan1.jpg" />
+				<img src="https://www.ecartoon.com.cn/picture/${user.image}" />
 			</div>
 			<div class="user-nick">
-				用户昵称
+				${user.name}
 			</div>
 		</div>
 		<div style="height:10px;background-color:#F0F0F2;"></div>
@@ -137,7 +137,9 @@
 						},
 						dataType: "json",
 						success: callback,
-						error: e => console.log(e)
+						error: function (e) {
+							console.log(e)
+						} 
 					});
 				},
 				
