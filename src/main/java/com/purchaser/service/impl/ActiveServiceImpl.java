@@ -133,6 +133,14 @@ public class ActiveServiceImpl implements ActiveService {
 			return result;
 		}
 
+		// 签到检查3: 当前活动是否已经结束
+		long currentTime = System.currentTimeMillis();
+		long activeEndTime = active.getEndDate().getTime();
+		if (activeEndTime > currentTime) {
+			result.fluentPut("success", false).fluentPut("message", "活动已结束");
+			return result;
+		}
+
 		// 签到检查通过: 生成签到数据
 		Sign sign = new Sign();
 		sign.setActive(active.getId());

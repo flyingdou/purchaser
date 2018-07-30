@@ -165,8 +165,7 @@
 								timestamp : sign.timestamp,
 								nonceStr : sign.nonceStr,
 								signature : sign.signature,
-								jsApiList : [ "chooseImage", "uploadImage",
-										"downloadImage" ]
+								jsApiList : ["getLocation", "scanQRCode"]
 							});
 						}
 					})
@@ -174,6 +173,7 @@
 				
 				// 获取地理位置和扫码结果
 				getLocationAndCode: function (callback) {
+					type: 'gcj02',
 					wx.getLocation({
 					    success: function (location) {
 							wx.scanQRCode({
@@ -200,21 +200,19 @@
 					} else {
 						this.status = 1;
 					}
-					// 签到接口调用成功回调函数
-					var callback = res => {
-						// 重置函数执行状态
-						this.status = 0;
-						this.signStatus = 1;
-						this.message = res.message;
-					}
 					
 					// 获取地理位置和扫码结果
-					this.getLocationAndCod(function (res) {
+					this.getLocationAndCode(function (param) {
 						// 请求服务端签到接口
 						var url = "active/sign.pur";
-						var param = res;
-						param.activeId = res.resultStr;
-						vue.requestServer(url, param, callback);
+						var param = param;
+						param.activeId = param.resultStr;
+						vue.requestServer(url, param, function (res) {
+							// 重置函数执行状态
+							vue.status = 0;
+							vue.signStatus = 1;
+							vue.message = res.message;
+						});
 					});
 				}
 				
