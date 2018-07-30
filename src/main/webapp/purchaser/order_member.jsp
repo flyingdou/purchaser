@@ -150,7 +150,7 @@
 		
 		<!-- 支付按钮 -->
 		<div class="payment-button-wraper">
-			<div class="payment-button">确定支付</div>
+			<div class="payment-button" @click='createOrder()'>确定支付</div>
 		</div>
 	</div>
 	<script type="text/javascript">
