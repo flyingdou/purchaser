@@ -289,16 +289,11 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 					<div class="title">照片</div>
 					<div class="inputValue pic_remark">请上传3张公司照片</div>
 				</div>
-				<div class="imgDiv" @click="selectPicture()">
-					<img :src="model.image3.localId" class="previwer"
-						v-if="model.image3.localId" />
+				<div class="imgDiv" @click="selectPicture()" v-if="imageList.length == 0">
+					<img src="" class="previwer" />
 				</div>
-				<div class="imgDiv" @click="selectPicture()">
-					<img :src="model.image2.localId" class="previwer"
-						v-if="model.image2.localId" />
-				</div>
-				<div class="imgDiv" @click="selectPicture()">
-					<img :src="model.image1.localId" class="previwer" />
+				<div class="imgDiv" @click="selectPicture()" v-for="(item, i) in imageList">
+					<img :src="item.localId" class="previwer" />
 				</div>
 			</div>
 		</div>
@@ -390,9 +385,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 					sendCode : 1,
 					createDate : '',
 					businessValue : '',
-					image1 : {},
-					image2 : {},
-					image3 : {}
+					imageList : []
 				},
 				timeout: 0
 			},
@@ -514,10 +507,13 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 									isShowProgressTips : 0, // 默认为1，显示进度提示
 									success : function(resx) {
 										// 返回图片的服务器端Id, 保存到vue的model中
-										vue.model["image" + (index + 1)] = {
+										var imageList = vue.imageList;
+										var obj = {
 											localId : res.localIds[index],
 											serverId : resx.serverId
 										}
+										imageList.push(obj);
+										Vue.set(vue, "imageList", imageList);
 									}
 								});
 								// 递归调用自身 
@@ -610,34 +606,6 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 						return;
 					}
 
-					// 照片1
-					if (!model.image1.serverId || model.image1.serverId == '') {
-						/* alert('请先上传照片！');
-						return; */
-					} else {
-						// 参数处理
-						model.image1 = model.image1.serverId;
-					}
-					
-					// 照片2
-					if (!model.image2.serverId || model.image2.serverId == '') {
-						/* alert('请先上传照片！');
-						return; */
-					} else {
-						// 参数处理
-						model.image2 = model.image2.serverId;
-					}
-					
-					// 照片3
-					if (!model.image3.serverId || model.image3.serverId == '') {
-						/* alert('请先上传照片！');
-						return; */
-					} else {
-						// 参数处理
-						model.image3 = model.image3.serverId;
-					}
-					
-
 					// 联系人名称
 					if (!model.contact || model.contact == '') {
 						alert('请先填联系人姓名！');
@@ -679,6 +647,13 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 		    			alert('请先填写手机验证码！');
 		    			return;
 		    		}
+					
+					// 处理图片
+					vue.imageList.forEach(function (item, i) {
+						if (i < 3 && item.serverId) {
+							model["image" + (i + 1)] = item.serverId;
+						}
+					});
 
 					// 数据校验通过，提交服务器
 					$.ajax({
