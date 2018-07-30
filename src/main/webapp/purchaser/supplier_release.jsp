@@ -31,8 +31,7 @@ html, body {
 	margin: 0;
 	padding: 0;
 	width: 100%;
-	height: 100%;
-	min-height: 100%;
+	height: auto;
 	background: #f0f2f2;
 }
 
@@ -396,6 +395,10 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 				// 初始化页面
 				this.init();
 				
+				// ios软键盘弹出不会触发resize事件
+			    $(window).resize(function(){ 
+			    	Vue.set(vue, "isHide", vue.isHide ? false : true);
+			    });
 			},
 
 			// 自定义方法
