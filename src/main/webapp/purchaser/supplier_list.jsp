@@ -182,7 +182,7 @@
 				</div>
 				<div class="content-item" v-for="(item,i) in contentList1" @click="toDetail(i)">
 					<div class="content-image">
-						<img :src="'http://purchaser.ecartoon.com.cn/picture/' + item.image">
+						<img :src="'http://purchaser.ecartoon.com.cn/picture/' + item.image1">
 					</div>
 					<div class="content-body">
 						<div class="content-name">
@@ -204,7 +204,7 @@
 				</div>
 				<div class="content-item" v-for="(item,i) in contentList2" @click="toDetail(i)">
 					<div class="content-image">
-						<img :src="'http://purchaser.ecartoon.com.cn/picture/' + item.image">
+						<img :src="'http://purchaser.ecartoon.com.cn/picture/' + item.image1">
 					</div>
 					<div class="content-body">
 						<div class="content-name">
@@ -226,7 +226,7 @@
 				</div>
 				<div class="content-item" v-for="(item,i) in contentList3" @click="toDetail(i)">
 					<div class="content-image">
-						<img :src="'http://purchaser.ecartoon.com.cn/picture/' + item.image">
+						<img :src="'http://purchaser.ecartoon.com.cn/picture/' + item.image1">
 					</div>
 					<div class="content-body">
 						<div class="content-name">
@@ -255,7 +255,8 @@
 				contentList1: [],
 				contentList2: [],
 				contentList3: [],
-				model: {}
+				model: {},
+				isMember: 0
 			},
 			
 			// 页面创建完成回调函数(vue生命周期函数)
@@ -276,7 +277,9 @@
 						},
 						dataType: "json",
 						success: callback,
-						error: e => console.log(e)
+						error: function (e) {
+							console.log(e)
+						}
 					});
 				},
 				
@@ -293,6 +296,14 @@
 					
 					// 获取数据列表
 					this.getSupplierList();
+					
+					// 请求服务端查询当前角色是否为会员
+					var url = "order/getActiveProductInfo.pur";
+					var param = {}
+					// 请求服务接口
+					this.requestServer(url, param, function (res) {
+						vue.set(vue, "isMember", res.isMember);
+					});
 				},
 				
 				// 改变当前选项卡索引
@@ -346,6 +357,9 @@
 				
 				// 到供应商详情页面
 				toDetail: function (index) {
+					if (!this.isMember) {
+						return;
+					}
 					var supplierId = this["contentList" + (this.currentIndex + 1)][index].id;
 					sessionStorage.setItem("supplierId", supplierId);
 					location.href = "purchaser/supplier_detail.jsp";
