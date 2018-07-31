@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.purchaser.pojo.PageInfo;
 import com.purchaser.pojo.User;
 import com.purchaser.service.MemberService;
 import com.purchaser.service.ParameterService;
@@ -236,6 +237,39 @@ public class MemberController {
 		
 		// 返回数据
 		CommentUtils.response(response, JSON.toJSONString(ret));
+	}
+	
+	
+	
+	
+	/**
+	 * 查询会员列表
+	 * @param response
+	 * @param json
+	 */
+	@RequestMapping("/getMemberList")
+	@ResponseBody
+	public void getMemberList (HttpServletResponse response, String json) {
+		JSONObject ret = new JSONObject();
+		try {
+			// 处理请求参数
+			JSONObject param = JSONObject.parseObject(URLDecoder.decode(json, "UTF-8"));
+			
+			// 查询数据
+			PageInfo pageInfo = memberService.getMemberList(param);
+			ret.fluentPut("success", true)
+			   .fluentPut("pageInfo", pageInfo)
+			   ;
+		} catch (Exception e) {
+			ret.fluentPut("success", false)
+			   .fluentPut("message", e.toString())
+			   ;
+			e.printStackTrace();
+		}
+		
+		// 返回数据
+		CommentUtils.response(response, JSON.toJSONString(ret, CommentUtils.dateformatValue("yyyy-MM-dd")));
+		
 	}
 
 

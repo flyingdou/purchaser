@@ -202,4 +202,42 @@
 					u.id = #{userId} 
   </select>
   
+  <!-- 查询会员列表 -->
+  <select id="getMemberList" parameterType="Map" resultType="Map">
+			SELECT 
+			        m.id, u.name, u.id_card_num, u.concord, u.mobilephone, u.email, 
+			        m.duty, m.affiliation, pc.name as company_name, 
+			        pb.name as business_name, mp.type_name, mp.price, 
+			        ADDDATE(m.apply_date,INTERVAL 1 YEAR) as valid_period 
+			FROM 
+			        tb_user u  INNER JOIN tb_member m ON u.id = m.user 
+			                   LEFT JOIN tb_parameter pc ON m.company_type = pc.id 
+			                   LEFT JOIN tb_parameter  pb ON m.business = pb.id 
+			                   LEFT JOIN tb_member_price mp ON m.type = mp.id 
+			WHERE
+			       m.audit = #{audit} 
+			       AND m.valid = #{valid} 
+			LIMIT
+			      #{start},#{pageSize}
+			      
+  </select>
+  
+  <!-- 查询有效会员的总数量 -->
+  <select id="memberListCount" parameterType="Map" resultType="Integer">
+			SELECT 
+			        count(m.id) as count 
+			FROM 
+			        tb_user u  INNER JOIN tb_member m ON u.id = m.user 
+			                   
+			WHERE
+			       m.audit = #{audit} 
+			       AND m.valid = #{valid}  
+  
+  </select>
+  
+  
+  
+  
+  
+  
 </mapper>

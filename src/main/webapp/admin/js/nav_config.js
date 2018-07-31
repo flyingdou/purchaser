@@ -5,11 +5,21 @@ var nav = [
 		name : "用户管理", 
 		link : "javascript:void(0)", 
 		sub_nav : [
-			{name : "用户列表" , link : "toPage.pur?url=user_list.html"},
+			{name : "用户列表" , link : "toPage.pur?url=user_list.html"}
+		]
+	},
+	
+	// 会员管理 
+	{
+		name : "会员管理", 
+		link : "javascript:void(0)", 
+		sub_nav : [
 			{name : "会员信息录入" , link : "toPage.pur?url=member_release.html"},
+			{name : "会员列表" , link : "toPage.pur?url=member_list.html"},
 			{name : "设定会员收费标准" , link : "javascript:void(0)"}
 		]
 	},
+	
 	
 	// 活动管理 
 	{

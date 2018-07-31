@@ -1,5 +1,6 @@
 package com.purchaser.dao;
 
+import java.util.List;
 import java.util.Map;
 
 import com.purchaser.pojo.Member;
@@ -38,5 +39,20 @@ public interface MemberMapper {
      * @return
      */
     Map<String, Object> memberSimple (Map<String, Object> paramMap);
+    
+    
+    /**
+     * 查询会员列表
+     * @param paramMap
+     * @return
+     */
+    List<Map<String, Object>> getMemberList (Map<String, Object> paramMap);
+    
+    /**
+     * 查询会员总数量
+     * @param paramMap
+     * @return
+     */
+    Integer memberListCount(Map<String, Object> paramMap);
     
 }

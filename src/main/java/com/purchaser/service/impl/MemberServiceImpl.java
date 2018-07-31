@@ -2,6 +2,7 @@ package com.purchaser.service.impl;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +20,7 @@ import com.purchaser.dao.MemberPriceMapper;
 import com.purchaser.dao.UserMapper;
 import com.purchaser.pojo.Member;
 import com.purchaser.pojo.MemberPrice;
+import com.purchaser.pojo.PageInfo;
 import com.purchaser.pojo.User;
 import com.purchaser.service.MemberService;
 import com.purchaser.util.CommentUtils;
@@ -103,8 +105,14 @@ public class MemberServiceImpl implements MemberService {
 		member.setBusiness(param.getInteger("business_id"));
 		member.setDuty(param.getString("duty"));
 		member.setApplyDate(new Date());
-		member.setAudit(Constant.AUDIT_STATUS_NOT);
-		member.setValid(Constant.MEMBER_INVALID);
+		member.setAudit(Constant.AUDIT_STATUS_PASS);
+		Integer member_valid = Constant.MEMBER_INVALID;
+		if (param.containsKey("user") && StringUtils.isNotBlank(param.getString("user"))) {
+			// 后台管理系统进来的
+			member_valid = Constant.MEMBER_VALID;
+		}
+		
+		member.setValid(member_valid);
 		// 持久化数据
 		memberMapper.insert(member);
 		
@@ -139,6 +147,30 @@ public class MemberServiceImpl implements MemberService {
 		paramMap.put("valid", Constant.MEMBER_VALID);
 		Map<String, Object> memberMap = memberMapper.memberSimple(paramMap);
 		return 	JSON.parseObject(JSON.toJSONString(memberMap, CommentUtils.dateformatValue("yyyy-MM-dd")));
+	}
+
+	
+	/**
+	 * 查询会员列表
+	 */
+	@Override
+	public PageInfo getMemberList(JSONObject param) {
+		PageInfo pageInfo = null;
+		pageInfo = JSONObject.toJavaObject(param, PageInfo.class);
+		param.fluentPut("start", pageInfo.getStart())
+		     .fluentPut("audit", Constant.AUDIT_STATUS_PASS)
+		     .fluentPut("valid", Constant.MEMBER_VALID)
+		     ;
+		// 查询数据
+		List<Map<String, Object>> memberList = memberMapper.getMemberList(param);
+		
+		// 查询总条数
+		Integer count = memberMapper.memberListCount(param);
+		
+		pageInfo.setTotalCount(count);
+		pageInfo.setData(memberList);
+		
+		return pageInfo;
 	}
 
 

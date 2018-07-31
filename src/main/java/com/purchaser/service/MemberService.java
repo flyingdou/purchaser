@@ -7,6 +7,7 @@ package com.purchaser.service;
 import javax.servlet.http.HttpServletRequest;
 
 import com.alibaba.fastjson.JSONObject;
+import com.purchaser.pojo.PageInfo;
 
 public interface MemberService {
 
@@ -38,6 +39,14 @@ public interface MemberService {
 	 * @return
 	 */
 	public JSONObject memberSimple (Long userId);
+	
+	
+	/**
+	 * 查询会员列表
+	 * @param param
+	 * @return
+	 */
+	public PageInfo getMemberList (JSONObject param);
 	
 	
 	
