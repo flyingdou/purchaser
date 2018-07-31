@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.purchaser.pojo.PageInfo;
 import com.purchaser.service.AdmirerService;
 import com.purchaser.util.CommentUtils;
 
@@ -63,7 +64,7 @@ public class AdmirerController {
 	
 	
 	/**
-	 * 查询采购师列表
+	 * 查询采购师列表(微信前端)
 	 * @param response
 	 * @param session
 	 * @param json
@@ -124,6 +125,71 @@ public class AdmirerController {
 			   ;
 			e.printStackTrace();
 		}
+		
+		// 返回数据
+		CommentUtils.response(response, JSON.toJSONString(ret));
+	}
+	
+	
+	
+	/**
+	 * 查询采购师列表(后台管理系统)
+	 * @param response
+	 * @param json
+	 */
+	@RequestMapping("/getAdmirerList4admin")
+	@ResponseBody
+	public void getAdmirerList4admin (HttpServletResponse response, String json) {
+		JSONObject ret = new JSONObject();
+		try {
+			// 处理请求参数
+			JSONObject param = JSONObject.parseObject(URLDecoder.decode(json, "UTF-8"));
+			
+			// 查询数据
+			PageInfo pageInfo = admirerService.getAdmirerList4admin(param);
+			
+			ret.fluentPut("success", true)
+			   .fluentPut("pageInfo", pageInfo)
+			   ;
+			
+		} catch (Exception e) {
+		    ret.fluentPut("success", false)
+		       .fluentPut("message", e.toString())
+		       ;
+		    e.printStackTrace();
+		}
+		
+		// 返回数据
+		CommentUtils.response(response, JSON.toJSONString(ret, CommentUtils.dateformatValue("yyyy-MM-dd")));
+	}
+	
+	
+	
+	/**
+	 * 审核采购师
+	 * @param response
+	 * @param json
+	 */
+	@RequestMapping("/auditAdmirer")
+	@ResponseBody
+	public void auditAdmirer (HttpServletResponse response, String json) {
+		JSONObject ret = new JSONObject();
+		try {
+			// 处理请求参数
+			JSONObject param = JSONObject.parseObject(URLDecoder.decode(json, "UTF-8"));
+			
+			// 影响行数
+		    admirerService.auditAdmirer(param);
+		    
+		    ret.fluentPut("success", true)
+		       ;
+		} catch (Exception e) {
+			ret.fluentPut("success", false)
+			   .fluentPut("message", e.toString())
+			   ;
+			e.printStackTrace();
+		}
+		
 		
 		// 返回数据
 		CommentUtils.response(response, JSON.toJSONString(ret));

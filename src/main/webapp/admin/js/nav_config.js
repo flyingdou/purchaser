@@ -36,7 +36,7 @@ var nav = [
 		name : "采购师管理", 
 		link : "javascript:void(0)", 
 		sub_nav : [
-			{name : "采购师录入审核" , link : "javascript:void(0)"}
+			{name : "采购师录入审核" , link : "toPage.pur?url=admirer_list.html"}
 		]
 	},
 	

@@ -22,12 +22,13 @@ public interface AdmirerMapper {
     int updateByPrimaryKey(Admirer record);
     
     /**
-     * 查询采购师列表
+     * 查询采购师列表(微信前端)
      * @param paramMap
      * @return
      */
     List<Map<String, Object>> getAdmirerList(Map<String, Object> paramMap);
     
+
     
     /**
      * 查询采购师详情
@@ -43,5 +44,30 @@ public interface AdmirerMapper {
      * @return
      */
     Map<String, Object> getUserByAdmirer (Map<String, Object> paramMap);
+    
+    
+    
+    /**
+     * 采购师列表(后台)
+     * @param paramMap
+     * @return
+     */
+    List<Map<String, Object>> getAdmirerList4admin (Map<String, Object> paramMap);
+    
+    
+   
+    /**
+     * 查询采购师总数量 
+     * @return
+     */
+    Integer admirerListCount ();
+    
+    
+    /**
+     * 修改采购师审核状态
+     * @param paramMap
+     * @return
+     */
+    Integer auditAdmirer (Map<String, Object> paramMap);
     
 }

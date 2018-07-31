@@ -11,6 +11,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import com.alibaba.fastjson.JSONObject;
+import com.purchaser.pojo.PageInfo;
 
 public interface AdmirerService {
 
@@ -23,7 +24,7 @@ public interface AdmirerService {
 	
 	
 	/**
-	 * 查询采购师列表
+	 * 查询采购师列表(微信前端)
 	 * @param param
 	 * @return
 	 */
@@ -44,6 +45,23 @@ public interface AdmirerService {
 	 * @return
 	 */
 	public JSONObject admirerDetail (JSONObject param);
+	
+	
+	/**
+	 * 查询采购师列表(后台管理系统)
+	 * @param param
+	 * @return
+	 */
+	public PageInfo getAdmirerList4admin (JSONObject param);
+	
+	
+	
+	/**
+	 * 修改采购师的审核状态
+	 * @param param
+	 * @return
+	 */
+	public Integer auditAdmirer (JSONObject param);
 	
 	
 }

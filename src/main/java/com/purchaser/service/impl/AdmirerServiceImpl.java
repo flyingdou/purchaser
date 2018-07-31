@@ -18,6 +18,7 @@ import com.purchaser.constants.Constant;
 import com.purchaser.dao.AdmirerMapper;
 import com.purchaser.dao.UserMapper;
 import com.purchaser.pojo.AdmirerWithBLOBs;
+import com.purchaser.pojo.PageInfo;
 import com.purchaser.pojo.User;
 import com.purchaser.service.AdmirerService;
 import com.purchaser.util.Validcode;
@@ -99,7 +100,7 @@ public class AdmirerServiceImpl implements AdmirerService {
 
 
 	/**
-	 * 查询采购师列表
+	 * 查询采购师列表(微信前端)
 	 */
 	@Override
 	public List<Map<String, Object>> getAdmirerList(JSONObject param) {
@@ -145,6 +146,37 @@ public class AdmirerServiceImpl implements AdmirerService {
 		paramMap.put("audit", Constant.AUDIT_STATUS_PASS);
 		Map<String, Object> userMap = admirerMapper.getUserByAdmirer(paramMap);
 		return JSONObject.parseObject(JSON.toJSONString(userMap));
+	}
+
+
+	/**
+	 * 查询采购师列表(后台管理系统)
+	 */
+	@Override
+	public PageInfo getAdmirerList4admin(JSONObject param) {
+		PageInfo pageInfo = null;
+		pageInfo = JSONObject.toJavaObject(param, PageInfo.class);
+		param.fluentPut("start", pageInfo.getStart());
+		// 查询数据
+		List<Map<String, Object>> admirerList = admirerMapper.getAdmirerList4admin(param);
+		
+		// 查询总条数
+		Integer count = admirerMapper.admirerListCount();
+		pageInfo.setTotalCount(count);
+		pageInfo.setData(admirerList);
+		return pageInfo;
+	}
+
+
+	
+	
+	
+	/**
+	 * 修改采购师审核状态
+	 */
+	@Override
+	public Integer auditAdmirer(JSONObject param) {
+		return admirerMapper.auditAdmirer(param);
 	}
 
 }

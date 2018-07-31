@@ -195,7 +195,7 @@
     where id = #{id,jdbcType=BIGINT}
   </update>
   
-  
+  <!-- 采购师列表微信前台 -->
   <select id="getAdmirerList" parameterType="Map" resultType="Map" >
           select 
 				  a.id, u.image, u.gender, u.name, p.name as study, p.code as studyCode, xd.tf as monthDiff   
@@ -238,6 +238,7 @@
 		         </if>
   </select>
   
+  <!-- 采购师详情 -->
   <select id="admirerDetail" parameterType="Map" resultType="Map">
 			select    
 			          u.name, u.gender, u.id_card_num, u.concord, u.mobilephone, u.email, u.image,
@@ -266,6 +267,41 @@
                   a.id = #{id}
                   and a.audit = #{audit}
   </select>
+  
+  
+  
+  <!-- 查询采购师列表后台 -->
+  <select id="getAdmirerList4admin" parameterType="Map" resultType="Map">
+			SELECT
+			        a.id, u.name, u.gender, u.id_card_num, u.concord, 
+                    u.mobilephone, u.email, ep.company_name, ep.post,
+			        a.address, ps.name as study, a.language, a.qualification, 
+			        a.learning, a.self_evaluation, a.audit 
+			 FROM 
+					tb_user u INNER JOIN tb_admirer a ON u.id = a.user 
+			                  LEFT JOIN tb_parameter ps ON a.study = ps.code 
+			                  LEFT JOIN (
+                                         SELECT e.user, e.company_name, e.post FROM tb_experience e GROUP BY e.user ORDER BY e.endTime desc 
+                                        ) ep  ON a.user = ep.user 
+			LIMIT
+			        #{start},#{pageSize}
+  
+  </select>
+  
+  <!-- 查询采购师总数量 -->
+  <select id="admirerListCount" resultType="Integer">
+			SELECT
+			       count(a.id) as count 
+			FROM 
+				   tb_user u INNER JOIN tb_admirer a ON u.id = a.user 
+  
+  </select>
+  
+  
+  <!-- 修改采购师审核状态 -->
+  <update id="auditAdmirer" parameterType="Map" >
+           update tb_admirer set audit = #{audit} where id = #{admirerId}
+  </update>
   
   
 </mapper>
