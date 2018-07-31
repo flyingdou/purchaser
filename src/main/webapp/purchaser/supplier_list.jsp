@@ -302,7 +302,7 @@
 					var param = {}
 					// 请求服务接口
 					this.requestServer(url, param, function (res) {
-						vue.set(vue, "isMember", res.isMember);
+						Vue.set(vue, "isMember", res.isMember);
 					});
 				},
 				
