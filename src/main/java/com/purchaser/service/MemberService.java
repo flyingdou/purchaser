@@ -50,4 +50,11 @@ public interface MemberService {
 	
 	
 	
+	/**
+	 * 保存会员价格
+	 * @param param
+	 * @return
+	 */
+	public JSONObject savePrice (JSONObject param);
+	
 }

@@ -16,7 +16,7 @@ var nav = [
 		sub_nav : [
 			{name : "会员信息录入" , link : "toPage.pur?url=member_release.html"},
 			{name : "会员列表" , link : "toPage.pur?url=member_list.html"},
-			{name : "设定会员收费标准" , link : "javascript:void(0)"}
+			{name : "设定会员收费标准" , link : "toPage.pur?url=price_list.html"}
 		]
 	},
 	

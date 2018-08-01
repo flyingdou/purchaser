@@ -273,4 +273,34 @@ public class MemberController {
 	}
 
 
+	
+	
+	
+	/**
+	 * 保存会员价格信息
+	 * @param response
+	 * @param json
+	 */
+	@RequestMapping("/savePrice")
+	@ResponseBody
+	public void savePrice (HttpServletResponse response, String json) {
+		JSONObject ret = new JSONObject();
+		try {
+			// 处理请求参数
+			JSONObject param = JSONObject.parseObject(URLDecoder.decode(json, "UTF-8"));
+			ret = memberService.savePrice(param);
+			ret.fluentPut("success", true);
+		} catch (Exception e) {
+			ret.fluentPut("success", false)
+			   .fluentPut("message", e.toString())
+			   ;
+			e.printStackTrace();
+		}
+		
+		
+		// 返回数据
+		CommentUtils.response(response, JSON.toJSONString(ret));
+	}
+	
+	
 }

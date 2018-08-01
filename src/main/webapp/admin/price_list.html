@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>设定会员收费标准</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<!-- Le styles -->
+<link href="http://fonts.googleapis.com/css?family=Oxygen|Marck+Script"
+	rel="stylesheet" type="text/css">
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/font-awesome.css" rel="stylesheet">
+<link href="css/admin.css" rel="stylesheet">
+<style type="text/css">
+	.table{
+		margin-top: 30px;
+		width: 1530px;
+	}
+	
+	.float{
+		position: fixed;
+		bottom: 20px;
+		right: 10px;
+	}
+	
+	.addLineDiv {
+	    width: 1530px;
+	}
+	
+	.addLine{
+	   padding: 10px 0;
+	   background: red;
+	   color: white;
+	   text-align: center;
+	   width: 7%;
+	   margin: 0 auto;
+	   font-size: 18px;
+	   border-radius: 5px;
+	}
+	
+	.inputValue{
+	  margin: 10px 0;
+	}
+	
+	
+	.saveOrDelete{
+	   line-height: 64px;
+	}
+	
+	
+</style>
+</head>
+<body>
+	<div class="container" id="wraper">
+		<div class="row">
+			<div class="span2">
+				<div class="main-left-col">
+					<h1>
+						<i class="icon-shopping-cart icon-large"></i> Admin
+					</h1>
+					<ul class="side-nav">
+						<li class="dropdown" v-for="(item1, i) in nav">
+							<a class="dropdown-toggle" data-toggle="collapse" :data-target="'#sub-nav-' + i"
+								:href="item1.link"> <!-- <i class="icon-home"></i> -->
+									{{item1.name}}<b class="caret"></b>
+							</a>
+							<ul :id="'sub-nav-' + i" class="collapse">
+								<li v-for="(item2, i) in item1.sub_nav"><a :href="item2.link">{{item2.name}}</a></li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+				<!-- end main-left-col -->
+
+			</div>
+			<!-- end span2 -->
+
+			<div class="span10">
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th style="text-align: center;">会员类型</th>
+							<th style="text-align: center;">会员价格</th>
+							<th style="text-align: center;">操作</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr v-for="(item,i) in priceList">
+						    <!-- 会员类型 -->
+							<td style="text-align: center; display: flex; justify-content: center;align-items: center;">
+							      <span v-if='item.update == "0" ' >{{item.value}}</span>
+							      <input type="text" class='inputValue' v-if='item.update == "1" ' :value='item.value' v-model = 'item.value' placeholder='请输入会员类型'/>
+							</td>
+							
+							<!-- 价格 -->
+							<td style="text-align: center;">
+							      <span v-if='item.update == "0" ' >{{item.price}}</span>
+							      <input type="text" class='inputValue' v-if= 'item.update == "1" ' :value='item.price' v-model = 'item.price' placeholder='请输入价格' />
+							</td>
+							
+							<td style="text-align: center;">
+									<div v-if='item.update == "0" '>
+										  <a href="javascript:void(0)"  @click="updatePrice(i)">修改</a> <span>|</span>
+										  <a href="javascript:void(0)" v-if = 'item.valid == "1" ' @click="changePriceValid(i,0)">关闭</a>
+										  <a href="javascript:void(0)" v-if = 'item.valid == "0" ' @click='changePriceValid(i,1)'>开启</a>
+									</div>
+									<div v-if = 'item.update == "1" ' class='saveOrDelete'>
+										  <a href="javascript:void(0)"  @click="savePrice(i)">保存</a>
+									      <span v-if = 'item.id == "" || item.id == null '>
+										      <span>|</span>
+										      <a href="javascript:void(0)" @click="deletePrice(i)">删除</a>
+									      </span>
+									</div>
+							</td>
+						</tr>
+						
+						
+					</tbody>
+				</table>
+				
+				<!-- 新增行 -->
+				<div class='addLineDiv'>
+						<div class='addLine' @click='addPrice()'>新增</div>
+				</div>
+			</div>
+			<!-- end span10 -->
+			
+			
+		</div>
+		<!-- end row -->
+		
+		
+	</div><!-- end container -->
+
+	<script src="js/jquery.min.js"></script>
+	<script src="js/qrcode.min.js"></script>
+	<script src="js/bootstrap.js"></script>
+	<script src="js/nav_config.js"></script>
+	<script src="../purchaser/js/commonUtils.js"></script>
+	<script src="../purchaser/js/vue.min.js"></script>
+	<script type="text/javascript">
+	
+	
+	
+		var vue = new Vue({
+			el: "#wraper",
+			data: {
+				nav: nav,
+				model: {},
+				priceList:[]
+			},
+			created: function () {
+				this.init();
+			},
+			
+			methods: {
+				// 初始化
+				init: function () {
+					var param = {
+							type:3
+					}
+					this.getPriceList(param);
+				},
+				
+				// 查询会员类型列表
+				getPriceList: function (param) {
+					// 请求数据
+					var url = location.origin + "/member/findParameters.pur";
+					requestServer(url, param, function(res) {
+						res.type.forEach(function(price) {
+							price.update = '0';
+						})
+						Vue.set(vue, "priceList" , res.type);
+					})
+				},
+				
+				// 修改会员收费标准
+				updatePrice: function (i) {
+					vue.priceList[i].update = '1';
+				},
+				
+				// 保存会员收费标准信息
+				savePrice: function (i) {
+					var param = vue.priceList[i];
+					console.log(JSON.stringify(param));
+					var url = '/member/savePrice.pur';
+					requestServer(url, param, function(res) {
+						if (res.success) {
+							vue.priceList[i].id = res.id;
+							vue.priceList[i].update = '0';
+						} else {
+							console.log('程序异常: ' + res.message);
+						}
+						
+					})
+				},
+				
+				// 新增会员价格类型
+				addPrice: function () {
+					var price = {
+							id:'',
+							price:'',
+							value:'',
+							parent:3,
+							valid:'1',
+							update:'1'
+							
+					};
+					
+					// 将新的行加入到vue变量中，让vue实时渲染页面
+					vue.priceList.push(price);
+				},
+				
+				// 修改参数有效性
+				changePriceValid: function (index, valid) {
+					var param = vue.priceList[index];
+					param.valid = valid;
+					console.log(JSON.stringify(param));
+					// 请求服务器，保存参数状态
+					var url = '/member/savePrice.pur';
+					requestServer(url, param, function(res) {
+						if (res.success) {
+							// 修改数据成功
+							vue.priceList[index].valid = valid;
+						} else {
+							// 程序异常
+							console.log('程序异常，原因：' + res.message);
+						}
+						
+					})
+				},
+				
+				// 删除
+				deletePrice: function (index) {
+					vue.priceList.remove(index);
+					window.location.reload();
+				}
+			
+				
+				
+				
+			}
+			
+			
+		});
+		
+		
+		
+		/**
+		 * 根据数组下标删除元素
+		 */
+		Array.prototype.remove=function(obj){
+			    for(var i =0;i <this.length;i++){
+					    var temp = this[i];
+					    if(!isNaN(obj)){
+					    	temp=i;
+			    	    }
+					    if(temp == obj){
+						    for(var j = i;j <this.length;j++){
+						    	this[j]=this[j+1];
+						    }
+					    	this.length = this.length-1;
+					    }
+			     }
+		 }
+		
+	</script>
+</body>
+</html>

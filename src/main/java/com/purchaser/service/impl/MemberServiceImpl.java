@@ -17,10 +17,12 @@ import com.alibaba.fastjson.JSONObject;
 import com.purchaser.constants.Constant;
 import com.purchaser.dao.MemberMapper;
 import com.purchaser.dao.MemberPriceMapper;
+import com.purchaser.dao.ParameterMapper;
 import com.purchaser.dao.UserMapper;
 import com.purchaser.pojo.Member;
 import com.purchaser.pojo.MemberPrice;
 import com.purchaser.pojo.PageInfo;
+import com.purchaser.pojo.Parameter;
 import com.purchaser.pojo.User;
 import com.purchaser.service.MemberService;
 import com.purchaser.util.CommentUtils;
@@ -34,14 +36,31 @@ import com.purchaser.util.Validcode;
 @Transactional
 public class MemberServiceImpl implements MemberService {
 
+	/**
+	 * 注入memberMapper对象
+	 */
 	@Autowired
 	private MemberMapper memberMapper;
 	
+	/**
+	 * 注入userMapper对象
+	 */
 	@Autowired
 	private UserMapper userMapper;
 	
+	/**
+	 * 注入memberPriceMapper对象
+	 */
 	@Autowired
 	private MemberPriceMapper mpMapper;
+	
+	/**
+	 * 注入parameterMapper对象
+	 */
+	@Autowired
+	private ParameterMapper parameterMapper;
+	
+	
 	
 	/**
 	 * 查询会员信息
@@ -171,6 +190,37 @@ public class MemberServiceImpl implements MemberService {
 		pageInfo.setData(memberList);
 		
 		return pageInfo;
+	}
+
+	
+	
+	/**
+	 * 保存会员价格
+	 */
+	@Override
+	public JSONObject savePrice(JSONObject param) {
+		Parameter parameter = new Parameter();
+		parameter.setValue(param.getString("price"));
+		parameter.setParent(param.getLong("parent"));
+		parameter.setName(param.getString("value"));
+		parameter.setValid(param.getString("valid"));
+		
+		
+		// 更新数据
+		if (param.containsKey("id") && StringUtils.isNotBlank(param.getString("id"))) {
+			// 修改已有数据
+			parameter.setId(param.getLong("id"));
+			parameterMapper.updateByPrimaryKeySelective(parameter);
+		}
+		
+		// 新增数据
+		if (!param.containsKey("id") || StringUtils.isBlank(param.getString("id"))) {
+			parameterMapper.insertSelective(parameter);
+		}
+		
+		JSONObject ret = new JSONObject();
+		ret.fluentPut("id", parameter.getId());
+		return ret;
 	}
 
 

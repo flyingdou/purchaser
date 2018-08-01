@@ -32,9 +32,16 @@ public class ParameterServiceImpl implements ParameterService {
 	public JSONObject findParameters(JSONObject param) {
 		JSONObject ret = new JSONObject();
 		Map<String, Object> mapDou = new HashMap<String, Object>();
+		String valid = null;
+		// 参数有效性
+		if (param.containsKey("valid") && StringUtils.isNotBlank(param.getString("valid"))) {
+			valid = param.getString("valid");
+		}
+		
 		// 行业类型
 		if (param.containsKey("business") && StringUtils.isNotEmpty(param.getString("business"))) {
 			mapDou.clear();
+			mapDou.put("valid", valid);
 			mapDou.put("parent", param.getInteger("business"));
 			List<Map<String, Object>> business = parameterMap.findParameterByParent(mapDou);
 			ret.fluentPut("business", JSON.parseArray(JSON.toJSONString(business)));
@@ -43,6 +50,7 @@ public class ParameterServiceImpl implements ParameterService {
 		// 公司类型
 		if (param.containsKey("company_type") && StringUtils.isNotEmpty(param.getString("company_type"))) {
 			mapDou.clear();
+			mapDou.put("valid", valid);
 			mapDou.put("parent", param.getInteger("company_type"));
 			List<Map<String, Object>> company_type = parameterMap.findParameterByParent(mapDou);
 			ret.fluentPut("company_type", JSON.parseArray(JSON.toJSONString(company_type)));
@@ -51,6 +59,7 @@ public class ParameterServiceImpl implements ParameterService {
 		// 会员类型
 		if (param.containsKey("type") && StringUtils.isNotEmpty(param.getString("type"))) {
 			mapDou.clear();
+			mapDou.put("valid", valid);
 			mapDou.put("parent", param.getInteger("type"));
 			List<Map<String, Object>> type = parameterMap.findParameterByParent(mapDou);
 			ret.fluentPut("type", JSON.parseArray(JSON.toJSONString(type)));
@@ -59,6 +68,7 @@ public class ParameterServiceImpl implements ParameterService {
 		// 学历类型
 		if (param.containsKey("study_type") && StringUtils.isNotEmpty(param.getString("study_type"))) {
 			mapDou.clear();
+			mapDou.put("valid", valid);
 			mapDou.put("parent", param.getString("study_type"));
 			List<Map<String, Object>> studyType = parameterMap.findParameterByParent(mapDou);
 			ret.fluentPut("studyType", studyType);

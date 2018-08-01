@@ -293,7 +293,8 @@
     	 var param = {
     			 business: 1,
     			 company_type: 2,
-    			 type: 3
+    			 type: 3,
+    			 valid: 1
     	 };
     	 // 请求后台参数数据
     	 $.ajax({
@@ -350,9 +351,10 @@
     			     
     			     // type初始化
     			     if (!dou.type || dou.type == '') {
-    			    	 dou.type = "个人会员",
-    			    	 dou.price = "500";
-    			    	 dou.type_id = 17;
+    			    	 var initType = pageData.type[0];
+    			    	 dou.type = initType.value;
+    			    	 dou.price = initType.price;
+    			    	 dou.type_id = initType.id;
     			     }
     			     
     			     // 初始化操作

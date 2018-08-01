@@ -19,6 +19,11 @@ public class Parameter {
     
     // value
     private String value;
+    
+    /**
+     * 参数有效性
+     */
+    private String valid;
 
     public Long getId() {
         return id;
@@ -58,5 +63,13 @@ public class Parameter {
 
 	public void setValue(String value) {
 		this.value = value;
+	}
+	
+	public String getValid() {
+		return valid;
+	}
+	
+	public void setValid(String valid) {
+		this.valid = valid;
 	}
 }
