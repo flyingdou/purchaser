@@ -24,6 +24,7 @@
 			<version>5.0.6.RELEASE</version>
 		</dependency>
 
+        <!-- Spring jdbc -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jdbc</artifactId>
@@ -123,9 +124,6 @@
 			<artifactId>commons-codec</artifactId>
 			<version>1.11</version>
 		</dependency>
-
-
-
 
 		<!-- slf4j-log4j -->
 		<dependency>
