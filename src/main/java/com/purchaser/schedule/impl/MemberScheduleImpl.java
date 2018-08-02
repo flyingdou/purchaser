@@ -40,15 +40,15 @@ public class MemberScheduleImpl implements MemberSchedule {
 	private MemberMapper memberMapper;
 
 	/**
-	 * 会员续费提醒
+	 * 会员续费提醒(每天11:00扫描提醒)
 	 */
-	@Scheduled(cron = "1/60 * * * * ?") // 秒 分 时 日 月 周 * 年
+	@Scheduled(cron = "0 0 11 * * ?") // 秒 分 时 日 月 周 * 年
 	@Override
 	public void memberExpiredNotify() {
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("valid", Constant.MEMBER_VALID);
-		paramMap.put("minDay", Constant.MEMBER_BEFORE_EXPIRED_DAY -1);
-		paramMap.put("maxDay", Constant.MEMBER_BEFORE_EXPIRED_DAY);
+		paramMap.put("dayMin", Constant.MEMBER_BEFORE_EXPIRED_DAY -1);
+		paramMap.put("dayMax", Constant.MEMBER_BEFORE_EXPIRED_DAY);
 		// 查询数据
 		List<Map<String, Object>> memberNotifyList = memberMapper.expirationList(paramMap);
 		

@@ -258,20 +258,14 @@
 		  FROM 
 		         tb_member m INNER JOIN tb_user u ON m.user = u.id  
 		                     INNER JOIN tb_member_price mp ON m.type = mp.id  
-		 
-  </select>  
-  
-  <select id="">
-         WHERE    
+		 WHERE    
 		         m.valid = #{valid}
 		
 		HAVING   
 		         diffDay &gt; #{dayMin}  
-		         AND diffDay &lt;= #{dayMax} 
-  
-  </select>
-  
-  
+		         AND diffDay &lt;= #{dayMax}
+		 
+  </select>  
   
   
   
