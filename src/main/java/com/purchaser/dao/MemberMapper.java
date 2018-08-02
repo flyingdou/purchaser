@@ -55,4 +55,13 @@ public interface MemberMapper {
      */
     Integer memberListCount(Map<String, Object> paramMap);
     
+    
+    
+    /**
+     * 查询即将过期的会员，提醒用户续费
+     * @param paramMap
+     * @return
+     */
+    List<Map<String, Object>> expirationList (Map<String, Object> paramMap);
+    
 }

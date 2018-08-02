@@ -185,4 +185,9 @@ public class Constant {
 	public final static String MEMBER_VALID_EXPIRED_NOTIFY_REMARK = "请及时续费，以保持会员资格！";
 	
 	
+	/**
+	 * 距离会员过期天数
+	 */
+	public final static Integer MEMBER_BEFORE_EXPIRED_DAY = 7;
+	
 }

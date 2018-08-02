@@ -247,7 +247,29 @@
 			       AND m.valid = #{valid}  
   
   </select>
+
+
+  <!-- 插叙即将过期的会员，发送微信模板消息，提示用户续费，以维持会员身份 -->
+  <select id="expirationList" parameterType="Map" resultType="Map">
+		SELECT 
+		         m.id, u.name, mp.type_name, m.no, m.expiration, u.wechat_id,    
+		         TIMESTAMPDIFF(DAY,NOW(),m.expiration) as diffDay 
+		          
+		  FROM 
+		         tb_member m INNER JOIN tb_user u ON m.user = u.id  
+		                     INNER JOIN tb_member_price mp ON m.type = mp.id  
+		 
+  </select>  
   
+  <select id="">
+         WHERE    
+		         m.valid = #{valid}
+		
+		HAVING   
+		         diffDay &gt; #{dayMin}  
+		         AND diffDay &lt;= #{dayMax} 
+  
+  </select>
   
   
   
