@@ -352,22 +352,19 @@
   
   <!-- 发提示sql -->
   <select id="activeNotify" parameterType="Map" resultType="Map">
-		select 
+	    select 
 		        a.id, a.name, a.host_unit, a.address, a.start_date, u.wechat_id, 
 		        TIMESTAMPDIFF(HOUR,a.start_date,NOW()) as dh  
-		from 
+		 from 
 		        tb_active a INNER JOIN tb_order o ON a.id = o.product_id AND o.product_type = #{product_type} AND o.status = #{status} 	
 		                    INNER JOIN tb_user u ON o.user = u.id 
+		where 
+		        a.start_date &gt; NOW() 
+		
+       HAVING   
+		        dh &lt;= #{interval_value}
 		 
   </select>
   
-  <select id="">
-  where 
-		        a.start_date &gt; NOW() 
-		
-  HAVING   
-		        dh &lt;= #{interval_value}
-  
-  </select>
   
 </mapper>

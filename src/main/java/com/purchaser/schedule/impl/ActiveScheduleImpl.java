@@ -44,7 +44,7 @@ public class ActiveScheduleImpl implements ActiveSchedule {
 	/**
 	 * 活动开始前(24小时内)
 	 */
-	@Scheduled(cron = "1/60 * * * * ?") // 秒 分 时 日 月 周 * 年
+	@Scheduled(cron = "0 0 10 * * ?") // 秒 分 时 日 月 周 * 年
 	@Override
 	public void activeNotify() {
 		Map<String, Object> param = new HashMap<String, Object>();
