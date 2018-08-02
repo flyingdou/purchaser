@@ -13,9 +13,10 @@
     <result column="audit" property="audit" jdbcType="INTEGER" />
     <result column="apply_date" property="applyDate" jdbcType="TIMESTAMP" />
     <result column="valid" property="valid" jdbcType="INTEGER" />
+    <result column="expiration" property="expiration" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, no, user, duty, affiliation, company_type, business, type, audit, apply_date, valid
+    id, no, user, duty, affiliation, company_type, business, type, audit, apply_date, valid, expiration
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
@@ -30,11 +31,12 @@
   <insert id="insert" parameterType="com.purchaser.pojo.Member" useGeneratedKeys="true" keyProperty="id" >
     insert into tb_member (id, no, user, duty, 
       affiliation, company_type, business, 
-      type, audit, apply_date, valid
+      type, audit, apply_date, valid,expiration
       )
     values (#{id,jdbcType=BIGINT}, #{no,jdbcType=VARCHAR}, #{user,jdbcType=BIGINT}, #{duty,jdbcType=VARCHAR}, 
       #{affiliation,jdbcType=VARCHAR}, #{companyType,jdbcType=INTEGER}, #{business,jdbcType=INTEGER}, 
-      #{type,jdbcType=INTEGER}, #{audit,jdbcType=INTEGER}, #{applyDate,jdbcType=TIMESTAMP}, #{valid,jdbcType=INTEGER}
+      #{type,jdbcType=INTEGER}, #{audit,jdbcType=INTEGER}, #{applyDate,jdbcType=TIMESTAMP}, #{valid,jdbcType=INTEGER},
+      #{expiration,jdbcType=TIMESTAMP}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.purchaser.pojo.Member" >
@@ -73,6 +75,10 @@
       <if test="valid != null" >
         valid,
       </if>
+      <if test="expiration != null" >
+        expiration,
+      </if>
+      
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -107,6 +113,9 @@
       </if>
       <if test="valid != null" >
         #{valid,jdbcType=INTEGER},
+      </if>
+      <if test="expiration != null" >
+        #{expiration,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -143,6 +152,9 @@
       <if test="valid != null" >
         valid = #{valid,jdbcType=INTEGER},
       </if>
+      <if test="expiration != null" >
+        expiration = #{expiration,jdbcType=TIMESTAMP},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -157,7 +169,8 @@
       type = #{type,jdbcType=INTEGER},
       audit = #{audit,jdbcType=INTEGER},
       apply_date = #{applyDate,jdbcType=TIMESTAMP}
-      valid = #{valid,jdbcType=INTEGER}
+      valid = #{valid,jdbcType=INTEGER},
+      expiration = #{expiration,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
   
@@ -194,7 +207,7 @@
   <select id="memberSimple" parameterType="Map" resultType="Map">
           select 
 					u.name, u.image, m.duty, m.no, mp.type_name,
-					DATE_ADD(m.apply_date,INTERVAL 1 YEAR) as valid_period 
+					m.expiration as valid_period 
 			from 
 			      	tb_user u LEFT JOIN tb_member m ON u.id = m.user and m.valid = #{valid} 
 			                  LEFT JOIN tb_member_price mp ON m.type = mp.id 
@@ -208,7 +221,7 @@
 			        m.id, u.name, u.id_card_num, u.concord, u.mobilephone, u.email, 
 			        m.duty, m.affiliation, pc.name as company_name, 
 			        pb.name as business_name, mp.type_name, mp.price, 
-			        ADDDATE(m.apply_date,INTERVAL 1 YEAR) as valid_period 
+			        m.expiration as valid_period 
 			FROM 
 			        tb_user u  INNER JOIN tb_member m ON u.id = m.user 
 			                   LEFT JOIN tb_parameter pc ON m.company_type = pc.id 

@@ -59,6 +59,12 @@ public class Member {
      * 会员编号 
      */
     private String no;
+    
+    
+    /**
+     *  过期时间
+     */
+    private Date expiration;
 
     
     /**
@@ -151,6 +157,14 @@ public class Member {
 
     public void setNo(String no) {
         this.no = no == null ? null : no.trim();
+    }
+    
+    public Date getExpiration() {
+        return expiration;
+    }
+
+    public void setExpiration(Date expiration) {
+        this.expiration = expiration;
     }
     
 }

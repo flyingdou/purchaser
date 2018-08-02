@@ -1,5 +1,6 @@
 package com.purchaser.service.impl;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -114,6 +115,13 @@ public class MemberServiceImpl implements MemberService {
 		mpMapper.insert(mp);
 		
 		
+		// 申请时间
+		Date applyDate = new Date();
+		Calendar cd = Calendar.getInstance();
+		cd.setTime(applyDate);
+		cd.add(Calendar.YEAR, 1);
+		// 过期时间(在申请时间上加一年)
+		Date expiration = cd.getTime();
 		// 增加会员数据
 		Member member = new Member();
 		member.setNo(CommentUtils.getRandomByDate(6, "yyyy"));
@@ -123,8 +131,9 @@ public class MemberServiceImpl implements MemberService {
 		member.setCompanyType(param.getInteger("company_type_id"));
 		member.setBusiness(param.getInteger("business_id"));
 		member.setDuty(param.getString("duty"));
-		member.setApplyDate(new Date());
+		member.setApplyDate(applyDate);
 		member.setAudit(Constant.AUDIT_STATUS_PASS);
+		member.setExpiration(expiration);
 		Integer member_valid = Constant.MEMBER_INVALID;
 		if (param.containsKey("user") && StringUtils.isNotBlank(param.getString("user"))) {
 			// 后台管理系统进来的
