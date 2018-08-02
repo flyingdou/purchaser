@@ -72,8 +72,8 @@
 	</tx:advice>
 
 	<aop:config>
-		<aop:pointcut id="testService" expression="execution (* com.fish.service..*(..))" />
-		<aop:pointcut id="testSchedule" expression="execution (* com.fish.schedule..*(..))" />
+		<aop:pointcut id="testService" expression="execution (* com.purchaser.service..*(..))" />
+		<aop:pointcut id="testSchedule" expression="execution (* com.purchaser.schedule..*(..))" />
 		<aop:advisor advice-ref="advice" pointcut-ref="testService" />
 		<aop:advisor advice-ref="advice" pointcut-ref="testSchedule" />
 	</aop:config>

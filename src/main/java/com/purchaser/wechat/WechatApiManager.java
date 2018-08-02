@@ -346,7 +346,27 @@ public class WechatApiManager {
 	}
 	
 	
-	
+
+	/**
+	 * 发送微信模板消息
+	 * @param sendTemplateRequest
+	 * @return
+	 */
+	public  JSONObject sendTemplateMessage(SendTemplateRequest sendTemplateRequest) {
+		JSONObject ret = new JSONObject();
+		// 拼接请求url
+		String reqUrl = sendTemplateRequest.getReqUrl().replace("ACCESS_TOKEN", getAccessToken());
+		JSONObject param = new JSONObject();
+		param.fluentPut("touser", sendTemplateRequest.getOpenid())
+		     .fluentPut("template_id", sendTemplateRequest.getTemplate_id())
+		     .fluentPut("url", sendTemplateRequest.getUrl())
+		     .fluentPut("data", sendTemplateRequest.getDataJson())
+		     ;
+		// 发送微信模板消息
+		ret = HttpRequestUtils.httpPost(reqUrl, param);
+		return ret;
+	} 
+	 
 	
 	
 	
@@ -360,6 +380,7 @@ public class WechatApiManager {
 		APP_ID = aPP_ID;
 		APP_SECRET = aPP_SECRET;
 	}
+
 
 	/**
 	 * setter && getter

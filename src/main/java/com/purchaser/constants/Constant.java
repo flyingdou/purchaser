@@ -141,4 +141,48 @@ public class Constant {
 	 * 学历parent
 	 */
 	public final static Integer PARAMETER_STUDY_PARENT = 23;
+	
+	
+	/**
+	 * 活动开始提醒模板
+	 */
+	public final static String ACTIVE_STARTING_NOTIFY_TEMPLATE = "VTzUVPQdH_uVp8p2GQDwuAUBib8ICdQRpfADv5nnjFI";
+	
+	
+	/**
+	 * 会员证书到期提醒模板
+	 */
+	public final static String MEMBER_VALID_EXPIRED_NOTIFY_TEMPLATE = "VVvfiHojyyKkqYLigLsMlV2T7dmiGSvFMUuYkW_0Zko";
+	
+	
+	/**
+	 * 活动开始前提醒，扫描时间间隔
+	 */
+	public final static Integer ACTIVE_NOTIFY_INTERVAL_VALUE = 24;
+	
+	
+	/**
+	 * 活动开始提醒，first
+	 */
+	public final static String ACTIVE_STARTING_NOTIFY_FIRST = "您报名的活动即将开始，活动信息如下：";
+	
+	
+	/**
+	 * 活动开始提醒，remark
+	 */
+	public final static String ACTIVE_STARTING_NOTIFY_REMARK = "请按以上信息准时出席活动！";
+	
+	
+	/**
+	 * 会员到期提醒，first
+	 */
+	public final static String MEMBER_VALID_EXPIRED_NOTIFY_FIRST = "您的会员资格即将到期";
+	
+	
+	/**
+	 * 会员到期提醒，remark
+	 */
+	public final static String MEMBER_VALID_EXPIRED_NOTIFY_REMARK = "请及时续费，以保持会员资格！";
+	
+	
 }

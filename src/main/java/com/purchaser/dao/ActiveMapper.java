@@ -98,4 +98,14 @@ public interface ActiveMapper {
 	 * @return
 	 */
 	int changeActiveStatus(Map<String, Object> param);
+	
+	
+	
+	/**
+	 * 查询可以被提醒的活动
+	 * @param param
+	 * @return
+	 */
+	List<Map<String, Object>> activeNotify (Map<String, Object> param);
+	
 }
