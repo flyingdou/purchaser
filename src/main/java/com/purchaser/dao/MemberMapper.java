@@ -64,4 +64,12 @@ public interface MemberMapper {
      */
     List<Map<String, Object>> expirationList (Map<String, Object> paramMap);
     
+    
+    /**
+     * 查询权益到期的会员
+     * @param paramMap
+     * @return
+     */
+    List<Map<String, Object>> expiredMember (Map<String, Object> paramMap);
+    
 }

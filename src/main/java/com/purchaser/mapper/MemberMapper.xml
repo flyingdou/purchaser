@@ -268,5 +268,17 @@
   </select>  
   
   
+  <!-- 查询权益到期的会员 -->
+  <select id="expiredMember" parameterType="Map" resultType="Map">
+		SELECT 
+		        m.id 
+		  FROM 
+		        tb_member m INNER JOIN tb_user u ON m.user = u.id AND m.valid = #{valid}
+		 WHERE 
+		        now() &gt;= m.expiration   
+  </select>
+  
+  
+  
   
 </mapper>

@@ -16,6 +16,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.purchaser.constants.Constant;
 import com.purchaser.dao.MemberMapper;
+import com.purchaser.pojo.Member;
 import com.purchaser.schedule.MemberSchedule;
 import com.purchaser.util.CommentUtils;
 import com.purchaser.wechat.SendTemplateRequest;
@@ -73,6 +74,29 @@ public class MemberScheduleImpl implements MemberSchedule {
 		}
 		
 
+	}
+
+	/**
+	 * 会员过期状态修改(每个小时检查一次)
+	 */
+	@Scheduled(cron = "0 1/60 * * * ?") // 秒 分 时 日 月 周 * 年
+	@Override
+	public void memberExpired() {
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("valid", Constant.MEMBER_VALID);
+		// 查询数据
+		List<Map<String, Object>> memberList =  memberMapper.expiredMember(paramMap);
+		
+		// 把查询到的会员状态修改掉
+		for (Map<String, Object> map : memberList) {
+			Member member = new Member();
+			member.setId((Long)map.get("id"));
+			member.setValid(Constant.MEMBER_VALID_EXPIRED);
+			
+			// 持久化
+			memberMapper.updateByPrimaryKeySelective(member);
+			
+		}
 	}
 
 }

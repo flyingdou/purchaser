@@ -14,5 +14,10 @@ public interface MemberSchedule {
 	public void memberExpiredNotify ();
 		
 	
+	
+	/**
+	 * 会员过期状态修改
+	 */
+	public void memberExpired();
 
 }
