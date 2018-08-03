@@ -502,6 +502,9 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 									success : function(resx) {
 										// 返回图片的服务器端Id, 保存到vue的model中
 										var imageList = vue.imageList;
+										if (imageList.length >= 3) {
+											imageList = [];
+										}
 										var obj = {
 											localId : res.localIds[index],
 											serverId : resx.serverId
