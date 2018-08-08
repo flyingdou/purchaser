@@ -18,8 +18,10 @@
 <body>
 	<div id="allmap" style="width: 100%; height: 100%;"></div>
 	<script>
-		var lat = 30.53069759743673;
-		var lng = 114.31637048721313;
+		var model = JSON.parse(sessionStorage.getItem("model"));
+		var lat = model.latitude || 30.53069759743673;
+		var lng =  model.longitude || 114.31637048721313;
+		
 		var center = new qq.maps.LatLng(lat, lng);
 		var map = new qq.maps.Map("allmap", {
 			center: center,
@@ -46,7 +48,6 @@
 		    	    });
 		    	    marker = marker2;
 		    	    
-		    	    var model = JSON.parse(sessionStorage.getItem("model"));
 		    	    model.longitude = lng;
 		    	    model.latitude = lat;
 		    	    sessionStorage.setItem("model", JSON.stringify(model));
