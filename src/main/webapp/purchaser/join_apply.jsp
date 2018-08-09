@@ -657,7 +657,7 @@
     					// 后台请求成功, 跳转到下个页面
     					location.href = "purchaser/order_member.jsp";
     				} else {
-    					console.log('程序异常，原因: ' + res.message)
+    					alert('程序异常，原因: ' + res.message);
     				}
     			},
     			error: function (e) {

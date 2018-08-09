@@ -109,7 +109,7 @@ public class MemberServiceImpl implements MemberService {
 		
 		// 新增会员费用数据
 		MemberPrice mp = new MemberPrice();
-		mp.setPrice(param.getLong("price"));
+		mp.setPrice(param.getDouble("price"));
 		mp.setType(param.getInteger("type_id"));
 		mp.setTypeName(param.getString("type"));
 		mpMapper.insert(mp);

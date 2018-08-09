@@ -8,14 +8,20 @@ package com.purchaser.pojo;
 public class MemberPrice {
     private Long id;
 
-    // 会员类型
+    /**
+     *  会员类型
+     */
     private Integer type;
 
-    // 类型名称
+    /**
+     *  类型名称
+     */
     private String typeName;
 
-    // 价格
-    private Long price;
+    /**
+     *  价格
+     */
+    private Double price;
 
     public Long getId() {
         return id;
@@ -41,11 +47,11 @@ public class MemberPrice {
         this.typeName = typeName == null ? null : typeName.trim();
     }
 
-    public Long getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(Long price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 }
