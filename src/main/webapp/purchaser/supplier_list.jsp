@@ -273,7 +273,7 @@
 				
 				// 根据行业类别查询供应商列表
 				getSupplierList: function () {
-					var businessList = [23, 22, 24];
+					var businessList = [57, 58, 59, 60];
 					// 创建参数对象
 					var url = "supplier/getSupplierList.pur";
 					var param = {
