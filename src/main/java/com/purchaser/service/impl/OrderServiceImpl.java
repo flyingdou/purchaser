@@ -105,6 +105,10 @@ public class OrderServiceImpl implements OrderService {
 		if (Constant.MEMBER_PRODUCT_TYPE.equals(order.getProductType())) {
 			Member member = memberMapper.selectByPrimaryKey(order.getProductId());
 			member.setValid(Constant.MEMBER_VALID);
+			// 获取最新的会员编号
+			String memberNo = memberMapper.getNo();
+			memberNo = CommentUtils.genNo(memberNo);
+			member.setNo(memberNo);
 			memberMapper.updateByPrimaryKeySelective(member);
 		}
 		

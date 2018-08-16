@@ -30,7 +30,7 @@ public interface MemberService {
 	 * @param userId
 	 * @return
 	 */
-	public JSONObject getMemberPrice (Long userId);
+	public JSONObject getMemberPrice (JSONObject param);
 	
 	
 	/**

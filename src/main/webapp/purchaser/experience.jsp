@@ -38,6 +38,12 @@
       font-size: 13px;
 　　 }
 
+    img{
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
     .content{
       position: relative;
       width: 100%;
@@ -74,7 +80,6 @@
 	   border: none;
     }
     
-    
     .fillx{
       width: 100%;
       height: 20px;
@@ -84,7 +89,6 @@
     .addExperience{
       width: 100%;
     }
-    
     
     .lineAreaB{
        width: 86%;
@@ -108,11 +112,9 @@
       color: #939393;
     }
     
-    
     .doux{
       border: none;
     }
-    
     
     .description{
       margin-top: 10px;
@@ -131,6 +133,28 @@
       background: #E50313;
       border-radius: 5px;
     }
+    
+    .lineAUpdate{
+       background: red;
+       color: white;
+       padding: 2px 10px;
+       border-radius: 15px;
+    }
+    
+    .updateIcon{
+       width: 15px;
+       height: 15px;
+       padding-left: 10px;
+    }
+    
+    .lineAValue{
+       display: flex;
+       justify-content: flex-end;
+       align-items: center;
+    }
+    
+    
+    
    
    
     
@@ -149,9 +173,20 @@
                    <!-- 下面的内容行 -->
                    <div class='lineAreaA' >
                    
-                        <div class='lineA' v-for='experiencex in model.experienceList' >
+                        <div class='lineA' v-for='experiencex in experienceList' >
                              <div class='lineATitle'>{{experiencex.startTime}}至{{experiencex.endTime}}</div>
-                             <div class='lineAValue'>{{experiencex.company_name}}</div>
+                             <div class='lineAValue'>
+                                     
+                                     <!-- 公司名称 -->
+                                     <div>{{experiencex.company_name}}</div>
+                                     
+                                     <!-- 修改图标 -->
+		                             <div class='updateIcon' @click='updateData(experiencex)' >
+		                                   <img src='purchaser/img/edit.png'>
+		                             </div>
+		                             
+                             </div>
+                             
                         </div>
                         
                    </div>
@@ -222,9 +257,9 @@ var experience = new Vue({
     data:{
     	model:{
     		startTime:"请选择",
-    		endTime:"请选择",
-    		experienceList:[]
-    	}
+    		endTime:"请选择"
+    	},
+    	experienceList:[]
     },
     
     // vue初始化方法
@@ -235,7 +270,7 @@ var experience = new Vue({
     	requestServer(url, param, function (res) {
     		if (res.success) {
     			// 数据请求成功
-    			experience.model.experienceList = res.experienceList;
+    			experience.experienceList = res.experienceList;
     			
     			// 将工作履历存储起来
     			sessionStorage.setItem("experienceList", JSON.stringify(res.experienceList));
@@ -261,6 +296,11 @@ var experience = new Vue({
     			}
     		}, 2)
     		
+    	},
+    	
+    	// 用户点击修改
+    	updateData: function (item) {
+    		experience.model = item;
     	},
     	
     	// 添加工作履历

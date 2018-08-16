@@ -56,13 +56,24 @@ public class ExperienceServiceImpl implements ExperienceService {
 		experience.setPostDetail(param.getString("post_detail"));
 		experience.setCompanyName(param.getString("company_name"));
 		
-		// 持久化数据
-		experienceMapper.insertSelective(experience);
+		// 持久化数据(修改)
+		if (param.containsKey("id") && param.getLong("id") != 0) {
+			experience.setId(param.getLong("id"));
+			experienceMapper.updateByPrimaryKeySelective(experience);
+			ret.fluentPut("success", true)
+			   .fluentPut("message", "OK")
+			   ;
+			return ret;
+		}
 		
+		// 持久化数据(新增)
+		experienceMapper.insertSelective(experience);
 		ret.fluentPut("success", true)
 		   .fluentPut("message", "OK")
 		   ;
 		return ret;
+		
+		
 	}
 
 

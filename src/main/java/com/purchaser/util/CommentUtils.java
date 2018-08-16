@@ -44,6 +44,16 @@ public class CommentUtils {
 	}
 
 	/**
+	 * 用户传入日期格式，返回日期格式化对象
+	 * @param formart
+	 * @return
+	 */
+	public static SimpleDateFormat getSdf (String formart) {
+		SimpleDateFormat sdf = new SimpleDateFormat(formart);
+		return sdf;
+	}
+	
+	/**
 	 * 计算两个经纬度之间的距离(单位:米)
 	 * 
 	 * @param lat1
@@ -418,6 +428,21 @@ public class CommentUtils {
 		}
 		return list;
 	}
+	
+	
+    /**
+     * 自动生成会员编号
+     * @param no
+     * @return
+     */
+	public static String genNo (String no) {
+		Long lno = Long.valueOf(no) + 1;
+		no = lno + "";
+		no = no.substring(6, 12);
+		no = getSdf("YYMMdd").format(new Date()) + no;
+		return no;
+	}
+	
 	
 	
 }

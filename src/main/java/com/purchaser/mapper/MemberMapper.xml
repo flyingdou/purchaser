@@ -192,14 +192,17 @@
   
   
   <!-- 查询用户会员价格信息 -->
-  <select id="getMemberPrice" parameterType="Long" resultType="Map">
+  <select id="getMemberPrice" parameterType="Map" resultType="Map">
 		  select 
 			        m.id as memberId, mp.type_name, mp.price
 			from    
-			        tb_user u LEFT JOIN tb_member m ON u.id = m.user
+			        tb_user u LEFT JOIN tb_member m ON u.id = m.user and m.valid = #{valid} 
 			                  INNER JOIN tb_member_price mp ON m.type = mp.id 
 		   where 
-			        u.id = #{userId}   
+			        u.id = #{userId} 
+		   order by 
+		            mp.id desc 
+		            limit 1  
   </select>
   
   
@@ -276,6 +279,20 @@
 		        tb_member m INNER JOIN tb_user u ON m.user = u.id AND m.valid = #{valid}
 		 WHERE 
 		        now() &gt;= m.expiration   
+  </select>
+  
+  <!-- 查询截止目前位置的最新会员编号 -->
+  <select id="getNo" resultType="String">
+     	select 
+     			no 
+     	  from 
+     	  	    tb_member  
+     	 where 
+     	 		not ISNULL(no) 
+      ORDER BY 
+      			no desc  
+      	LIMIT 
+      		    1 
   </select>
   
   

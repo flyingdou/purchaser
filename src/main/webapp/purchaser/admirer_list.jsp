@@ -103,8 +103,8 @@
 	
 	.content-image{
 		float: left;
-		width: 66px;
-		height: 64px;
+		width: 42px;
+		height: 42px;
 		overflow: hidden;
 		border-radius: 50%;
 	}
@@ -125,6 +125,7 @@
 		margin-top: 5px;
 		font-size: 12px;
 		color: #BBB;
+		margin-right: 10px;
 	}
 	
 	/* 添加供应商按钮 */
@@ -160,9 +161,7 @@
 	
 	.next_line{
 	   display: flex;
-	   justify-content: space-between;
-	   align-items: center;
-	   margin-top: 18px;
+	   margin-top: 1px;
 	}
 	
 	
@@ -201,18 +200,27 @@
 						
 						<!-- 下面一行 -->
 						<div class="next_line">
-								<div class="content-remark">
-									{{ item.name}}
-								</div>
+						
+								<!-- 性别 -->
 								<div class="content-remark">
 									{{ item.gender | gender}}
 								</div>
+								
+								<!-- 学历 -->
 								<div class="content-remark">
 									{{ item.study}}
 								</div>
+								
+								<!-- 工作经验 -->
 								<div class="content-remark">
 									工作经验{{ item.monthDiff | month2year}}年
 								</div>
+								
+								<!--  资格认证 -->
+								<div class="content-remark">
+									{{ item.qualification | strOverflowerHidden}}
+								</div>
+								
 						</div>
 						
 					</div>
@@ -233,18 +241,27 @@
 						</div>
 						<!-- 下面一行 -->
 						<div class="next_line">
-								<div class="content-remark">
-									{{ item.name}}
-								</div>
+						
+						        <!-- 性别 -->
 								<div class="content-remark">
 									{{ item.gender | gender}}
 								</div>
+								
+								<!-- 学历 -->
 								<div class="content-remark">
 									{{ item.study}}
 								</div>
+								
+								<!-- 工作经验 -->
 								<div class="content-remark">
 									工作经验{{ item.monthDiff | month2year}}年
 								</div>
+								
+								<!--  资格认证 -->
+								<div class="content-remark">
+									{{ item.qualification}}
+								</div>
+								
 						</div>
 						
 					</div>
@@ -266,18 +283,27 @@
 						
 						<!-- 下面一行 -->
 						<div class="next_line">
-								<div class="content-remark">
-									{{ item.name}}
-								</div>
+								
+								<!-- 性别 -->
 								<div class="content-remark">
 									{{ item.gender | gender}}
 								</div>
+								
+								<!-- 学历 -->
 								<div class="content-remark">
 									{{ item.study}}
 								</div>
+								
+								<!-- 工作经验 -->
 								<div class="content-remark">
 									工作经验{{ item.monthDiff | month2year}}年
 								</div>
+								
+								<!--  资格认证 -->
+								<div class="content-remark">
+									{{ item.qualification}}
+								</div>
+								
 						</div>
 						
 					</div>
@@ -427,6 +453,7 @@
 			
 			// 过滤器
 			filters: {
+				
 				// 性别过滤器
 				gender: function (value) {
 					if (value == 'M') {
@@ -446,8 +473,17 @@
 						value = value/12;
 					}
 					return value;
-				}
+				},
 				
+				// 字符超长过滤
+				strOverflowerHidden: function (str) {
+					var length = 13;
+					if (str && str.length >= length) {
+						str = str.substr(0, length) + '...';
+					}
+					return str;
+					
+				}
 			}
 		});
 	</script>

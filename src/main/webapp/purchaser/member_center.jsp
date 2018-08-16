@@ -91,7 +91,7 @@
     
     .left{
       float: left;
-      padding-left: 14%;
+      padding-left: 10%;
     }
     
     .right{
@@ -145,6 +145,32 @@
       border-radius: 5px;
     }
     
+    .details{
+       padding-top: 20%;
+       padding-left: 70px;
+       padding-right: 40px;
+    }
+    
+    .detailLine{
+       font-size: 14px;
+       color: white;
+    }
+    
+    .toMemberInfoDiv{
+       position: fixed;
+       bottom: 20px;
+       left: 0;
+       width: 100%;
+       z-index: 1;
+    }
+    
+    .toMemberInfo{
+       font-size: 16px;
+       color: white;
+       text-align: center;
+       margin: 0 auto;
+    }
+    
 </style>
 
 </head>
@@ -172,21 +198,25 @@
                
                 <!-- 会员类型 -->
                 <div class='top'>
-                     	{{model.type_name}}
+                		<!-- 会员类型 -->
+                     	<div v-if = '!showDetail'>{{model.type_name}}</div>
+                     	
+                     	<!-- 会员权益 -->
+                     	<div v-if = 'showDetail'>会员权益</div>
                 </div>
                
-               <!-- 用户头像 -->
-               <div class='memberInfo'>
-                     
+               <!-- 会员证信息 -->
+               <div class='memberInfo' v-if = '!showDetail'>
                      
                      <div class='left'>
                              <img class='memberImg' :src='"http://purchaser.ecartoon.com.cn/picture/" + model.image'>
                      
 		                     <!-- 图片描述 -->
-		                     <div class='description'>查看会员权益</div>
+		                     <div class='description' @click='toShowDetails'>查看会员权益</div>
                      </div>
                      
                      <div class='right'>
+                     
                              <!-- 姓名 -->
                              <div class='titleFont'>姓名：<span class='valueFont'>{{model.name}}</span></div>
                              
@@ -201,6 +231,40 @@
                              
                      </div>
                      
+               </div>
+               
+               <!-- 会员权益信息 -->
+               <div class = 'details' v-if = 'showDetail'>
+                    
+                    <div class='detailLine'>
+                    		<span>1.拥护本会章程，自觉缴交会费</span>
+                    </div>
+                    
+                    <div class='detailLine'>
+                    		<span>2.享受采购师团体服务的优先权</span>
+                    </div>
+                    
+                    <div class='detailLine'>
+                    		<span>3.拥有选举权、被选举权、表决权、建议权和监督权</span>
+                    </div>
+                    
+                    <div class='detailLine'>
+                    		<span>4.优先参加本会组织的各类活动、参访、培训、沙龙讲座</span>
+                    </div>
+                    
+                    <div class='detailLine'>
+                    		<span>5.拥有查找/发布招聘求职、名优产品、采购需求、供应商库、采购师库等信息</span>
+                    </div>
+                    
+                    <div class='detailLine'>
+                    		<span>6.入会自愿，退会自由 </span>
+                    </div>
+                    
+               </div>
+               
+               <!-- 返回按钮 -->
+               <div class='toMemberInfoDiv' v-if = 'showDetail'>
+               		 <div class='toMemberInfo'  @click='toMemberInfo'>&lt;返回</div>
                </div>
                
            
@@ -246,7 +310,6 @@
     	  var bodyHeight = $("body").innerHeight();
     	  var userHeight = $(".userInfo").outerHeight(true);
     	  var memberHeight = bodyHeight - userHeight;
-    	  console.log('body: ' + bodyHeight + ', user: ' + userHeight + ', member: ' + memberHeight );
     	  $(".memberInfoDiv").css({"height": memberHeight + 'px'});
     	  $(".notMemberDiv").css({"height": memberHeight + 'px'});
     	  
@@ -264,6 +327,7 @@
 				  } else {
 					  member.notMember = true;
 				  }
+				  
 			  } else {
 				  // 程序异常，数据请求失败
 				  console.log('程序异常，原因: ' + res.message);
@@ -282,7 +346,9 @@
     			  image:'20180712173921373090.jpg'
     		  },
     		  isMember: true,
-    		  notMember: true
+    		  notMember: true,
+    		  showDetail: false,
+    		  time: 0
     	  },
     	  // 自定义方法
     	  methods:{
@@ -300,6 +366,28 @@
     		  // 跳转到入会申请页面
     		  gotoJoinApply: function () {
     			  location.href='member/joinApply.pur';
+    		  },
+    		  
+    		  // 用户点击查看会员权益
+    		  toShowDetails: function () {
+    			  var cuTime = new Date().getTime();
+    			  if (cuTime - this.time < 100) {
+    				  return;
+    			  }
+    			  
+    			  this.showDetail = true;
+    			  this.time = new Date().getTime();
+    		  },
+    		  
+    		  // 用户点击返回会员证信息
+    		  toMemberInfo: function () {
+    			  var cuTime = new Date().getTime();
+    			  if (cuTime - this.time < 100) {
+    				  return;
+    			  }
+    			  
+    			  this.showDetail = false;
+    			  this.time = new Date().getTime();
     		  }
     		  
     		  
