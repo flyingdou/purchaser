@@ -33,65 +33,65 @@ public class WechatApiManager {
 	 * app_id
 	 */
 	private String APP_ID;
-	
+
 	/**
 	 * app_secret
 	 */
 	private String APP_SECRET;
-	
+
 	/**
 	 * 获取accessToken
+	 * 
 	 * @return
 	 */
-	public String getAccessToken () {
-    	String GET_ACCESS_TOKEN_URL = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="
-    			+ this.getAPP_ID() + "&secret=" + this.getAPP_SECRET();
-    	JSONObject json = JSONObject.parseObject(HttpRequestUtils.httpRequest(GET_ACCESS_TOKEN_URL, null));
-    	String access_token = json.getString("access_token");
+	public String getAccessToken() {
+		String GET_ACCESS_TOKEN_URL = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="
+				+ this.getAPP_ID() + "&secret=" + this.getAPP_SECRET();
+		JSONObject json = JSONObject.parseObject(HttpRequestUtils.httpRequest(GET_ACCESS_TOKEN_URL, null));
+		String access_token = json.getString("access_token");
 		return access_token;
 	}
-	
-	
+
 	/**
 	 * 获取openId
+	 * 
 	 * @param openIdRequest
 	 * @return
 	 */
-	public JSONObject getOpenId (OpenIdRequest openIdRequest) {
+	public JSONObject getOpenId(OpenIdRequest openIdRequest) {
 		String reqUrl = openIdRequest.getRequestUrl();
 		reqUrl = reqUrl.replace("APPID", this.getAPP_ID()).replace("SECRET", this.getAPP_SECRET());
 		return HttpRequestUtils.httpGet(reqUrl);
 	}
 
-	
 	/**
 	 * 根据openId请求用户信息
+	 * 
 	 * @param userInfoRequest
 	 * @return
 	 */
-	public JSONObject getUserInfo (UserInfoRequest userInfoRequest, String openid) {
+	public JSONObject getUserInfo(UserInfoRequest userInfoRequest, String openid) {
 		String reqUrl = userInfoRequest.getReqUrl();
 		reqUrl += "access_token=" + getAccessToken() + "&openid=" + openid;
 		return HttpRequestUtils.httpGet(reqUrl);
 	}
-	
-	
-	
+
 	/**
 	 * 获取用户上传的图片下载链接
+	 * 
 	 * @param DownloadPictureRequest
 	 * @param mediaId
 	 * @return
 	 */
-	public String getDownloadUrl (DownloadPictureRequest downloadPictureRequest, String mediaId) {
-		String reqUrl = downloadPictureRequest.getReqUrl();
-		reqUrl.replace("ACCESS_TOKEN", this.getAccessToken()).replace("MEDIA_ID", mediaId);
+	public String getDownloadUrl(DownloadPictureRequest downloadPictureRequest, String mediaId) {
+		String baseUrl = downloadPictureRequest.getReqUrl();
+		String reqUrl = baseUrl.replace("ACCESS_TOKEN", this.getAccessToken()).replace("MEDIA_ID", mediaId);
 		return reqUrl;
 	}
-	
-	
+
 	/**
 	 * 从微信服务器下载用户上传的照片
+	 * 
 	 * @param mediaId
 	 * @return
 	 */
@@ -112,9 +112,7 @@ public class WechatApiManager {
 		}
 		return null;
 	}
-	
-	
-	
+
 	/**
 	 * 微信公众号支付签名
 	 * 
@@ -127,7 +125,7 @@ public class WechatApiManager {
 	 * @throws Exception
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public String paySign( PayRequest payRequest, Order order) throws Exception {
+	public String paySign(PayRequest payRequest, Order order) throws Exception {
 		// 获取发送给微信的参数
 		// 随机字符串
 		String nonce_str = create_nonce_str();
@@ -145,19 +143,19 @@ public class WechatApiManager {
 		String notify_url = "http://purchaser.ecartoon.com.cn/wechat/updateOrder.pur";
 		// 终端设备类型
 		String deviceInfo = "WEB";
-		
-		//微信支付分配的商户号
+
+		// 微信支付分配的商户号
 		String MCH_ID = payRequest.getMCH_ID();
 
-		//key为商户平台设置的密钥key
+		// key为商户平台设置的密钥key
 		String KEY = payRequest.getKey();
-		
+
 		// openid
 		String openid = payRequest.getOpenId();
-		
+
 		// appid
 		String appid = this.getAPP_ID();
-		
+
 		// ip
 		String ip = payRequest.getIp();
 
@@ -217,11 +215,7 @@ public class WechatApiManager {
 		res.fluentPut("prepay_id", prepay_id);
 		return res.toString();
 	}
-	
-	
-	
-	
-	
+
 	/**
 	 * 生成签名
 	 * 
@@ -251,10 +245,7 @@ public class WechatApiManager {
 		System.out.println("签名: " + sign);
 		return sign;
 	}
-	
-	
-	
-	
+
 	/**
 	 * 获取支付id
 	 * 
@@ -276,10 +267,7 @@ public class WechatApiManager {
 		}
 		return null;
 	}
-	
-	
-	
-	
+
 	/**
 	 * http请求
 	 * 
@@ -324,9 +312,7 @@ public class WechatApiManager {
 		}
 		return null;
 	}
-	
-	
-	
+
 	/**
 	 * 获取唯一字符串
 	 * 
@@ -344,34 +330,29 @@ public class WechatApiManager {
 	private static String create_timestamp() {
 		return Long.toString(System.currentTimeMillis() / 1000);
 	}
-	
-	
 
 	/**
 	 * 发送微信模板消息
+	 * 
 	 * @param sendTemplateRequest
 	 * @return
 	 */
-	public  JSONObject sendTemplateMessage(SendTemplateRequest sendTemplateRequest) {
+	public JSONObject sendTemplateMessage(SendTemplateRequest sendTemplateRequest) {
 		JSONObject ret = new JSONObject();
 		// 拼接请求url
 		String reqUrl = sendTemplateRequest.getReqUrl().replace("ACCESS_TOKEN", getAccessToken());
 		JSONObject param = new JSONObject();
 		param.fluentPut("touser", sendTemplateRequest.getOpenid())
-		     .fluentPut("template_id", sendTemplateRequest.getTemplate_id())
-		     .fluentPut("url", sendTemplateRequest.getUrl())
-		     .fluentPut("data", sendTemplateRequest.getDataJson())
-		     ;
+				.fluentPut("template_id", sendTemplateRequest.getTemplate_id())
+				.fluentPut("url", sendTemplateRequest.getUrl()).fluentPut("data", sendTemplateRequest.getDataJson());
 		// 发送微信模板消息
 		ret = HttpRequestUtils.httpPost(reqUrl, param);
 		return ret;
-	} 
-	 
-	
-	
-	
+	}
+
 	/**
 	 * 有参构造函数
+	 * 
 	 * @param aPP_ID
 	 * @param aPP_SECRET
 	 */
@@ -381,9 +362,9 @@ public class WechatApiManager {
 		APP_SECRET = aPP_SECRET;
 	}
 
-
 	/**
 	 * setter && getter
+	 * 
 	 * @return
 	 */
 	public String getAPP_ID() {
@@ -401,5 +382,5 @@ public class WechatApiManager {
 	public void setAPP_SECRET(String aPP_SECRET) {
 		APP_SECRET = aPP_SECRET;
 	}
-	
+
 }

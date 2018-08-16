@@ -276,12 +276,9 @@
   
   <!-- 查询活动列表 -->
   <select id="getActiveList" parameterType="Map" resultMap="BaseResultMap">
-  	 select id,name,image,start_date,end_date,join_end_date,address from tb_active where 1=1
+  	 select id,name,image,start_date,end_date,join_end_date,address from tb_active where status=1
   	 <if test="type != null and type != ''">
   	 	and type = #{type}
-  	 </if>
-  	 <if test="status != null and type != ''">
-  	 	and status = #{status}
   	 </if>
   	 	order by create_date desc
   </select>

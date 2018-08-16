@@ -28,8 +28,7 @@
 }
 
 .active-image {
-	padding-right: 50px; width : 140px;
-	width: 140px;
+	width: 218px;
 	height: 100px;
 	overflow: hidden;
 }
@@ -37,6 +36,14 @@
 .img-rounded {
 	width: 100%;
 	height: auto;
+}
+
+.mdzz{
+	position: absolute;
+	top: 60px;
+	right: 240px;
+	font-size: 18px;
+	color: #BBB;
 }
 
 .submit-button {
@@ -115,113 +122,114 @@ ul,li{
 					<div class="form-group">
 						<label for="firstname" class="col-sm-2 control-label">活动封面</label>
 						<div class="col-sm-10 control-input active-image">
-							<img :src="base_picture_url + model.image" class="img-rounded" v-if="model.image && model.operation != 0" 
+							<img :src="base_picture_url + model.image" class="img-rounded" v-if="model.image && model.operation != 2" 
 								@click="javascript:document.querySelector('#file').click()" />
-							<img :src="base_picture_url + model.image" class="img-rounded" v-if="model.image && model.operation == 0" />
+							<img :src="base_picture_url + model.image" class="img-rounded" v-if="model.image && model.operation == 2" />
 							<div style="height: 98px; line-height: 100px; text-align: center; border: 1px solid #BBB;" v-if="!model.image" 
 								@click="javascript:document.querySelector('#file').click()">
 								请选择图片
 							</div>
 							<input id="file" type="file" name="file" hidden @change="uploadImage()">
 						</div>
+						<div class='mdzz'>请上传宽: 218px , 高: 100px的图片</div>
 					</div>
 					<div class="form-group">
 						<label for="firstname" class="col-sm-2 control-label">活动名称</label>
 						<div class="col-sm-10 control-input">
 							<input type="text" class="form-control" id="firstname"
-								placeholder="请输入活动名称" v-model="model.name" v-if="model.operation != 0">
+								placeholder="请输入活动名称" v-model="model.name" v-if="model.operation != 2">
 							<input type="text" class="form-control" id="firstname"
-								placeholder="请输入活动名称" disabled v-model="model.name" v-if="model.operation == 0">
+								placeholder="请输入活动名称" disabled v-model="model.name" v-if="model.operation == 2">
 						</div>
 					</div>
 					<div class="form-group">
 						<label for="firstname" class="col-sm-2 control-label">会员价格</label>
 						<div class="col-sm-10 control-input">
 							<input type="text" class="form-control" id="firstname"
-								placeholder="请输入会员价格" v-model="model.price" v-if="model.operation != 0" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}">
+								placeholder="请输入会员价格" v-model="model.price" v-if="model.operation != 2" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}">
 							<input type="text" class="form-control" id="firstname"
-								placeholder="请输入会员价格" disabled v-model="model.price" v-if="model.operation == 0" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}">
+								placeholder="请输入会员价格" disabled v-model="model.price" v-if="model.operation == 2" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}">
 						</div>
 					</div>
 					<div class="form-group">
 						<label for="firstname" class="col-sm-2 control-label">嘉宾价格</label>
 						<div class="col-sm-10 control-input">
 							<input type="text" class="form-control" id="firstname"
-								placeholder="请输入嘉宾价格" v-model="model.distinguishedPrice" v-if="model.operation != 0" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}">
+								placeholder="请输入嘉宾价格" v-model="model.distinguishedPrice" v-if="model.operation != 2" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}">
 							<input type="text" class="form-control" id="firstname"
-								placeholder="请输入嘉宾价格" v-model="model.distinguishedPrice" disabled v-if="model.operation == 0" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}">
+								placeholder="请输入嘉宾价格" v-model="model.distinguishedPrice" disabled v-if="model.operation == 2" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}">
 						</div>
 					</div>
 					<div class="form-group">
 						<label for="firstname" class="col-sm-2 control-label">厂商价格</label>
 						<div class="col-sm-10 control-input">
 							<input type="text" class="form-control" id="firstname"
-								placeholder="请输入厂商价格" v-model="model.manufacturerPrice" v-if="model.operation != 0" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}">
+								placeholder="请输入厂商价格" v-model="model.manufacturerPrice" v-if="model.operation != 2" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}">
 							<input type="text" class="form-control" id="firstname"
-								placeholder="请输入厂商价格" disabled v-model="model.manufacturerPrice" v-if="model.operation == 0" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}">
+								placeholder="请输入厂商价格" disabled v-model="model.manufacturerPrice" v-if="model.operation == 2" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}">
 						</div>
 					</div>
 					<div class="form-group">
 						<label for="firstname" class="col-sm-2 control-label">开始时间</label>
 						<div class="col-sm-10 control-input">
 							<input type="text" class="form-control" id="startTime"
-								placeholder="请选择开始时间" v-model="model.startDate" v-if="model.operation != 0">
+								placeholder="请选择开始时间" v-model="model.startDate" v-if="model.operation != 2">
 							<input type="text" class="form-control" id="startTime"
-								placeholder="请选择开始时间" disabled v-model="model.startDate" v-if="model.operation == 0">
+								placeholder="请选择开始时间" disabled v-model="model.startDate" v-if="model.operation == 2">
 						</div>
 					</div>
 					<div class="form-group">
 						<label for="firstname" class="col-sm-2 control-label">结束时间</label>
 						<div class="col-sm-10 control-input">
 							<input type="text" class="form-control" id="endTime"
-								placeholder="请选择结束时间" v-model="model.endDate" v-if="model.operation != 0">
+								placeholder="请选择结束时间" v-model="model.endDate" v-if="model.operation != 2">
 							<input type="text" class="form-control" id="endTime"
-								placeholder="请选择结束时间" disabled v-model="model.endDate" v-if="model.operation == 0">
+								placeholder="请选择结束时间" disabled v-model="model.endDate" v-if="model.operation == 2">
 						</div>
 					</div>
 					<div class="form-group">
 						<label for="firstname" class="col-sm-2 control-label">报名结束时间</label>
 						<div class="col-sm-10 control-input">
 							<input type="text" class="form-control" id="joinEndTime"
-								placeholder="请选择报名结束时间" v-model="model.joinEndDate" v-if="model.operation != 0">
+								placeholder="请选择报名结束时间" v-model="model.joinEndDate" v-if="model.operation != 2">
 							<input type="text" class="form-control" id="joinEndTime"
-								placeholder="请选择报名结束时间" disabled v-model="model.joinEndDate" v-if="model.operation == 0">
+								placeholder="请选择报名结束时间" disabled v-model="model.joinEndDate" v-if="model.operation == 2">
 						</div>
 					</div>
 					<div class="form-group">
 						<label for="firstname" class="col-sm-2 control-label">联系电话</label>
 						<div class="col-sm-10 control-input">
 							<input type="text" class="form-control" id="firstname"
-								placeholder="请输入联系电话" v-model="model.telephone" v-if="model.operation != 0">
+								placeholder="请输入联系电话" v-model="model.telephone" v-if="model.operation != 2">
 							<input type="text" class="form-control" id="firstname"
-								placeholder="请输入联系电话" disabled v-model="model.telephone" v-if="model.operation == 0">
+								placeholder="请输入联系电话" disabled v-model="model.telephone" v-if="model.operation == 2">
 						</div>
 					</div>
 					<div class="form-group">
 						<label for="firstname" class="col-sm-2 control-label">主办单位</label>
 						<div class="col-sm-10 control-input">
 							<input type="text" class="form-control" id="firstname"
-								placeholder="请输入主办单位名称" v-model="model.hostUnit" v-if="model.operation != 0">
+								placeholder="请输入主办单位名称" v-model="model.hostUnit" v-if="model.operation != 2">
 							<input type="text" class="form-control" id="firstname"
-								placeholder="请输入主办单位名称" disabled v-model="model.hostUnit" v-if="model.operation == 0">
+								placeholder="请输入主办单位名称" disabled v-model="model.hostUnit" v-if="model.operation == 2">
 						</div>
 					</div>
 					<div class="form-group">
 						<label for="firstname" class="col-sm-2 control-label">人数上限</label>
 						<div class="col-sm-10 control-input">
 							<input type="text" class="form-control" id="firstname"
-								placeholder="请输入人数上限" v-model="model.upperLimit" v-if="model.operation != 0">
+								placeholder="请输入人数上限" v-model="model.upperLimit" v-if="model.operation != 2">
 							<input type="text" class="form-control" id="firstname"
-								placeholder="请输入人数上限" disabled v-model="model.upperLimit" v-if="model.operation == 0">
+								placeholder="请输入人数上限" disabled v-model="model.upperLimit" v-if="model.operation == 2">
 						</div>
 					</div>
 					<div class="form-group">
 						<label for="firstname" class="col-sm-2 control-label">地址</label>
 						<div class="col-sm-10 control-input">
 							<input type="text" class="form-control" id="firstname"
-								placeholder="请输入地址" v-model="model.address" v-if="model.operation != 0">
+								placeholder="请输入地址" v-model="model.address" v-if="model.operation != 2">
 							<input type="text" class="form-control" id="firstname"
-								placeholder="请输入地址" disabled v-model="model.address" v-if="model.operation == 0">
+								placeholder="请输入地址" disabled v-model="model.address" v-if="model.operation == 2">
 						</div>
 					</div>
 					<div class="form-group" v-if="!model.operation">
@@ -244,18 +252,18 @@ ul,li{
 							<span v-if="model.longitude && model.latitude">
 								经度: {{model.longitude | numberHidden}};纬度: {{model.latitude | numberHidden}}
 							</span>
-							<button type="button" class="btn btn-success" @click="selectLocation()" v-if="model.operation != 0">选择经纬度</button>
+							<button type="button" class="btn btn-success" @click="selectLocation()" v-if="model.operation != 2">选择经纬度</button>
 						</div>
 					</div>
 					<div class="form-group">
 						<label for="firstname" class="col-sm-2 control-label">活动类型</label>
 						<div class="col-sm-10 control-input">
-							<select v-model="model.type" v-if="model.operation != 0">
+							<select v-model="model.type" v-if="model.operation != 2">
 								<option value="0">联谊活动</option>
 								<option value="1">培训沙龙</option>
 								<option value="2">参观访问</option>
 							</select>
-							<select v-model="model.type" disabled v-if="model.operation == 0">
+							<select v-model="model.type" disabled v-if="model.operation == 2">
 								<option value="0">联谊活动</option>
 								<option value="1">培训沙龙</option>
 								<option value="2">参观访问</option>
@@ -264,11 +272,11 @@ ul,li{
 					</div>
 					<div class="form-group">
 						<label for="name">活动说明</label>
-						<textarea class="form-control" rows="6" style="resize: none;" v-model="model.remark" v-if="model.operation != 0"></textarea>
-						<textarea class="form-control" rows="6" style="resize: none;" disabled v-model="model.remark" v-if="model.operation == 0"></textarea>
+						<textarea class="form-control" rows="6" style="resize: none;" v-model="model.remark" v-if="model.operation != 2"></textarea>
+						<textarea class="form-control" rows="6" style="resize: none;" disabled v-model="model.remark" v-if="model.operation == 2"></textarea>
 					</div>
 					
-					<div class="activeCodeWraper" v-if="model.operation == 0">
+					<div class="activeCodeWraper" v-if="model.operation == 2">
 						<div class="activeCodeList">
 							<div class="activeCodeTitle">嘉宾邀请码:</div>
 							<ul class="activeCodeContent">
@@ -276,7 +284,7 @@ ul,li{
 							</ul>
 						</div>
 					</div>
-					<div class="activeCodeWraper" v-if="model.operation == 0">
+					<div class="activeCodeWraper" v-if="model.operation == 2">
 						<div class="activeCodeList">
 							<div class="activeCodeTitle">厂商邀请码:</div>
 							<ul class="activeCodeContent">
@@ -286,7 +294,7 @@ ul,li{
 					</div>
 					
 					<div class="submit-button" @click="submit()" v-if="!model.operation">确定</div>
-					<div class="submit-button" @click="updateActive()" v-if="model.operation && model.operation != 0">确定</div>
+					<div class="submit-button" @click="updateActive()" v-if="model.operation && model.operation != 2">确定</div>
 				</form>
 			</div>
 			<!-- end span10 -->
@@ -302,7 +310,7 @@ ul,li{
 	<script src="js/required.js"></script>
 	<script src="../purchaser/js/commonUtils.js"></script>
 	<script type="text/javascript">
-		var vue = null;
+		var vue = null, model = null;
 		
 		require(['DateBox/DateBox'], function(DateBox){
 
@@ -313,6 +321,13 @@ ul,li{
 			new DateBox('joinEndTime');
 
 		});
+		
+		window.onpageshow = function () {
+			if (sessionStorage.getItem("model") && sessionStorage.getItem("model") != "") {
+				model = JSON.parse(sessionStorage.getItem("model"));
+				sessionStorage.setItem("model", null);
+			}
+		}
 		
 		require(['../purchaser/js/vue.min.js'], function(Vue){
 			 vue = new Vue({
@@ -325,6 +340,10 @@ ul,li{
 					manufacturerCodeList: []
 				},
 				created: function () {
+					if (model) {
+						Vue.set(this, "model", model);
+					}
+					
 					if (this.GetQueryString("activeId")) {
 						var url = location.origin + "/active/getActiveById.pur";
 						var param = {
@@ -337,7 +356,7 @@ ul,li{
 							Vue.set(vue, "distinguishedCodeList", res.distinguishedCodeList);
 							Vue.set(vue, "manufacturerCodeList", res.manufacturerCodeList);
 							// 修改页面标题
-							if (data.operation == 0) {
+							if (data.operation == 2) {
 								document.title = "活动详情";
 							} else {
 								document.title = "修改活动";
@@ -346,12 +365,7 @@ ul,li{
 						return;
 					}
 					
-					if (sessionStorage.getItem("model") && sessionStorage.getItem("model") != "") {
-						var model = JSON.parse(sessionStorage.getItem("model"));
-						Vue.set(this, "model", model);
-					} else {
-						Vue.set(this.model, "type", 0);
-					}
+					Vue.set(this.model, "type", 0);
 				},
 				methods: {
 					// 取URL中参数

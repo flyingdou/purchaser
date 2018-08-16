@@ -175,56 +175,12 @@
 					{{item.text}}
 				</div>
 			</div>
-			<div class="content-list" v-if="currentIndex == 0">
-				<div class="no-data" v-if="contentList1.length == 0">
+			<div class="content-list">
+				<div class="no-data" v-if="contentList.length == 0">
 					<div class="no-data-image"><img src="purchaser/img/no_data.png"></div>
 					<div class="no-data-text">暂无数据</div>
 				</div>
-				<div class="content-item" v-for="(item,i) in contentList1" @click="toDetail(i)">
-					<div class="content-image">
-						<img :src="'http://purchaser.ecartoon.com.cn/picture/' + item.image1">
-					</div>
-					<div class="content-body">
-						<div class="content-name">
-							{{item.name}}
-						</div>
-						<div class="content-remark">
-							{{ item.address | overflow_hidden}}
-						</div>
-						<div class="content-remark">
-							{{ item.remark | overflow_hidden}}
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="content-list" v-if="currentIndex == 1">
-				<div class="no-data" v-if="contentList2.length == 0">
-					<div class="no-data-image"><img src="purchaser/img/no_data.png"></div>
-					<div class="no-data-text">暂无数据</div>
-				</div>
-				<div class="content-item" v-for="(item,i) in contentList2" @click="toDetail(i)">
-					<div class="content-image">
-						<img :src="'http://purchaser.ecartoon.com.cn/picture/' + item.image1">
-					</div>
-					<div class="content-body">
-						<div class="content-name">
-							{{item.name}}
-						</div>
-						<div class="content-remark">
-							{{ item.address | overflow_hidden}}
-						</div>
-						<div class="content-remark">
-							{{ item.remark | overflow_hidden}}
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="content-list" v-if="currentIndex == 2">
-				<div class="no-data" v-if="contentList3.length == 0">
-					<div class="no-data-image"><img src="purchaser/img/no_data.png"></div>
-					<div class="no-data-text">暂无数据</div>
-				</div>
-				<div class="content-item" v-for="(item,i) in contentList3" @click="toDetail(i)">
+				<div class="content-item" v-for="(item,i) in contentList" @click="toDetail(i)">
 					<div class="content-image">
 						<img :src="'http://purchaser.ecartoon.com.cn/picture/' + item.image1">
 					</div>
@@ -252,9 +208,7 @@
 			data: {
 				currentIndex: 0,
 				nav_items: [],
-				contentList1: [],
-				contentList2: [],
-				contentList3: [],
+				contentList: [],
 				model: {},
 				isMember: 0
 			},
@@ -290,7 +244,7 @@
 					}
 					
 					// 初始化顶部栏选项
-					var nav_text_list = ["原辅材料","机械电子","其他"];
+					var nav_text_list = ["制造/加工业","金融/服务业","教育/文创业","销售/酒店业"];
 					nav_text_list.forEach(item => this.nav_items.push({text : item, "class" : "nav-text"}));
 					this.nav_items[this.currentIndex]["class"] = "nav-text nav-text-acitve";
 					
@@ -327,7 +281,7 @@
 					}
 					// 请求服务端数据
 					this.requestServer(url, param, function (res) {
-						vue["contentList" + (vue.currentIndex + 1)] = res;
+						vue.contentList = res;
 						
 						// 处理图片
 						clipImgs("img");

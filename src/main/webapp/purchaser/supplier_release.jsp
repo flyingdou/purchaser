@@ -494,33 +494,31 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 						sourceType : [ 'album', 'camera' ], 
 						// 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
 						success : function(res) {
-							var index = 0;
-							(function(res, index) {
-								wx.uploadImage({
-									localId : res.localIds[index], // 需要上传的图片的本地ID，由chooseImage接口获得
-									isShowProgressTips : 0, // 默认为1，显示进度提示
-									success : function(resx) {
-										// 返回图片的服务器端Id, 保存到vue的model中
-										var imageList = vue.imageList;
-										if (imageList.length >= 3) {
-											imageList = [];
-										}
-										var obj = {
-											localId : res.localIds[index],
-											serverId : resx.serverId
-										}
-										imageList.push(obj);
-										Vue.set(vue, "imageList", imageList);
-									}
-								});
-								// 递归调用自身 
-								if (index < res.localIds.length - 1) {
-									index++;
-									arguments.callee(res, index);
-								}
-							})(res, index);
+							vue.wxUpload(res.localIds, 0);
 						}
 					});
+				},
+				
+				// 上传图片到微信服务器
+				wxUpload: function (localIds, index) {
+					// 递归调用自身 
+					if (index < localIds.length) {
+						var localId = localIds[index];
+						wx.uploadImage({
+							localId: localId, // 需要上传的图片的本地ID，由chooseImage接口获得
+							isShowProgressTips : 0, // 默认为1，显示进度提示
+							success : function(res) {
+								// 返回图片的服务器端Id, 保存到vue的model中
+								vue.imageList.push({
+									localId: localId,
+									serverId: res.serverId
+								});
+							}
+						});
+						
+						index++;
+						arguments.callee(localIds, index);
+					}
 				},
 
 				// 用户点击发送短信

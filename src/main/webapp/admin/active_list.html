@@ -87,11 +87,9 @@
 							<td style="text-align: center;">{{item.host_unit}}</td>
 							<td style="text-align: center;">{{item.upper_limit}}</td>
 							<td style="text-align: center;">{{item.address}}</td>
-							<td style="text-align: center;">{{item.type |
-								showActiveType}}</td>
+							<td style="text-align: center;">{{item.type | showActiveType}}</td>
 							<td style="text-align: center;">{{item.create_date}}</td>
-							<td style="text-align: center;">{{item.status |
-								showActiveStatus}}</td>
+							<td style="text-align: center;">{{item.status | showActiveStatus}}</td>
 							<td style="text-align: center;"><a href="javascript:void(0)"
 								@click="getQRCode(i)">查看二维码</a></td>
 							<td>
@@ -193,7 +191,7 @@
 				getActiveDetail: function (index) {
 					var activeId = vue.pageInfo.data[index].id;
 					sessionStorage.setItem("activeCurrentPage", vue.pageInfo.currentPage);
-					location.href = location.origin + "/admin/toPage.pur?url=active_release.html&operation=0&activeId=" + activeId;
+					location.href = location.origin + "/admin/toPage.pur?url=active_release.html&operation=2&activeId=" + activeId;
 				},
 				
 				// 修改活动信息

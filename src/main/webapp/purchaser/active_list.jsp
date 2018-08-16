@@ -129,7 +129,7 @@
 			</div>
 			<div class="active-item" v-for="(item, i) in activeList1" @click="goAcitveDetail(i)">
 				<div class="active-image">
-					<img src="http://www.ecartoon.com.cn/picture/wangyan1.jpg"/>
+					<img :src="'http://purchaser.ecartoon.com.cn/picture/' + item.image"/>
 				</div>
 				<div class="active-content">
 					<div class="active-name">{{item.name}}</div>
@@ -148,7 +148,7 @@
 			</div>
 			<div class="active-item" v-for="(item, i) in activeList2" @click="goAcitveDetail(i)">
 				<div class="active-image">
-					<img src="http://www.ecartoon.com.cn/picture/wangyan1.jpg"/>
+					<img :src="'http://purchaser.ecartoon.com.cn/picture/' + item.image"/>
 				</div>
 				<div class="active-content">
 					<div class="active-name">{{item.name}}</div>
@@ -167,7 +167,7 @@
 			</div>
 			<div class="active-item" v-for="(item, i) in activeList3" @click="goAcitveDetail(i)">
 				<div class="active-image">
-					<img src="http://www.ecartoon.com.cn/picture/wangyan1.jpg"/>
+					<img :src="'http://purchaser.ecartoon.com.cn/picture/' + item.image"/>
 				</div>
 				<div class="active-content">
 					<div class="active-name">{{item.name}}</div>
