@@ -171,8 +171,9 @@
 		</div>
 		<div class="supplier-box">
 			<div class="nav">
-				<div :class="item.class" v-for="(item, i) in nav_items" @click="changeCurrent(i)">
-					{{item.text}}
+				<div :class="'nav-text ' + (i == currentIndex ? 'nav-text-acitve' : '')" 
+					v-for="(item, i) in nav_items" @click="changeCurrent(i)">
+					{{item.value}}
 				</div>
 			</div>
 			<div class="content-list">
@@ -243,13 +244,34 @@
 						location.href = "user/checkLogin.pur?redirectURL=" + encodeURI("purchaser/supplier_list.jsp");
 					}
 					
-					// 初始化顶部栏选项
-					var nav_text_list = ["制造/加工业","金融/服务业","教育/文创业","销售/酒店业"];
-					nav_text_list.forEach(item => this.nav_items.push({text : item, "class" : "nav-text"}));
-					this.nav_items[this.currentIndex]["class"] = "nav-text nav-text-acitve";
-					
-					// 获取数据列表
-					this.getSupplierList();
+					// 请求后台参数数据
+					var param = {
+		    			 business: 1
+			    	 };
+					$.ajax({
+						url : "member/findParameters.pur",
+						data : {
+							json : encodeURI(JSON.stringify(param))
+						},
+						success : function(res) {
+							// 网络请求成功
+							res = JSON.parse(res);
+							if (res.success) {
+								// 初始化顶部栏选项
+								vue.nav_items = res.business.map(vue.addClass);
+								// nav_text_list.forEach(item => this.nav_items.push({text : item, "class" : "nav-text"}));
+								// vue.nav_items[this.currentIndex]["class"] = "nav-text nav-text-acitve";
+								
+								// 获取数据列表
+								vue.getSupplierList();
+							} else {
+								console.log("程序异常");
+							}
+						},
+						error : function(e) {
+							console.log("网络异常");
+						}
+					})
 					
 					// 请求服务端查询当前角色是否为会员
 					var url = "order/getActiveProductInfo.pur";
@@ -260,12 +282,17 @@
 					});
 				},
 				
+				addClass: function (obj) {
+					obj["class"] =  "nav-text";
+					return obj;
+				},
+				
 				// 改变当前选项卡索引
 				changeCurrent: function (index) {
 					// 切换选项卡
 					this.currentIndex = index;
-					this.nav_items.forEach((item, i) => i == index ? this.nav_items[i]["class"] = "nav-text nav-text-acitve" : 
-						this.nav_items[i]["class"] = "nav-text");
+					/* this.nav_items.forEach((item, i) => i == index ? this.nav_items[i]["class"] = "nav-text nav-text-acitve" : 
+						this.nav_items[i]["class"] = "nav-text"); */
 					
 					// 获取数据列表
 					this.getSupplierList();
@@ -273,11 +300,11 @@
 				
 				// 根据行业类别查询供应商列表
 				getSupplierList: function () {
-					var businessList = [57, 58, 59, 60];
+					// var businessList = [57, 58, 59, 60];
 					// 创建参数对象
 					var url = "supplier/getSupplierList.pur";
 					var param = {
-						business: businessList[this.currentIndex]
+						business: this.nav_items[this.currentIndex].id
 					}
 					// 请求服务端数据
 					this.requestServer(url, param, function (res) {

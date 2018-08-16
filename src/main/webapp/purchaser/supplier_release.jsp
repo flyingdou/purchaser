@@ -417,9 +417,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 
 					// 请求后台参数数据
 					var param = {
-		    			 business: 1,
-		    			 company_type: 2,
-		    			 type: 3
+		    			 business: 1
 			    	 };
 					$.ajax({
 						url : "member/findParameters.pur",
