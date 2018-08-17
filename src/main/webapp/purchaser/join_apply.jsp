@@ -690,7 +690,7 @@
     		
     		// 行业
     		if (!model.company_type || model.company_type == '' || model.company_type.indexOf('请') > 0) {
-    			alert('请先选择企业类型！');
+    			alert('请先选择行业！');
     			return false;
     		}
     		
