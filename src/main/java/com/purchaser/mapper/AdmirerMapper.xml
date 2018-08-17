@@ -198,7 +198,7 @@
   <!-- 采购师列表微信前台 -->
   <select id="getAdmirerList" parameterType="Map" resultType="Map" >
           select 
-				  a.id, u.image, u.gender, u.name, p.name as study, p.code as studyCode, xd.tf as monthDiff   
+				  a.id, a.qualification, u.image, u.gender, u.name, p.name as study, p.code as studyCode, xd.tf as monthDiff   
 			from 
 				  tb_admirer a LEFT JOIN tb_user u ON a.user = u.id  
 			                   LEFT JOIN tb_parameter p ON a.study = p.code AND p.parent = #{parent} 

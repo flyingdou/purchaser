@@ -221,16 +221,16 @@
       	         </div>
       	         
       	         <!-- 行业  -->
-      	         <div class="line">
+      	         <!-- <div class="line">
       	              <div class="title">行业 </div>
       	              <div class="value" @click="selectBusiness()" >
       	                     <span class="inputValue" v-model="model.business">{{model.business}}</span><span class="inputValue">&nbsp;&gt;</span>
       	              </div>
-      	         </div>
+      	         </div> -->
       	         
-      	         <!-- 企业类型  -->
+      	         <!-- 行业  -->
       	         <div class="line">
-      	              <div class="title">企业类型 </div>
+      	              <div class="title">行业 </div>
       	              <div class="value" @click="selectCompanyType()">
       	              		<span class="inputValue" v-model="model.company_type">{{model.company_type}}</span><span class="inputValue">&nbsp;&gt;</span>
       	              </div>

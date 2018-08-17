@@ -156,7 +156,9 @@ public class MemberController {
 		try {
 			
 			User user = (User) request.getSession().getAttribute("user");
-			ret = memberService.getMemberPrice(user.getId());
+			JSONObject param = new JSONObject();
+			param.fluentPut("userId", user.getId());
+			ret = memberService.getMemberPrice(param);
 			ret.fluentPut("success", true)
 			   .fluentPut("message", "OK")
 			   .fluentPut("orderDate", CommentUtils.format(new Date(), "yyyy-MM-dd"))

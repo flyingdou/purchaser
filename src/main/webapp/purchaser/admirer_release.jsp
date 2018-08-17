@@ -136,6 +136,15 @@
 	  background: #E71C2A;
 	}
 	
+	.selfFont{
+	  text-align: left;
+	  margin-bottom: 20px;
+	}
+	
+	.xline{
+	  border-bottom: none;
+	}
+	
 	
     
     
@@ -248,9 +257,9 @@
       	         
       	         <!-- 教育经历-->
       	         <div class="line">
-      	              <div class="title">教育经历 </div>
+      	              <div class="title">毕业院校</div>
       	              <div class="value">
-      	              		<input class="inputValue" v-model="model.learning" type="text" placeholder="请输入教育经历" />
+      	              		<input class="inputValue" v-model="model.learning" type="text" placeholder="请输入毕业院校" />
       	              </div>
       	         </div>
       	         
@@ -264,16 +273,6 @@
       	              </div>
       	         </div>
       	         
-      	         
-      	         <!-- 自我评价 -->
-      	         <div class="line">
-      	              <div class="title">自我评价 </div>
-      	              <div class="value">
-      	              		<input class="inputValue" v-model="model.self_evaluation" type="text" placeholder="请输入自我评价" />
-      	              </div>
-      	         </div>
-      	         
-      	         
       	         <!-- 短信验证码 -->
       	         <div class="line">
       	              <div class="title">短信验证码 </div>
@@ -282,8 +281,20 @@
       	              </div>
       	         </div>
       	         
+      	         <!-- 自我评价 -->
+      	         <div class="line xline">
+      	              <div class="title">自我评价 </div>
+      	              <div class="value">
+      	              		<div class="inputValue">50字左右</div>
+      	              </div>
+      	         </div>
+      	         
+      	         <!-- textarea行 -->
+      	         <div class="line">
+      	         		<textarea cols="50" rows="8" class="inputValue selfFont" v-model="model.self_evaluation"  placeholder="请输入自我评价" ></textarea>
+      	         </div>
+      	         
       	    </div>
-      	    
       	    
       	    <!-- 填充高度  -->
       	    <div class="footerFill"></div>
@@ -294,12 +305,9 @@
       	    	 <div class="footer countdown" v-if = "model.sendCode == '0'">重新获取({{model.countdown}})</div>
       	    	 <div class="footer pay" @click='save()'>保存</div>
       	    </div>
-      	    
-      	    
-      	   
-      	    
-      	    
+
       </div>
+      
 </body>
 
 <script type="text/javascript">

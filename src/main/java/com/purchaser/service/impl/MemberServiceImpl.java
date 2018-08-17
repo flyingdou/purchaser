@@ -124,12 +124,15 @@ public class MemberServiceImpl implements MemberService {
 		Date expiration = cd.getTime();
 		// 增加会员数据
 		Member member = new Member();
-		member.setNo(CommentUtils.getRandomByDate(6, "yyyy"));
 		member.setUser(user.getId());
 		member.setAffiliation(param.getString("affiliation"));
 		member.setType(mp.getId().intValue());
 		member.setCompanyType(param.getInteger("company_type_id"));
-		member.setBusiness(param.getInteger("business_id"));
+		
+		// 可选
+		if (param.containsKey("business_id")) {
+			member.setBusiness(param.getInteger("business_id"));
+		}
 		member.setDuty(param.getString("duty"));
 		member.setApplyDate(applyDate);
 		member.setAudit(Constant.AUDIT_STATUS_PASS);
@@ -142,7 +145,7 @@ public class MemberServiceImpl implements MemberService {
 		
 		member.setValid(member_valid);
 		// 持久化数据
-		memberMapper.insert(member);
+		memberMapper.insertSelective(member);
 		
 		
 		ret.fluentPut("success", true)
@@ -158,8 +161,10 @@ public class MemberServiceImpl implements MemberService {
 	 * 查询用户的会员价格信息
 	 */
 	@Override
-	public JSONObject getMemberPrice(Long userId) {
-		Map<String, Object> priceMap = memberMapper.getMemberPrice(userId);
+	public JSONObject getMemberPrice(JSONObject param) {
+		param.fluentPut("valid", Constant.MEMBER_INVALID)
+		        ;
+		Map<String, Object> priceMap = memberMapper.getMemberPrice(param);
 		return JSON.parseObject(JSON.toJSONString(priceMap));
 	}
 
