@@ -70,7 +70,7 @@ public class MemberServiceImpl implements MemberService {
 	public JSONObject findMemberInfo(Long userId) {
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("userId", userId);
-		paramMap.put("valid", Constant.MEMBER_VALID);
+		paramMap.put("valid", Constant.MEMBER_INVALID);
 		Map<String, Object> memberInfoMap = memberMapper.findMemberInfo(paramMap);
 		return JSON.parseObject(JSON.toJSONString(memberInfoMap, CommentUtils.getValueFilterNullStringFillNull()));
 	}

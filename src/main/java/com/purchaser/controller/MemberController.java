@@ -99,7 +99,7 @@ public class MemberController {
 			// 从session中取出当前登录用户
 			User user = (User) request.getSession().getAttribute("user");
 			
-			// 查询采购师的基本信息
+			// 查询用户的基本信息
 			JSONObject memberInfo = memberService.findMemberInfo(user.getId());
 			
 			// 判断当前用户是否已经是会员了
