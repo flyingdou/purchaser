@@ -156,6 +156,60 @@ public class MemberServiceImpl implements MemberService {
 		   ;
 		return ret;
 	}
+	
+	@Override
+	public JSONObject updateMember(JSONObject param, HttpServletRequest request) {
+		JSONObject ret = new JSONObject();
+		// 校验验证码是否有效
+		Validcode valid = new Validcode(param.getString("mobilephone"), request);
+		Boolean isRightful = valid.isRightful(param.getString("code"));
+		if (!isRightful) {
+			ret.fluentPut("success", false)
+			   .fluentPut("message", "验证码不正确或超时！")
+			   ;
+			return ret;
+		}
+		
+		// 更新用户基本数据
+		User user = (User) request.getSession().getAttribute("user");
+		if (param.containsKey("user") && StringUtils.isNotBlank(param.getString("user"))) {
+			// 后台管理系统进来的
+			user = userMapper.selectByPrimaryKey(param.getLong("user"));
+		}
+		user.setName(param.getString("name"));
+		user.setImage(param.getString("image"));
+		user.setEmail(param.getString("email"));
+		user.setIdCardNum(param.getString("id_card_num"));
+		user.setConcord(param.getString("province") + "/" + param.getString("city"));
+		// 持久化数据
+		userMapper.updateByPrimaryKeySelective(user);
+		
+		request.getSession().setAttribute("user", user);
+		
+		
+		
+		// 更新会员数据
+		Member member = new Member();
+		member.setId(param.getLong("mid"));
+		member.setAffiliation(param.getString("affiliation"));
+		member.setCompanyType(param.getInteger("company_type_id"));
+		
+		member.setDuty(param.getString("duty"));
+		member.setAudit(Constant.AUDIT_STATUS_PASS);
+		
+		// 持久化数据
+		memberMapper.updateByPrimaryKeySelective(member);
+		
+		
+		ret.fluentPut("success", true)
+		   .fluentPut("message", "OK")
+		   .fluentPut("memberId", member.getId())
+		   .fluentPut("price", param.getString("price"))
+		   .fluentPut("type", param.getString("type"))
+		   ;
+		return ret;
+		
+	}
 
 	/**
 	 * 查询用户的会员价格信息
@@ -236,6 +290,7 @@ public class MemberServiceImpl implements MemberService {
 		ret.fluentPut("id", parameter.getId());
 		return ret;
 	}
+
 
 
 }

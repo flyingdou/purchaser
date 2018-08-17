@@ -11,7 +11,7 @@
 <base href="<%=basePath%>">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-<title>入会申请</title>
+<title></title>
 
 <link rel="stylesheet" href="purchaser/css/iosSelect.css">
 <script type="text/javascript" src="purchaser/js/vue.min.js"></script>
@@ -182,7 +182,10 @@
 	      	         <div class="line">
 	      	              <div class="title">手机</div>
 	      	              <div class="value">
-	      	              		<input class="inputValue" v-model="model.mobilephone" type="number" placeholder="请输入手机号"/>
+	      	              		<input class="inputValue" v-if="!updatePage" v-model="model.mobilephone" type="number" placeholder="请输入手机号"/>
+	      	              		
+	      	              		<!-- 不能修改的信息 -->
+	      	              		<span class="inputValue" v-if="updatePage">{{model.mobilephone}}</span>
 	      	              </div>
 	      	         </div>
 	      	         
@@ -221,14 +224,6 @@
       	         </div>
       	         
       	         <!-- 行业  -->
-      	         <!-- <div class="line">
-      	              <div class="title">行业 </div>
-      	              <div class="value" @click="selectBusiness()" >
-      	                     <span class="inputValue" v-model="model.business">{{model.business}}</span><span class="inputValue">&nbsp;&gt;</span>
-      	              </div>
-      	         </div> -->
-      	         
-      	         <!-- 行业  -->
       	         <div class="line">
       	              <div class="title">行业 </div>
       	              <div class="value" @click="selectCompanyType()">
@@ -244,8 +239,13 @@
       	         <!-- 会员类型  -->
       	         <div class="line">
       	              <div class="title">会员类型</div>
-      	              <div class="value" @click="selectType()">
+      	              <div class="value" v-if="!updatePage" @click="selectType()">
       	                     <span class="inputValue" v-model="model.type">{{model.type}}</span><span class="inputValue">&nbsp;&gt;</span>
+      	              </div>
+      	              
+      	              <!-- 不能修改的信息 -->
+      	              <div class="value" v-if="updatePage">
+      	                     <span class="inputValue" v-model="model.type">{{model.type}}</span>
       	              </div>
       	         </div>
       	         
@@ -274,7 +274,8 @@
       	    <div class="funButton">
       	    	 <div class="footer getMobilecode" v-if = "model.sendCode == '1' " @click='sendMobileCode()' >获取验证码</div>
       	    	 <div class="footer countdown" v-if = "model.sendCode == '0'">重新获取({{model.countdown}})</div>
-      	    	 <div class="footer pay" @click='toPay()'>支付</div>
+      	    	 <div class="footer pay" v-if = "!updatePage" @click='toPay()'>支付</div>
+      	    	 <div class="footer pay" v-if = "updatePage" @click='update()'>修改</div>
       	    </div>
       	    
       	    
@@ -287,12 +288,12 @@
 <script type="text/javascript">
      var pageData = {};
      $(function () {
+    	 
     	 var src = "purchaser/img/uploadIcon.png";
     	 $("#previwer").attr({"src":src});
     	 
     	 var param = {
-    			 business: 1,
-    			 company_type: 2,
+    			 company_type: 1,
     			 type: 3,
     			 valid: 1
     	 };
@@ -306,7 +307,6 @@
     			// 网络请求成功
     			res = JSON.parse(res);
     			if (res.success) {
-    				pageData.business = res.business;
     				pageData.company_type = res.company_type;
     				pageData.type = res.type;
     				findUserInfo();
@@ -387,11 +387,27 @@
      var joinApply = new Vue({
     	 el: "#app",
     	 data: {
-    		 model: {}
+    		 model: {},
+    		 updatePage: false
     	 },
+    	 
     	 
     	 // 初始化函数
     	 created: function () {
+    		 var cuUrl = location.href;
+        	 var updatePage = false;
+        	 var pageTitle = '入会申请';
+        	 if (cuUrl.indexOf("update") != -1) {
+    			 // 修改会员信息
+    			 updatePage = true;
+    			 pageTitle = '修改会员信息';
+        	 }
+        	 
+        	 // 修改页面标题
+        	 document.title = pageTitle;
+        	 this.updatePage = updatePage;
+        	 
+        	 
     		 // 请求微信签名，准备调用jsapi接口
     		 $.ajax({
     			 url: "wechat/jsapiSign.pur",
@@ -426,25 +442,11 @@
 	                });
     		 },
     		 
-    		 // 选择行业，弹出层
-    		 selectBusiness: function () {
-    			 createSelector({
-    				data: pageData.business,
-    				title: "选择行业",
-    				callback: function (res) {
-    					console.log(res);
-    					joinApply.model.business_id = res.id;
-    					joinApply.model.business = res.value;
-    				}
-    			 });
-    		 },
-    		 
-    		 
-    		 // 企业类型，弹出层
+    		 // 行业，弹出层
     		 selectCompanyType: function () {
     			 createSelector({
     				data: pageData.company_type,
-    				title: "企业类型",
+    				title: "行业",
     				callback: function (res) {
     					console.log(res);
     					joinApply.model.company_type_id = res.id;
@@ -564,86 +566,12 @@
     	
     	// 用户点击'支付'按钮时
     	toPay: function () {
-    		
-    		// 当前用户已经是会员，中断后续操作
-    		if (joinApply.isMember) {
-    			alert('你当前已经是会员，无需再次申请成为会员！');
+    		// 数据校验不通过
+    		if (!this.checkData()) {
     			return;
     		}
     		
     		var model = joinApply.model;
-    		
-    		// 姓名
-    		if (!model.name || model.name == '') {
-    			alert('请先填写姓名！');
-    			return;
-    		}
-    		
-    		// 职务
-    		if (!model.duty || model.duty == '') {
-    			alert('请先填写职务！');
-    			return;
-    		}
-    		
-    		// 身份证号
-    		if (!model.id_card_num || model.id_card_num == '') {
-    			alert('请先填写身份证号！');
-    			return;
-    		}
-    		
-    		// 籍贯
-    		if (!model.province || model.province == '' || !model.city || model.city == '') {
-    			alert('请先填写籍贯！');
-    			return;
-    		}
-    		
-    		// 手机号
-    		if (!model.mobilephone || model.mobilephone == '') {
-    			alert('请先填写手机号！');
-    			return;
-    		}
-    		
-    		// 电子邮箱
-    		if (!model.email || model.email == '') {
-    			alert('请先填写电子邮箱！');
-    			return;
-    		}
-    		
-    		// 照片
-    		if ((!model.image || model.image == '') && (!model.imgs || model.imgs.length < 1)) {
-    			alert('请先上传一寸免冠照！');
-    			return;
-    		}
-    		
-    		// 企业名称
-    		if (!model.affiliation || model.affiliation == '') {
-    			alert('请先填写企业名称！');
-    			return;
-    		}
-    		// 行业
-    		if (!model.business || model.business == '' || model.business.indexOf('请') > 0) {
-    			alert('请先选择行业！');
-    			return;
-    		}
-    		
-    		// 企业类型
-    		if (!model.company_type || model.company_type == '' || model.company_type.indexOf('请') > 0) {
-    			alert('请先选择企业类型！');
-    			return;
-    		}
-    		
-    		// 会员类型
-    		if (!model.type || model.type == '') {
-    			alert('请先选择会员类型！');
-    			return;
-    		}
-    		
-    		// 手机验证码
-    		if (!model.code || model.code == '') {
-    			alert('请先填写手机验证码！');
-    			return;
-    		}
-    		
     		
     		// 去后台将用户数据存储起来
     		$.ajax({
@@ -665,8 +593,126 @@
     			}
     		})
     		
+    	},
+    	
+    	// 用户点击'修改'按钮时
+    	update: function () {
+    		// 数据校验
+    		if (!this.checkData()){
+    			return;
+    		}
+    		
+    		var model = joinApply.model;
+    		
+    		// 去后台将用户数据存储起来
+    		$.ajax({
+    			url:'member/updateMember.pur',
+    			dataType:'json',
+    			data: {
+    				json: encodeURI(JSON.stringify(model))
+    			},
+    			success: function (res) {
+    				if (res.success) {
+    					// 后台请求成功, 跳转到下个页面
+    					location.href = "purchaser/member_center.jsp";
+    				} else {
+    					alert('程序异常，原因: ' + res.message);
+    				}
+    			},
+    			error: function (e) {
+    				console.log('网络异常');
+    			}
+    		})
     		
     		
+    	},
+    	
+    	// 校验数据
+    	checkData: function () {
+    		// 如果当前修改当前页面时，则不做会员判断
+    		if (!joinApply.updatePage) {
+    			// 当前用户已经是会员，中断后续操作
+        		if (joinApply.isMember) {
+        			alert('你当前已经是会员，无需再次申请成为会员！');
+        			return false;
+        		}
+    		}
+    		
+    		var model = joinApply.model;
+    		
+    		// 姓名
+    		if (!model.name || model.name == '') {
+    			alert('请先填写姓名！');
+    			return false;
+    		}
+    		
+    		// 职务
+    		if (!model.duty || model.duty == '') {
+    			alert('请先填写职务！');
+    			return false;
+    		}
+    		
+    		// 身份证号
+    		if (!model.id_card_num || model.id_card_num == '') {
+    			alert('请先填写身份证号！');
+    			return false;
+    		}
+    		
+    		// 籍贯
+    		if (!model.province || model.province == '' || !model.city || model.city == '') {
+    			alert('请先填写籍贯！');
+    			return;
+    		}
+    		
+    		// 手机号
+    		if (!model.mobilephone || model.mobilephone == '') {
+    			alert('请先填写手机号！');
+    			return false;
+    		}
+    		
+    		// 电子邮箱
+    		if (!model.email || model.email == '') {
+    			alert('请先填写电子邮箱！');
+    			return;
+    		}
+    		
+    		// 照片
+    		if ((!model.image || model.image == '') && (!model.imgs || model.imgs.length < 1)) {
+    			alert('请先上传一寸免冠照！');
+    			return false;
+    		}
+    		
+    		// 企业名称
+    		if (!model.affiliation || model.affiliation == '') {
+    			alert('请先填写企业名称！');
+    			return false;
+    		}
+    		// 行业
+    		if (!model.business || model.business == '' || model.business.indexOf('请') > 0) {
+    			alert('请先选择行业！');
+    			return false;
+    		}
+    		
+    		// 企业类型
+    		if (!model.company_type || model.company_type == '' || model.company_type.indexOf('请') > 0) {
+    			alert('请先选择企业类型！');
+    			return false;
+    		}
+    		
+    		// 会员类型
+    		if (!model.type || model.type == '') {
+    			alert('请先选择会员类型！');
+    			return false;
+    		}
+    		
+    		// 手机验证码
+    		if (!model.code || model.code == '') {
+    			alert('请先填写手机验证码！');
+    			return false;
+    		}
+    		
+    		// 数据校验通过
+    		return true;
     		
     	}
     	

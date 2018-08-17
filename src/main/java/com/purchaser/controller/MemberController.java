@@ -145,6 +145,31 @@ public class MemberController {
 	
 	
 	/**
+	 * 修改会员信息
+	 * @param request
+	 * @param response
+	 * @param json
+	 */
+	@RequestMapping("/updateMember")
+	@ResponseBody
+	public void updateMember (HttpServletRequest request, HttpServletResponse response, String json) {
+		JSONObject ret = new JSONObject();
+		try {
+			// 处理请求参数
+			JSONObject param = JSONObject.parseObject(URLDecoder.decode(json, "UTF-8"));
+			ret = memberService.updateMember(param, request);
+		} catch (Exception e) {
+			ret.fluentPut("success", false)
+			   .fluentPut("message", e.toString());
+			e.printStackTrace();
+		}
+		
+		// 返回数据
+		CommentUtils.response(response, ret.toJSONString());
+	}
+	
+	
+	/**
 	 * 获取当前登录用户的会员价格
 	 * @param request
 	 * @param response

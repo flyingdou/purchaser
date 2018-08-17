@@ -360,7 +360,7 @@
     				  return;
     			  }
     			  // 会员，跳转到会员详情页
-    			  location.href = 'purchaser/member_detail.jsp';
+    			  location.href = 'purchaser/join_apply.jsp?update=1';
     		  },
     		  
     		  // 跳转到入会申请页面

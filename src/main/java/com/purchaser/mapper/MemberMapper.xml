@@ -177,12 +177,12 @@
   <!-- 查询会员基本信息 -->
   <select id="findMemberInfo" parameterType="Map" resultType="Map">
           select 
-					u.name, u.gender, u.id_card_num, u.mobilephone, u.email, u.image, 
+					m.id as mid, u.name, u.gender, u.id_card_num, u.mobilephone, u.email, u.image, 
 		            SUBSTRING_INDEX(u.concord,'/',1) as province, SUBSTRING_INDEX(u.concord,'/',-1) as city, 
 					m.duty, m.affiliation, pc.name as company_type, m.company_type as company_type_id,
                     pb.name as business, m.business as business_id, mp.type_name as type, mp.type as type_id, mp.price  
 			from 
-			      	tb_user u LEFT JOIN tb_member m ON u.id = m.user and m.valid = #{valid}
+			      	tb_user u INNER JOIN tb_member m ON u.id = m.user and m.valid = #{valid}
 			                  LEFT JOIN tb_member_price mp ON m.type = mp.id 
 			                  LEFT JOIN tb_parameter pc ON pc.id = m.company_type 
                               LEFT JOIN tb_parameter pb ON pb.id = m.business

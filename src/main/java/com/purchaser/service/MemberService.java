@@ -25,6 +25,14 @@ public interface MemberService {
 	 */
 	public JSONObject saveMember (JSONObject param, HttpServletRequest request);
 	
+	
+	/**
+	 * 修改会员数据
+	 * @param param
+	 * @return
+	 */
+	public JSONObject updateMember (JSONObject param, HttpServletRequest request);
+	
 	/**
 	 * 查询用户的会员价格信息
 	 * @param userId
