@@ -129,10 +129,6 @@ public class MemberServiceImpl implements MemberService {
 		member.setType(mp.getId().intValue());
 		member.setCompanyType(param.getInteger("company_type_id"));
 		
-		// 可选
-		if (param.containsKey("business_id")) {
-			member.setBusiness(param.getInteger("business_id"));
-		}
 		member.setDuty(param.getString("duty"));
 		member.setApplyDate(applyDate);
 		member.setAudit(Constant.AUDIT_STATUS_PASS);
