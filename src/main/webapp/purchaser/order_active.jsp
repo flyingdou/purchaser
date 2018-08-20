@@ -128,7 +128,7 @@ input {
 		<!-- 活动信息 -->
 		<div class="active-wraper">
 			<div class="active-image">
-				<img src="https://www.ecartoon.com.cn/picture/wangyan1.jpg">
+				<img :src="'http://purchaser.ecartoon.com.cn/picture/' + active.image">
 			</div>
 			<div class="active-other">
 				<div class="active-name">{{active.name}}</div>
@@ -271,6 +271,7 @@ input {
 						if (res.isPay) {
 							alert('报名成功!');
 							location.href = "purchaser/pay_success_active.jsp";
+							return;
 						}
 						
 						// 调用微信支付API

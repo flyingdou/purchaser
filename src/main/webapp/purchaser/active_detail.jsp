@@ -235,8 +235,11 @@
 					<div class="active-name">{{active.name}}</div>
 					<div class="active-time">{{active.startDate}}</div>
 				</div>
-				<div class="active-price">
+				<div class="active-price" v-if="active.price != 0">
 					¥{{active.price}}/人
+				</div>
+				<div class="active-price" v-if="active.price == 0">
+					免费
 				</div>
 			</div>
 			<div class="active-address-row" @click="goActiveMap">
