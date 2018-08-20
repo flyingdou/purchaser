@@ -92,7 +92,7 @@
 			</div>
 			<div class="content-item" v-for="(item,i) in contentList" @click="toDetail(i)">
 				<div class="content-image">
-					<img src="https://www.ecartoon.com.cn/picture/wangyan1.jpg">
+					<img :src="'http://purchaser.ecartoon.com.cn/picture/' + item.image">
 				</div>
 				<div class="content-body">
 					<div class="content-name">

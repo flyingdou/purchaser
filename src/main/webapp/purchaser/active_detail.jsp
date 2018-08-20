@@ -258,7 +258,7 @@
 						<img src="https://www.ecartoon.com.cn/picture/201806151359.png">
 					</div>
 					<div class="active-mobilephone-title-content">
-						13657277062
+						{{active.telephone}}
 					</div>
 				</div>
 			</div>
