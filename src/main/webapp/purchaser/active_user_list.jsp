@@ -82,9 +82,9 @@
 				已报名 <span style="color:#FF0000;">{{active.joinCount}}</span> 人 / 限额 
 				<span style="color:#FF0000;">{{active.upperLimit}}</span> 人
 			</div>
-			<div class="active-user-title-icon">
+			<!-- <div class="active-user-title-icon"
 				<img src="https://www.ecartoon.com.cn/picture/201806151423.png">
-			</div>
+			</div> -->
 		</div>
 		<div class="active-users-wraper">
 			<div class="active-user-list">

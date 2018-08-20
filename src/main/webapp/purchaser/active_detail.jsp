@@ -227,7 +227,7 @@
 <body>
 	<div id="wraper">
 		<div class="active-image">
-			<img :src="'http://purchaser.ecartoon.com.cn/picture/' + active.image">
+			<img :src="'http://purchaser.ecartoon.com.cn/picture/' + active.image || 'default.png'">
 		</div>
 		<div class="main">
 			<div class="active-info-row">
@@ -287,7 +287,7 @@
 				</div>
 				<div class="active-users-wraper">
 					<div class="active-user-list" :style="user_list_width">
-						<div class="active-user-item" v-for="(item,i) in active.userList">
+						<div class="active-user-item" v-for="(item,i) in userList">
 							<div class="active-user-image">
 								<img :src="'http://purchaser.ecartoon.com.cn/picture/' + item.image">
 							</div>
