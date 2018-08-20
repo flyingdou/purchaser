@@ -55,6 +55,8 @@ public class ActiveController {
 			CommentUtils.response(response, JSON.toJSONString(e));
 		}
 	}
+	
+	
 
 	/**
 	 * 查询挑战列表
