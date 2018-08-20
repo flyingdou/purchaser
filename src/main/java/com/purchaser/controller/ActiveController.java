@@ -33,7 +33,6 @@ public class ActiveController {
 	 * @param response
 	 * @param session
 	 */
-	
 	@RequestMapping("/release")
 	public void release(String json, HttpServletResponse response, HttpSession session) {
 		try {

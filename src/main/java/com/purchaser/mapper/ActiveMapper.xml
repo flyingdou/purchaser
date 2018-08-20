@@ -298,7 +298,7 @@
   
   <!-- 根据id查询参加的用户列表 -->
   <select id="getJionUserListById" parameterType="String" resultType="Map">
-  	select u.id,u.name,u.image from tb_user u inner join tb_order o on u.id = o.user
+  	select DISTINCT u.id,u.name,u.image from tb_user u inner join tb_order o on u.id = o.user
 	where o.status = 1 and o.product_type = 'A' and o.product_id = #{activeId}
   </select>
   

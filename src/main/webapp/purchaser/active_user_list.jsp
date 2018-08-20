@@ -23,6 +23,11 @@
 		height: 100%;
 		background-color: #FFF;
 	}
+	
+	img{
+		width: 100%;
+		height: auto;
+	}
 
 	.active-users{
 		padding: 10px;
@@ -55,8 +60,8 @@
 	
 	.active-user-item{
 		float: left;
-		margin-right: 10px;
-		width: 80px;
+		margin-left: 10%;
+		width: 20%;
 	}
 	
 	.active-user-image > img{
