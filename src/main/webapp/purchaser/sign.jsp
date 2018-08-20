@@ -95,7 +95,7 @@
 	<div id="wraper">
 		<div class="user_info">
 			<div class="user-image">
-				<img src="https://purchaser.ecartoon.com.cn/picture/${user.image}" />
+				<img src="picture/${user.image}" />
 			</div>
 			<div class="user-nick">
 				${user.name}

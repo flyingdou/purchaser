@@ -56,8 +56,6 @@ public class ActiveController {
 		}
 	}
 	
-	
-
 	/**
 	 * 查询挑战列表
 	 * 
