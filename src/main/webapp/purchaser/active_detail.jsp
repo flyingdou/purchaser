@@ -227,7 +227,7 @@
 <body>
 	<div id="wraper">
 		<div class="active-image">
-			<img src="https://www.ecartoon.com.cn/picture/wangyan1.jpg">
+			<img :src="'http://purchaser.ecartoon.com.cn/picture/' + active.image">
 		</div>
 		<div class="main">
 			<div class="active-info-row">

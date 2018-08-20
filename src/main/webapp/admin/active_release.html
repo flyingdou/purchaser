@@ -146,27 +146,27 @@ ul,li{
 						<label for="firstname" class="col-sm-2 control-label">会员价格</label>
 						<div class="col-sm-10 control-input">
 							<input type="text" class="form-control" id="firstname"
-								placeholder="请输入会员价格" v-model="model.price" v-if="model.operation != 2" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}">
+								placeholder="价格为0时免费报名" v-model="model.price" v-if="model.operation != 2" onkeyup="value=value.match(/^-?[0-9]\d*$/)||value.match(/-?/)">
 							<input type="text" class="form-control" id="firstname"
-								placeholder="请输入会员价格" disabled v-model="model.price" v-if="model.operation == 2" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}">
+								placeholder="价格为0时免费报名" disabled v-model="model.price" v-if="model.operation == 2" onkeyup="value=value.match(/^-?[0-9]\d*$/)||value.match(/-?/)">
 						</div>
 					</div>
 					<div class="form-group">
 						<label for="firstname" class="col-sm-2 control-label">嘉宾价格</label>
 						<div class="col-sm-10 control-input">
 							<input type="text" class="form-control" id="firstname"
-								placeholder="请输入嘉宾价格" v-model="model.distinguishedPrice" v-if="model.operation != 2" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}">
+								placeholder="价格为0时免费报名" v-model="model.distinguishedPrice" v-if="model.operation != 2" onkeyup="value=value.match(/^-?[0-9]\d*$/)||value.match(/-?/)">
 							<input type="text" class="form-control" id="firstname"
-								placeholder="请输入嘉宾价格" v-model="model.distinguishedPrice" disabled v-if="model.operation == 2" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}">
+								placeholder="价格为0时免费报名" v-model="model.distinguishedPrice" disabled v-if="model.operation == 2" onkeyup="value=value.match(/^-?[0-9]\d*$/)||value.match(/-?/)">
 						</div>
 					</div>
 					<div class="form-group">
 						<label for="firstname" class="col-sm-2 control-label">厂商价格</label>
 						<div class="col-sm-10 control-input">
 							<input type="text" class="form-control" id="firstname"
-								placeholder="请输入厂商价格" v-model="model.manufacturerPrice" v-if="model.operation != 2" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}">
+								placeholder="价格为0时免费报名" v-model="model.manufacturerPrice" v-if="model.operation != 2" onkeyup="value=value.match(/^-?[0-9]\d*$/)||value.match(/-?/)">
 							<input type="text" class="form-control" id="firstname"
-								placeholder="请输入厂商价格" disabled v-model="model.manufacturerPrice" v-if="model.operation == 2" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}">
+								placeholder="价格为0时免费报名" disabled v-model="model.manufacturerPrice" v-if="model.operation == 2" onkeyup="value=value.match(/^-?[0-9]\d*$/)||value.match(/-?/)">
 						</div>
 					</div>
 					<div class="form-group">
