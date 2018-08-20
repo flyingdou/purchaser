@@ -140,8 +140,11 @@ input {
 		<!-- 会员价格 -->
 		<div class="price-wraper">
 			<div>会员价:</div>
-			<div style="color: #E60012;">
+			<div style="color: #E60012;" v-if="active.price != 0">
 				<span style="font-size: 9px;">¥</span> {{active.price}}元
+			</div>
+			<div style="color: #E60012;" v-if="active.price == 0">
+				免费
 			</div>
 		</div>
 		<div style="height: 10px; background-color: #F0F0F2;"></div>
@@ -267,6 +270,8 @@ input {
 						param.activeCodeId = this.activeCode.id; 
 					}
 					this.requestServer(url, param, function(res) {
+						res = JSON.parse(res);
+						
 						// 0元订单, 不走微信支付
 						if (res.isPay) {
 							alert('报名成功!');

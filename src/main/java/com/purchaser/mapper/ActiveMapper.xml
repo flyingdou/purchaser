@@ -299,7 +299,7 @@
   <!-- 根据id查询参加的用户列表 -->
   <select id="getJionUserListById" parameterType="String" resultType="Map">
   	select u.id,u.name,u.image from tb_user u inner join tb_order o on u.id = o.user
-	where o.status = 1 and o.product_type = 'B' and o.product_id = #{activeId}
+	where o.status = 1 and o.product_type = 'A' and o.product_id = #{activeId}
   </select>
   
   <!-- 根据id查询活动邀请码 -->
@@ -319,7 +319,7 @@
   <!-- 检查用户是否已经参加活动 -->
   <select id="checkUserJoinActiveByActiveId" parameterType="Map" resultType="int">
   	select count(u.id) from tb_user u inner join tb_order o on u.id = o.user
-	where o.status = 1 and o.product_type = 'B' and o.product_id = #{activeId}
+	where o.status = 1 and o.product_type = 'A' and o.product_id = #{activeId}
 	and u.id = #{userId}
   </select>
   
