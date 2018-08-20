@@ -22,7 +22,7 @@
        padding: 0;
        width: 100%;
        height: 100%;
-       background: #f0f0f2;
+       background: #255d9c;
     }
     
     .content{
@@ -37,7 +37,12 @@
       align-items: center;
       padding: 10px 16px;
       background: white;
-      margin-bottom: 20px;
+    }
+    
+    .fillx{
+      width: 100%;
+      height: 20px;
+      background: #f0f0f2;
     }
     
     .userImgDiv{
@@ -149,11 +154,15 @@
        padding-top: 20%;
        padding-left: 70px;
        padding-right: 40px;
+       color: white;
     }
     
-    .detailLine{
+    .small{
+       font-size: 0.4rem;
+    }
+    
+    .big{
        font-size: 14px;
-       color: white;
     }
     
     .toMemberInfoDiv{
@@ -192,6 +201,8 @@
                  
            </div>
            
+           <!-- 填充块 -->
+           <div class = 'fillx'></div>
            
            <!-- 是会员时 -->
            <div class='memberInfoDiv' v-if='isMember'>
@@ -234,29 +245,29 @@
                </div>
                
                <!-- 会员权益信息 -->
-               <div class = 'details' v-if = 'showDetail'>
+               <div :class = "'details ' + spanClass" v-if = 'showDetail'>
                     
-                    <div class='detailLine'>
+                    <div>
                     		<span>1.拥护本会章程，自觉缴交会费</span>
                     </div>
                     
-                    <div class='detailLine'>
+                    <div>
                     		<span>2.享受采购师团体服务的优先权</span>
                     </div>
                     
-                    <div class='detailLine'>
+                    <div>
                     		<span>3.拥有选举权、被选举权、表决权、建议权和监督权</span>
                     </div>
                     
-                    <div class='detailLine'>
+                    <div>
                     		<span>4.优先参加本会组织的各类活动、参访、培训、沙龙讲座</span>
                     </div>
                     
-                    <div class='detailLine'>
+                    <div>
                     		<span>5.拥有查找/发布招聘求职、名优产品、采购需求、供应商库、采购师库等信息</span>
                     </div>
                     
-                    <div class='detailLine'>
+                    <div>
                     		<span>6.入会自愿，退会自由 </span>
                     </div>
                     
@@ -308,9 +319,13 @@
     	  }
     	  
     	  var bodyHeight = $("body").innerHeight();
+    	  var bodyWidth = $("body").width();
     	  var userHeight = $(".userInfo").outerHeight(true);
     	  var memberHeight = bodyHeight - userHeight;
-    	  $(".memberInfoDiv").css({"height": memberHeight + 'px'});
+    	  var picRate = parseFloat(375/545);
+    	  var picHei = parseInt(bodyWidth / picRate);
+    	  console.log('height: ' + bodyHeight);
+    	  $(".memberInfoDiv").css({"height": picHei + 'px'});
     	  $(".notMemberDiv").css({"height": memberHeight + 'px'});
     	  
     	  // 请求后台数据
@@ -348,7 +363,8 @@
     		  isMember: true,
     		  notMember: true,
     		  showDetail: false,
-    		  time: 0
+    		  time: 0,
+    		  spanClass: ''
     	  },
     	  // 自定义方法
     	  methods:{
@@ -377,6 +393,15 @@
     			  
     			  this.showDetail = true;
     			  this.time = new Date().getTime();
+    			  
+    			  var bodyWidth = $("body").width();
+    	    	  if (bodyWidth < 375) {
+    	    		  console.log('1');
+    	    		  this.spanClass = 'small';
+    	    	  } else {
+    	    		  console.log('2');
+    	    		 this.spanClass = 'big';
+    	    	  }
     		  },
     		  
     		  // 用户点击返回会员证信息
