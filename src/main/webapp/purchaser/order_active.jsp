@@ -157,8 +157,11 @@ input {
 			<div class="code-button" @click="checkCode()">确定</div>
 			<div class="price-wraper">
 				<div>参加费用:</div>
-				<div style="color: #E60012;">
+				<div style="color: #E60012;" v-if="finalPrice != 0">
 					<span style="font-size: 9px;">¥</span> {{finalPrice}}元
+				</div>
+				<div style="color: #E60012;" v-if="finalPrice == 0">
+					免费
 				</div>
 			</div>
 		</div>
@@ -264,6 +267,12 @@ input {
 						param.activeCodeId = this.activeCode.id; 
 					}
 					this.requestServer(url, param, function(res) {
+						// 0元订单, 不走微信支付
+						if (res.isPay) {
+							alert('报名成功!');
+							location.href = "purchaser/pay_success_active.jsp";
+						}
+						
 						// 调用微信支付API
 						vue.wechatPay(JSON.parse(res));
 					});
@@ -282,7 +291,7 @@ input {
 						},
 						function(res) {
 							if (res.err_msg == "get_brand_wcpay_request:ok") {
-								alert('购买成功!');
+								alert('报名成功!');
 								location.href = "purchaser/pay_success_active.jsp";
 							} else if (res.err_msg == "get_brand_wcpay_request:cancel") {
 								// alert("已取消支付!");

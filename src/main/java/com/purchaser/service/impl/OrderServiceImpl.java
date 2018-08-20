@@ -44,10 +44,9 @@ public class OrderServiceImpl implements OrderService {
 
 	@Autowired
 	private ActiveMapper activeMapper;
-	
+
 	@Autowired
 	private MemberMapper memberMapper;
-	
 
 	/**
 	 * 获取活动商品信息
@@ -79,11 +78,23 @@ public class OrderServiceImpl implements OrderService {
 		order.setUser(user.getId());
 		order.setStatus(Constant.ORDER_STATUS_BEPAIED);
 		order.setCreateDate(new Date());
+
+		// 如果价格为0, 直接修改订单状态为支付成功不走支付流程
+		if (order.getMoney() == 0) {
+			order.setStatus(Constant.ORDER_STATUS_PAIED);
+		}
+
+		// 订单数据保存到数据库
 		orderMapper.insertSelective(order);
 
 		// 如果使用邀请码 , 修改邀请码为已使用
 		if (param.containsKey("activeCodeId") && StringUtils.isNoneEmpty(param.getString("activeCodeId"))) {
 			activeMapper.updateActiveCodeUse(param.getLongValue("activeCodeId"));
+		}
+
+		// 如果价格为0, 不走支付流程
+		if (order.getMoney() == 0) {
+			return new JSONObject().fluentPut("success", true).fluentPut("isPay", true).toJSONString();
 		}
 
 		// 调用微信支付签名
@@ -92,7 +103,6 @@ public class OrderServiceImpl implements OrderService {
 		return wechatApiManager.paySign(payRequest, order);
 	}
 
-	
 	/**
 	 * 支付回调，修改订单状态
 	 */
@@ -100,7 +110,7 @@ public class OrderServiceImpl implements OrderService {
 	public void updateOrderStatus(String no) {
 		// 根据订单号，查询订单信息
 		Order order = orderMapper.findOrderByNo(no);
-		
+
 		// 会员订单 ，需要更新会员信息
 		if (Constant.MEMBER_PRODUCT_TYPE.equals(order.getProductType())) {
 			Member member = memberMapper.selectByPrimaryKey(order.getProductId());
@@ -111,13 +121,12 @@ public class OrderServiceImpl implements OrderService {
 			member.setNo(memberNo);
 			memberMapper.updateByPrimaryKeySelective(member);
 		}
-		
+
 		// 修改订单状态
 		order.setStatus(Constant.ORDER_STATUS_PAIED);
 		order.setPayTime(new Date());
 		orderMapper.updateByPrimaryKeySelective(order);
-		
-		
+
 	}
 
 }
