@@ -41,9 +41,14 @@
 		width: 100%;
 	}
 	
+	.text-wraper{
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	
 	.text{
 		margin: 0 auto;
-		width: 56%;
 		font-size: 16px;
 	}
 </style>
@@ -52,12 +57,14 @@
 	<div id="wraper">
 		<img src="purchaser/img/member_card.png">
 		<div class="text-block">
-			<div class="text">
-				您已经成功报名“ {{active.name}} ”
-				<div style="height: 5px;"></div>
-				请按时出席本活动 ，
-				<div style="height: 5px;"></div>
-				谢谢您的参与！
+			<div class="text-wraper">
+				<div class="text">
+					您已经成功报名“ {{active.name}} ”
+					<div style="height: 5px;"></div>
+					请按时出席本活动 ，
+					<div style="height: 5px;"></div>
+					谢谢您的参与！
+				</div>
 			</div>
 			<div style="padding-top: 30px; font-size: 12px; color: #BBB; text-align: center;" @click="getActive()">
 				查看活动详情

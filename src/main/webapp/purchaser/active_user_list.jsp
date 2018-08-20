@@ -85,10 +85,10 @@
 			<div class="active-user-list">
 				<div class="active-user-item" v-for="(item,i) in active.userList">
 					<div class="active-user-image">
-						<img src="https://www.ecartoon.com.cn/picture/wangyan1.jpg">
+						<img :src="'http://purchaser.ecartoon.com.cn/picture/' + item.image">
 					</div>
 					<div class="active-user-name">
-						{{item.nick}}
+						{{item.name}}
 					</div>
 				</div>
 			</div>
