@@ -92,6 +92,14 @@ public class OrderServiceImpl implements OrderService {
 			activeMapper.updateActiveCodeUse(param.getLongValue("activeCodeId"));
 		}
 
+		// 如果有用户信息, 保存用户信息
+		if (param.containsKey("name") && param.containsKey("gender") && param.containsKey("idCard")) {
+			user.setName(param.getString("name"));
+			user.setGender(param.getString("gender"));
+			user.setIdCardNum(param.getString("idCard"));
+			userMapper.updateByPrimaryKey(user);
+		}
+
 		// 如果价格为0, 不走支付流程
 		if (order.getMoney() == 0) {
 			return new JSONObject().fluentPut("success", true).fluentPut("isPay", true).toJSONString();

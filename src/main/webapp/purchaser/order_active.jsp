@@ -15,9 +15,11 @@
 <meta name="viewport"
 	content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 <title>活动报名</title>
+<link rel="stylesheet" href="purchaser/css/iosSelect.css">
 <script type="text/javascript" src="purchaser/js/vue.min.js"></script>
 <script type="text/javascript" src="purchaser/js/jquery.min.js"></script>
 <script type="text/javascript" src="purchaser/js/commonUtils.js"></script>
+<script type="text/javascript" src="purchaser/js/iosSelect.js"></script>
 <style type="text/css">
 html, body {
 	margin: 0;
@@ -102,6 +104,37 @@ input {
 	border-radius: 5px;
 }
 
+/* 表单 */
+.line{
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   padding: 0 10px;
+   border-bottom: 1px solid #f0f2f2;
+ }
+ 
+ .line:last-child {
+	border:none;
+ }
+ 
+ .title{
+   font-size: 13px;
+   padding: 14px 0;
+ }
+ 
+ .inputValue{
+   font-size: 13px;
+   color: #bbb;
+   border: none;
+   text-align: right;
+ }
+   
+   input{ 
+ -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+ -webkit-user-modify: read-write-plaintext-only;
+ outline: none;
+}
+
 /* 支付按钮 */
 .payment-button-wraper {
 	position: fixed;
@@ -138,7 +171,7 @@ input {
 		</div>
 		<div style="height: 10px; background-color: #F0F0F2;"></div>
 		<!-- 会员价格 -->
-		<div class="price-wraper">
+		<div class="price-wraper" v-if="isMember">
 			<div>会员价:</div>
 			<div style="color: #E60012;" v-if="active.price != 0">
 				<span style="font-size: 9px;">¥</span> {{active.price}}元
@@ -147,9 +180,9 @@ input {
 				免费
 			</div>
 		</div>
-		<div style="height: 10px; background-color: #F0F0F2;"></div>
+		<div style="height: 10px; background-color: #F0F0F2;" v-if="isMember"></div>
 		<!-- 邀请码和参加费用 -->
-		<div class="code-wraper">
+		<div class="code-wraper" v-if="!isMember">
 			<div class="code-input-wraper">
 				<div>请输入邀请码</div>
 				<div>
@@ -158,7 +191,8 @@ input {
 				</div>
 			</div>
 			<div class="code-button" @click="checkCode()">确定</div>
-			<div class="price-wraper">
+			<div style="height: 10px;" v-if="!activeCode.id"></div>
+			<div class="price-wraper" v-if="activeCode.id">
 				<div>参加费用:</div>
 				<div style="color: #E60012;" v-if="finalPrice != 0">
 					<span style="font-size: 9px;">¥</span> {{finalPrice}}元
@@ -168,7 +202,32 @@ input {
 				</div>
 			</div>
 		</div>
-		<div style="height: 10px; background-color: #F0F0F2;"></div>
+		<div style="height: 10px; background-color: #F0F0F2;" v-if="!isMember"></div>
+		<div class="user-info-wraper" v-if="!isMember">
+			<div class="line">
+	              <div class="title">姓名</div>
+	              <div class="value">
+	              		<input class="inputValue" v-model="model.name" type="text" placeholder="请输入真实姓名"/>
+	              </div>
+  	         </div>
+  	         <div class="line">
+	              <div class="title">性别</div>
+	              <div class="value">
+	              		<div class="value" @click="selectGender()">
+      	              		<span class="inputValue">{{model.genderText}}</span><span class="inputValue">&nbsp;&gt;</span>
+      	              		<input type="hidden" id="iosSelector" value="1" />
+      	              </div>
+	              </div>
+  	         </div>
+  	         <div class="line">
+	              <div class="title">身份证</div>
+	              <div class="value">
+	              		<input class="inputValue" v-model="model.idCard" type="text" placeholder="请输入身份证"/>
+	              </div>
+  	         </div>
+		</div>
+		<div style="height: 10px; background-color: #F0F0F2;" v-if="!isMember"></div>
+		
 		<!-- 支付按钮 -->
 		<div class="payment-button-wraper" @click="payMent()" v-if="!isHide">
 			<div class="payment-button">确定支付</div>
@@ -183,6 +242,7 @@ input {
 				finalPrice: 0,
 				code: '',
 				activeCode: {},
+				model: {},
 				isHide: false
 			},
 			created: function () {
@@ -226,6 +286,8 @@ input {
 					this.requestServer(url, param, function (res) {
 						vue.isMember = res.isMember;
 					});
+					
+					this.model.genderText = "男";
 				},
 				
 				// 验证邀请码
@@ -251,6 +313,36 @@ input {
 					});
 				},
 				
+				// 选择性别
+				selectGender: function () {
+					createSelector({
+	    				data: [{value: '男', id: 'M'}, {value: '女', id: 'F'}],
+	    				title: "性别",
+	    				callback: function (res) {
+	    					console.log(res);
+	    					vue.model.gender = res.id;
+	    					vue.model.genderText = res.value;
+	    				}
+	    			 });
+				},
+				
+				checkForm: function () {
+					var model = this.model;
+					if (!model.name || model.name == "") {
+						alert("请输入真实姓名");
+						return false;
+					}
+					if (!model.idCard || model.idCard == "") {
+						alert("请输入身份证");
+						return false;
+					}
+					if (!model.company || model.company == "") {
+						alert("请输入单位");
+						return false;
+					}
+					return true;
+				},
+				
 				// 支付
 				payMent: function () {
 					
@@ -259,12 +351,20 @@ input {
 						return;
 					} 
 					
+					if (!this.isMember && !this.checkForm()) {
+						return;
+					}
+					
 					// 请求服务接口生成订单并生成支付签名
 					var url = "order/createOrder.pur";
 					var param = {
 							productId: this.active.id,
 							productType: "A",
-							price: this.finalPrice
+							price: this.finalPrice,
+							name: this.model.name,
+							gender: this.model.gender,
+							idCard: this.model.idCard,
+							company: this.model.company
 					}
 					if (this.activeCode.id) {
 						param.activeCodeId = this.activeCode.id; 
@@ -280,7 +380,7 @@ input {
 						}
 						
 						// 调用微信支付API
-						vue.wechatPay(JSON.parse(res));
+						vue.wechatPay(res);
 					});
 				},
 				
