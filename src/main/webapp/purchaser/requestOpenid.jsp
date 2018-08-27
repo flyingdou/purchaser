@@ -12,13 +12,15 @@ var page = {
      status : ${status == null ? 0 : status},
      upUrl : "${upUrl}"
 };
-	if(page.status == 0){
-		sessionStorage.upUrl = page.upUrl;
-		location.href='https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxa8d461eba30468fd&redirect_uri=http://purchaser.ecartoon.com.cn/wechat/wechatLogin.pur&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect';
-	}else if(page.status == 1){
-		var upUrl = sessionStorage.upUrl;
-		sessionStorage.removeItem("upUrl");
-		location.href = upUrl;
-	}
+alert(JSON.stringify(status));
+return;
+if(page.status == 0){
+	sessionStorage.upUrl = page.upUrl;
+	location.href='https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxa8d461eba30468fd&redirect_uri=http://purchaser.ecartoon.com.cn/wechat/wechatLogin.pur&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect';
+}else if(page.status == 1){
+	var upUrl = sessionStorage.upUrl;
+	sessionStorage.removeItem("upUrl");
+	location.href = upUrl;
+}
 </script>
 </html>
