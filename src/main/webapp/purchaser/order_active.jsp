@@ -242,7 +242,10 @@ input {
 				finalPrice: 0,
 				code: '',
 				activeCode: {},
-				model: {},
+				model: {
+					genderText: "男",
+					gender: "M"
+				},
 				isHide: false
 			},
 			created: function () {
@@ -286,8 +289,6 @@ input {
 					this.requestServer(url, param, function (res) {
 						vue.isMember = res.isMember;
 					});
-					
-					this.model.genderText = "男";
 				},
 				
 				// 验证邀请码
@@ -359,8 +360,7 @@ input {
 							price: this.finalPrice,
 							name: this.model.name,
 							gender: this.model.gender,
-							idCard: this.model.idCard,
-							company: this.model.company
+							idCard: this.model.idCard
 					}
 					if (this.activeCode.id) {
 						param.activeCodeId = this.activeCode.id; 
