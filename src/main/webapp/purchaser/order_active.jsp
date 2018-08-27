@@ -336,10 +336,6 @@ input {
 						alert("请输入身份证");
 						return false;
 					}
-					if (!model.company || model.company == "") {
-						alert("请输入单位");
-						return false;
-					}
 					return true;
 				},
 				
