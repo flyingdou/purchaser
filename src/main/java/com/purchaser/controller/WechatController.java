@@ -8,10 +8,11 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.dom4j.Document;
 import org.dom4j.Element;
-import org.dom4j.io.SAXReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -159,12 +160,35 @@ public class WechatController {
 	@RequestMapping("/updateOrder")
 	public void updateOrder (HttpServletRequest request, HttpServletResponse response) {
 	       try {
+	    	   DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+	    	   String FEATURE = null;
+	    	   
+	    	   FEATURE = "http://apache.org/xml/features/disallow-doctype-decl";
+	    	   dbf.setFeature(FEATURE, true);
+	    	   
+	    	   FEATURE = "http://xml.org/sax/features/external-general-entities";
+	    	   dbf.setFeature(FEATURE, false);
+	    	   
+	    	   FEATURE = "http://xml.org/sax/features/external-parameter-entities";
+	    	   dbf.setFeature(FEATURE, false);
+	    	   
+	    	   FEATURE = "http://apache.org/xml/features/nonvalidating/load-external-dtd";
+	    	   dbf.setFeature(FEATURE, false);
+	    	   
+	    	   dbf.setXIncludeAware(false);
+	    	   dbf.setExpandEntityReferences(false);
+	    	   
+	    	   DocumentBuilder safebuilder = dbf.newDocumentBuilder();
+	    		
 	    	   // 解析结果存储在HashMap
 				Map<String, String> map = new HashMap<String, String>();
 				InputStream inputStream = request.getInputStream();
+				
+				// test 
+				Document document = (Document) safebuilder.parse(inputStream);
 				// 读取输入流
-				SAXReader reader = new SAXReader();
-				Document document = reader.read(inputStream);
+//				SAXReader reader = new SAXReader();
+//				Document document = reader.read(inputStream);
 				// 得到xml根元素
 				Element root = document.getRootElement();
 				// 得到根元素的所有子节点
